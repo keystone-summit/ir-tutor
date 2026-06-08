@@ -160,6 +160,9 @@ STYLE: warm and encouraging; plain language first, then the precise term; univer
           <div className="ir-name">{COURSE.title}</div>
         </div>
         <div className="ir-sub">{COURSE.subtitle}</div>
+        <a className="ir-signout" href="/" title="All courses">
+          <Library size={16} />
+        </a>
         <button className="ir-signout" onClick={signOut} title="Sign out">
           <LogOut size={16} />
         </button>

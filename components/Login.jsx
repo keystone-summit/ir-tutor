@@ -5,7 +5,12 @@ import { setToken } from "../lib/clientAuth";
 
 const PIN_LEN = 6; // 6-digit PIN; default PIN is 123456
 
-export default function Login({ onAuthed }) {
+export default function Login({
+  onAuthed,
+  code = "KEYSTONE SUMMIT",
+  title = "Course Portal",
+  sub = "Enter your PIN to continue",
+}) {
   const [pin, setPin] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
@@ -68,9 +73,9 @@ export default function Login({ onAuthed }) {
     <div className="ir-login">
       <div className={`ir-logincard ${shake ? "ir-shake" : ""}`}>
         <div className="ir-crest big"><GraduationCap size={26} /></div>
-        <div className="ir-logincode">IAFF / PSC 1001</div>
-        <h1>Introduction to International Relations</h1>
-        <p className="ir-loginsub">Enter your PIN to continue</p>
+        <div className="ir-logincode">{code}</div>
+        <h1>{title}</h1>
+        <p className="ir-loginsub">{sub}</p>
 
         <div className="ir-pindots">
           {Array.from({ length: PIN_LEN }).map((_, i) => (
