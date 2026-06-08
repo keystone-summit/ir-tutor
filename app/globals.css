@@ -245,7 +245,7 @@ body{font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased;
 .cwrap .progress-bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
 .cwrap .progress-bar span{display:block;height:100%;background:var(--accent);transition:width .3s;}
 .cwrap .progress small{color:#777;font-size:12px;}
-.cwrap nav{margin-top:18px;display:flex;flex-direction:column;gap:2px;flex:1;}
+.cwrap nav{margin-top:18px;display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow-y:auto;}
 .cwrap .nav-item{display:flex;gap:8px;align-items:flex-start;text-align:left;background:none;border:none;
   padding:9px 10px;border-radius:6px;font-family:inherit;font-size:13.5px;cursor:pointer;color:var(--ink);}
 .cwrap .nav-item:hover{background:var(--accent-soft);}
