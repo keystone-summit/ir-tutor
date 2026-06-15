@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { GraduationCap, Delete } from "lucide-react";
 import { setToken } from "../lib/clientAuth";
+import ChangePinModal from "./ChangePinModal";
 
 const PIN_LEN = 6; // 6-digit PIN; default PIN is 123456
 
@@ -15,6 +16,7 @@ export default function Login({
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
   const [shake, setShake] = useState(false);
+  const [showChangePin, setShowChangePin] = useState(false);
 
   const submit = useCallback(async (value) => {
     const code = (value ?? pin).trim();
@@ -97,7 +99,13 @@ export default function Login({
         </div>
 
         {msg && <p className="ir-loginmsg">{msg}</p>}
+
+        <button type="button" className="ir-changepin-link" onClick={() => setShowChangePin(true)} disabled={busy}>
+          Change PIN
+        </button>
       </div>
+
+      {showChangePin && <ChangePinModal onClose={() => setShowChangePin(false)} />}
     </div>
   );
 }

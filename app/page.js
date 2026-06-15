@@ -1,9 +1,10 @@
 "use client";
 // Home = course picker. Three cards, one per course, all behind the same PIN.
 // The existing IR Tutor course moved to /irtutor; this page replaced it at /.
-import React from "react";
-import { GraduationCap, BookOpen, Languages, LogOut, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import { GraduationCap, BookOpen, Languages, LogOut, ChevronRight, KeyRound } from "lucide-react";
 import AuthGate from "../components/AuthGate";
+import ChangePinModal from "../components/ChangePinModal";
 import { clearToken } from "../lib/clientAuth";
 
 const COURSES = [
@@ -37,15 +38,22 @@ const COURSES = [
 ];
 
 function Picker() {
+  const [showChangePin, setShowChangePin] = useState(false);
   function signOut() {
     clearToken();
     if (typeof window !== "undefined") window.location.reload();
   }
   return (
     <div className="coursepicker">
-      <button className="cp-signout" onClick={signOut} title="Sign out">
-        <LogOut size={15} /> Sign out
-      </button>
+      <div className="cp-toolbar">
+        <button className="cp-toolbtn" onClick={() => setShowChangePin(true)} title="Change PIN">
+          <KeyRound size={15} /> Change PIN
+        </button>
+        <button className="cp-signout" onClick={signOut} title="Sign out">
+          <LogOut size={15} /> Sign out
+        </button>
+      </div>
+      {showChangePin && <ChangePinModal onClose={() => setShowChangePin(false)} />}
       <header className="cp-head">
         <div className="cp-crest"><GraduationCap size={28} /></div>
         <div className="cp-kicker">Keystone Summit</div>

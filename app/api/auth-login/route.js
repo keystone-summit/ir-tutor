@@ -8,6 +8,7 @@
 export const runtime = "nodejs";
 
 import { getSecret, getPinHash, verifyPin, issueToken } from "../../../lib/auth";
+import { getEffectivePinHash } from "../../../lib/pinStore";
 
 export async function POST(req) {
   if (!getSecret() || !getPinHash()) {
@@ -30,8 +31,10 @@ export async function POST(req) {
   }
 
   // scrypt runs on every well-formed 6-digit PIN so timing is roughly
-  // constant whether or not the PIN is correct.
-  const ok = verifyPin(pin, getPinHash());
+  // constant whether or not the PIN is correct. The effective hash is the
+  // DB-stored one (if the PIN was changed) with the env hash as fail-open
+  // fallback, so a paused DB never locks the user out.
+  const ok = verifyPin(pin, await getEffectivePinHash());
   if (!ok) {
     return Response.json({ ok: false, error: "Incorrect PIN." }, { status: 401 });
   }
