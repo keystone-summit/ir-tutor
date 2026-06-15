@@ -2,7 +2,7 @@
 // Home = course picker. Three cards, one per course, all behind the same PIN.
 // The existing IR Tutor course moved to /irtutor; this page replaced it at /.
 import React, { useState } from "react";
-import { GraduationCap, BookOpen, Languages, LogOut, ChevronRight, KeyRound } from "lucide-react";
+import { GraduationCap, BookOpen, Languages, LogOut, ChevronRight, KeyRound, Globe } from "lucide-react";
 import AuthGate from "../components/AuthGate";
 import ChangePinModal from "../components/ChangePinModal";
 import { clearToken } from "../lib/clientAuth";
@@ -73,6 +73,17 @@ function Picker() {
           </a>
         ))}
       </div>
+
+      <a href="/seminar" className="cp-seminar">
+        <div className="cp-seminar-icon"><Globe size={24} /></div>
+        <div className="cp-seminar-body">
+          <div className="cp-seminar-kicker">New · weekly</div>
+          <h2>Foreign Policy — Implications Seminar</h2>
+          <p>A current-events deep-dive that publishes Monday mornings: the week's top 5 events,
+            a five-layer / five-lens deep dive, gaps to fill, and what to watch next.</p>
+        </div>
+        <span className="cp-go">Open seminar <ChevronRight size={16} /></span>
+      </a>
 
       <footer className="cp-foot">Keystone Summit · self-paced learning</footer>
     </div>

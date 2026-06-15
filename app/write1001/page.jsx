@@ -10,6 +10,8 @@ import Drill from "./components/Drill";
 import WritingBox from "./components/WritingBox";
 import Tutor from "./components/Tutor";
 import AuthGate from "../../components/AuthGate";
+import NotesPanel from "../../components/NotesPanel";
+import StudySaves from "../../components/StudySaves";
 import { authFetch, clearToken } from "../../lib/clientAuth";
 
 // Progress for all three courses lives in one `progress` table keyed by
@@ -20,6 +22,7 @@ const WEEK_OFFSET = 1000;
 function Write1001() {
   const [active, setActive] = useState(1);
   const [done, setDone] = useState({}); // local week number -> true
+  const [savesRefresh, setSavesRefresh] = useState(0);
 
   // Load completed weeks (filtered to this course's band).
   useEffect(() => {
@@ -105,7 +108,12 @@ function Write1001() {
             )}
           </section>
 
-          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} week={week.week + WEEK_OFFSET} />
+          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} week={week.week + WEEK_OFFSET}
+            course="write1001" localWeek={week.week} onSaved={() => setSavesRefresh((n) => n + 1)} />
+
+          <NotesPanel course="write1001" week={week.week} />
+
+          <StudySaves course="write1001" refreshKey={savesRefresh} />
 
           <button className="complete-btn" onClick={() => toggleDone(week.week)}>
             {done[week.week] ? "✓ Marked complete — undo" : "Mark week complete"}

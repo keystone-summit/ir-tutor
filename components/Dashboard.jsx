@@ -8,6 +8,9 @@ import {
 import { authFetch, clearToken } from "../lib/clientAuth";
 import { COURSE, WEEKS, HOME, SUGGESTIONS } from "./course";
 import PayoffMatrix from "./PayoffMatrix";
+import NotesPanel from "./NotesPanel";
+import ChatSaveButton from "./ChatSaveButton";
+import StudySaves from "./StudySaves";
 
 export default function Dashboard({ onSignOut }) {
   const [activeN, setActiveN] = useState(0);
@@ -18,6 +21,7 @@ export default function Dashboard({ onSignOut }) {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState({});
   const [activeTerm, setActiveTerm] = useState(null);
+  const [savesRefresh, setSavesRefresh] = useState(0);
   const scrollRef = useRef(null);
 
   const current = activeN === 0 ? HOME : WEEKS.find((w) => w.n === activeN);
@@ -203,6 +207,9 @@ STYLE: warm and encouraging; plain language first, then the precise term; univer
             <button className={tab === "tutor" ? "on" : ""} onClick={() => setTab("tutor")}>
               <MessageCircle size={15} /> Ask the Tutor
             </button>
+            <button className={tab === "saves" ? "on" : ""} onClick={() => setTab("saves")}>
+              <Library size={15} /> Study Saves
+            </button>
           </div>
 
           {tab === "module" ? (
@@ -304,8 +311,10 @@ STYLE: warm and encouraging; plain language first, then the precise term; univer
                   </div>
                 </div>
               )}
+
+              <NotesPanel course="ir_tutor" week={activeN} />
             </div>
-          ) : (
+          ) : tab === "tutor" ? (
             <div className="ir-chat">
               <div className="ir-msgs" ref={scrollRef}>
                 {messages.map((m, i) => (
@@ -322,6 +331,11 @@ STYLE: warm and encouraging; plain language first, then the precise term; univer
                     <div className="ir-bubble ir-typing"><span></span><span></span><span></span></div>
                   </div>
                 )}
+              </div>
+
+              <div className="ir-savebar" style={{ padding: "4px 30px 0" }}>
+                <ChatSaveButton course="ir_tutor" week={activeN} messages={messages}
+                  onSaved={() => setSavesRefresh((n) => n + 1)} />
               </div>
 
               <div className="ir-suggest">
@@ -348,6 +362,10 @@ STYLE: warm and encouraging; plain language first, then the precise term; univer
                   </button>
                 </div>
               </div>
+            </div>
+          ) : (
+            <div className="ir-content">
+              <StudySaves course="ir_tutor" refreshKey={savesRefresh} />
             </div>
           )}
         </main>

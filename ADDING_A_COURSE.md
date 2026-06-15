@@ -63,7 +63,9 @@ This Vercel project (`ir-tutor`, personal/Keystone account) is **not
 git-linked**, so pushing GitHub does not auto-deploy. From this folder:
 
 ```powershell
-# token is in  C:\Users\david\Config keystone summit.txt
+# VERCEL_TOKEN (and all Keystone personal-account secrets) live in the master file:
+#   C:\Users\david\Documents\Keystone Summit\keystone_credentials_MASTER.txt  -> [vercel] VERCEL_TOKEN
+# (old pointer C:\Users\david\Config keystone summit.txt is now *.legacy.txt — superseded by the master)
 git add -A; git commit -m "feat: <course>"
 git push keystone HEAD:main          # source control -> keystone-summit/ir-tutor
 vercel --prod --yes --token <KEYSTONE_VERCEL_TOKEN>   # actual deploy

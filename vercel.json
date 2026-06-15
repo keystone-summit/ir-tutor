@@ -1,5 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    { "path": "/api/seminar/ingest", "schedule": "0 10 * * 1" },
+    { "path": "/api/seminar/generate", "schedule": "0 11 * * 1" }
+  ],
   "headers": [
     {
       "source": "/(.*\\.html)",

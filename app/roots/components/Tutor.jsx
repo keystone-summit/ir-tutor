@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { authFetch } from "../../../lib/clientAuth";
+import ChatSaveButton from "../../../components/ChatSaveButton";
 
 // Direct-answer AI etymology tutor for ROOTS 1001. Same direct style as the
 // WRITE 1001 tutor (no Socratic loop), focused on breaking words into their
@@ -8,7 +9,7 @@ import { authFetch } from "../../../lib/clientAuth";
 // Chat is persisted through the shared /api/chat route, keyed by `week` (the
 // caller passes the offset-applied week number so it never collides with the
 // IR Tutor or Write 1001 chat bands).
-export default function Tutor({ weekTitle, tutorFocus, roots, week }) {
+export default function Tutor({ weekTitle, tutorFocus, roots, week, course, localWeek, onSaved }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -90,6 +91,11 @@ STYLE RULES (important):
         ))}
         {loading && <div className="bubble assistant">…</div>}
       </div>
+      {course && Number.isInteger(localWeek) && (
+        <div style={{ padding: "8px 16px 0" }}>
+          <ChatSaveButton course={course} week={localWeek} messages={msgs} onSaved={onSaved} />
+        </div>
+      )}
       <div className="tutor-input">
         <input
           value={input}

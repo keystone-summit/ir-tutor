@@ -8,6 +8,8 @@ import { COURSE, WEEKS } from "./data/curriculum";
 import RootDrill from "./components/RootDrill";
 import Tutor from "./components/Tutor";
 import AuthGate from "../../components/AuthGate";
+import NotesPanel from "../../components/NotesPanel";
+import StudySaves from "../../components/StudySaves";
 import { authFetch, clearToken } from "../../lib/clientAuth";
 
 const WEEK_OFFSET = 2000; // Roots band in the shared progress table (see write1001 page)
@@ -47,6 +49,7 @@ function buildDrills(week) {
 function Roots() {
   const [active, setActive] = useState(1);
   const [done, setDone] = useState({});
+  const [savesRefresh, setSavesRefresh] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -138,7 +141,12 @@ function Roots() {
             {drills.map((ex, i) => <RootDrill key={`${active}-${ex.type}-${i}`} ex={ex} />)}
           </section>
 
-          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} roots={week.roots} week={week.week + WEEK_OFFSET} />
+          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} roots={week.roots} week={week.week + WEEK_OFFSET}
+            course="roots" localWeek={week.week} onSaved={() => setSavesRefresh((n) => n + 1)} />
+
+          <NotesPanel course="roots" week={week.week} />
+
+          <StudySaves course="roots" refreshKey={savesRefresh} />
 
           <button className="complete-btn" onClick={() => toggleDone(week.week)}>
             {done[week.week] ? "✓ Marked complete — undo" : "Mark week complete"}
