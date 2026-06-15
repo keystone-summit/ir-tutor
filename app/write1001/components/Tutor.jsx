@@ -1,14 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authFetch } from "../../../lib/clientAuth";
 
 // Direct-answer AI writing tutor (no Socratic loop). Routes through the shared
 // PIN-gated /api/tutor proxy ({system, messages} -> {text}); the writing-tutor
 // system prompt (formerly server-side in the zip's /api/tutor) is built here.
-export default function Tutor({ weekTitle, tutorFocus }) {
+// Chat is persisted through the shared /api/chat route, keyed by `week` (the
+// caller passes the offset-applied week number so it never collides with the
+// IR Tutor or Roots chat bands).
+export default function Tutor({ weekTitle, tutorFocus, week }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Load this lesson's saved conversation when the week changes.
+  useEffect(() => {
+    let cancelled = false;
+    if (!Number.isInteger(week)) { setMsgs([]); return; }
+    (async () => {
+      try {
+        const r = await authFetch(`/api/chat?week=${week}`);
+        const d = await r.json().catch(() => ({}));
+        if (!cancelled) setMsgs((d.messages || []).map((m) => ({ role: m.role, content: m.content })));
+      } catch { if (!cancelled) setMsgs([]); }
+    })();
+    return () => { cancelled = true; };
+  }, [week]);
+
+  // Persist one chat turn (fire-and-forget; the UI doesn't wait on it).
+  function saveMsg(role, content) {
+    if (!Number.isInteger(week)) return;
+    authFetch("/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ week, role, content }),
+    }).catch(() => {});
+  }
 
   function system() {
     return `You are the writing tutor for an introductory academic writing course.
@@ -29,6 +56,7 @@ STYLE RULES (important):
     setMsgs(next);
     setInput("");
     setLoading(true);
+    saveMsg("user", input);
     try {
       const r = await authFetch("/api/tutor", {
         method: "POST",
@@ -36,7 +64,9 @@ STYLE RULES (important):
         body: JSON.stringify({ system: system(), messages: next }),
       });
       const d = await r.json();
-      setMsgs([...next, { role: "assistant", content: d.text || "Sorry — please try asking again." }]);
+      const reply = d.text || "Sorry — please try asking again.";
+      setMsgs([...next, { role: "assistant", content: reply }]);
+      saveMsg("assistant", reply);
     } catch {
       setMsgs([...next, { role: "assistant", content: "The tutor is unavailable right now. Please try again." }]);
     } finally {

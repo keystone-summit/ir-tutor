@@ -105,7 +105,7 @@ function Write1001() {
             )}
           </section>
 
-          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} />
+          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} week={week.week + WEEK_OFFSET} />
 
           <button className="complete-btn" onClick={() => toggleDone(week.week)}>
             {done[week.week] ? "✓ Marked complete — undo" : "Mark week complete"}

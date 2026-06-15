@@ -138,7 +138,7 @@ function Roots() {
             {drills.map((ex, i) => <RootDrill key={`${active}-${ex.type}-${i}`} ex={ex} />)}
           </section>
 
-          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} roots={week.roots} />
+          <Tutor weekTitle={week.title} tutorFocus={week.tutorFocus} roots={week.roots} week={week.week + WEEK_OFFSET} />
 
           <button className="complete-btn" onClick={() => toggleDone(week.week)}>
             {done[week.week] ? "✓ Marked complete — undo" : "Mark week complete"}

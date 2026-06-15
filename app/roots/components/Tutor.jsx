@@ -1,14 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authFetch } from "../../../lib/clientAuth";
 
 // Direct-answer AI etymology tutor for ROOTS 1001. Same direct style as the
 // WRITE 1001 tutor (no Socratic loop), focused on breaking words into their
 // Greek/Latin parts. Routes through the shared PIN-gated /api/tutor proxy.
-export default function Tutor({ weekTitle, tutorFocus, roots }) {
+// Chat is persisted through the shared /api/chat route, keyed by `week` (the
+// caller passes the offset-applied week number so it never collides with the
+// IR Tutor or Write 1001 chat bands).
+export default function Tutor({ weekTitle, tutorFocus, roots, week }) {
   const [msgs, setMsgs] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Load this lesson's saved conversation when the week changes.
+  useEffect(() => {
+    let cancelled = false;
+    if (!Number.isInteger(week)) { setMsgs([]); return; }
+    (async () => {
+      try {
+        const r = await authFetch(`/api/chat?week=${week}`);
+        const d = await r.json().catch(() => ({}));
+        if (!cancelled) setMsgs((d.messages || []).map((m) => ({ role: m.role, content: m.content })));
+      } catch { if (!cancelled) setMsgs([]); }
+    })();
+    return () => { cancelled = true; };
+  }, [week]);
+
+  // Persist one chat turn (fire-and-forget; the UI doesn't wait on it).
+  function saveMsg(role, content) {
+    if (!Number.isInteger(week)) return;
+    authFetch("/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ week, role, content }),
+    }).catch(() => {});
+  }
 
   function system() {
     const rootList = roots.map((r) => `${r.root} = ${r.meaning}`).join("; ");
@@ -30,6 +57,7 @@ STYLE RULES (important):
     setMsgs(next);
     setInput("");
     setLoading(true);
+    saveMsg("user", input);
     try {
       const r = await authFetch("/api/tutor", {
         method: "POST",
@@ -37,7 +65,9 @@ STYLE RULES (important):
         body: JSON.stringify({ system: system(), messages: next }),
       });
       const d = await r.json();
-      setMsgs([...next, { role: "assistant", content: d.text || "Sorry — please try asking again." }]);
+      const reply = d.text || "Sorry — please try asking again.";
+      setMsgs([...next, { role: "assistant", content: reply }]);
+      saveMsg("assistant", reply);
     } catch {
       setMsgs([...next, { role: "assistant", content: "The tutor is unavailable right now. Please try again." }]);
     } finally {
