@@ -12,7 +12,7 @@
 // All of these integrate with Option 3's save flow — cards, openings, and
 // debates save into chat_saves (course='fp_seminar') and surface in the
 // Study Saves panel at the foot of the page.
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import {
   Globe, ArrowLeft, BookmarkPlus, Check, ExternalLink, Eye, Scale,
   Layers as LayersIcon, Search, Building2, Users, MessageSquare, Loader2,
@@ -231,9 +231,22 @@ export default function SeminarView() {
     (dd ? `\n\n## Deep Dive\n` +
       LAYER_DEFS.map(([k, lbl]) => `### ${lbl}\n${layers[k] || ""}`).join("\n\n") : "");
 
+  // Section pills — only sections that are actually rendered (in scroll order).
+  const navItems = [
+    { id: "briefing", label: "Briefing" },
+    ...(dd ? [{ id: "deep-dive", label: "Deep Dive" }] : []),
+    ...(dd ? [{ id: "gaps", label: "Gaps" }] : []),
+    ...(dd ? [{ id: "implications", label: "Implications" }] : []),
+    ...(dd && seminarId != null ? [{ id: "debate", label: "Debate" }] : []),
+    ...(dd && dd.what_to_watch ? [{ id: "what-to-watch", label: "What to Watch" }] : []),
+    { id: "carry-forward", label: "Carry-Forward" },
+  ];
+
   return (
     <div className="sem-wrap">
       <TopBar savedCount={savedCount} />
+
+      <SectionNav items={navItems} />
 
       {activeParty && (
         <ActorDrawer
@@ -259,7 +272,7 @@ export default function SeminarView() {
       )}
 
       {/* 1 — Weekly Briefing */}
-      <section className="sem-sec">
+      <section id="briefing" className="sem-sec">
         <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top 5 Events</h2>
         <ol className="sem-events">
           {events.map((e) => (
@@ -286,7 +299,7 @@ export default function SeminarView() {
 
       {/* 2 — Deep Dive: layers + lenses */}
       {dd && (
-        <section className="sem-sec">
+        <section id="deep-dive" className="sem-sec">
           <h2 className="sem-h2"><LayersIcon size={18} /> Deep Dive — {events[0] ? events[0].title : ""}</h2>
 
           <h3 className="sem-h3">Five-Layer Drill-Down</h3>
@@ -320,7 +333,7 @@ export default function SeminarView() {
 
       {/* 3 — Gaps to Fill */}
       {dd && (
-        <section className="sem-sec">
+        <section id="gaps" className="sem-sec">
           <h2 className="sem-h2"><Search size={18} /> Gaps to Fill</h2>
           <div className="sem-cards">
             {GAP_DEFS.map(([k, lbl, hint]) => (
@@ -341,7 +354,7 @@ export default function SeminarView() {
 
       {/* 4 — Implications */}
       {dd && (
-        <section className="sem-sec">
+        <section id="implications" className="sem-sec">
           <h2 className="sem-h2"><Building2 size={18} /> Implications</h2>
           <div className="sem-imp">
             {IMP_DEFS.map(([k, lbl]) => (
@@ -356,9 +369,14 @@ export default function SeminarView() {
         </section>
       )}
 
-      {/* 5 — What I'd Watch Next Week */}
+      {/* 5 — Debate Room (live, Phase 2) */}
+      {dd && seminarId != null && (
+        <DebateRoom seminarId={seminarId} wk={wk} onSaved={onModuleSaved} />
+      )}
+
+      {/* 6 — What I'd Watch Next Week */}
       {dd && dd.what_to_watch && (
-        <section className="sem-sec">
+        <section id="what-to-watch" className="sem-sec">
           <h2 className="sem-h2"><Eye size={18} /> What I'd Watch Next Week</h2>
           <ul className="sem-watch">
             {String(dd.what_to_watch).split("\n").map((b, i) => {
@@ -367,11 +385,6 @@ export default function SeminarView() {
             })}
           </ul>
         </section>
-      )}
-
-      {/* 6 — Debate Room (live, Phase 2) */}
-      {dd && seminarId != null && (
-        <DebateRoom seminarId={seminarId} wk={wk} onSaved={onModuleSaved} />
       )}
 
       {/* 7 — Study Saves (Option 3 review surface for fp_seminar) */}
@@ -384,9 +397,15 @@ export default function SeminarView() {
         />
       </section>
 
-      <footer className="sem-foot">
-        <Users size={14} /> Carry-forward actor map &amp; cui-bono ledger — coming in Phase 3.
-      </footer>
+      {/* 8 — Carry-Forward (Phase 3 placeholder) */}
+      <section id="carry-forward" className="sem-sec">
+        <h2 className="sem-h2"><Users size={18} /> Carry-Forward</h2>
+        <div className="sem-stub">
+          A cross-week <strong>actor map</strong> (who connects to whom over time) and a{" "}
+          <strong>cui-bono ledger</strong> (who profits, drawn from the Marxist lens + faction
+          sub-maps) arrive in <strong>Phase 3</strong>.
+        </div>
+      </section>
     </div>
   );
 }
@@ -394,11 +413,21 @@ export default function SeminarView() {
 // =====================================================================
 // Party click-in drawer — 5-panel actor dossier.
 // =====================================================================
+const DRAWER_PANELS = [
+  { id: "dp-trajectory", label: "Trajectory" },
+  { id: "dp-decoded", label: "Decoded" },
+  { id: "dp-act", label: "If acts" },
+  { id: "dp-inact", label: "If not" },
+  { id: "dp-factions", label: "Factions" },
+];
+
 function ActorDrawer({ name, seminarId, wk, onClose, onSaved }) {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
   const [actor, setActor] = useState(null);
   const [saveState, setSaveState] = useState({});   // {card, submap} -> status
+  const [activePanel, setActivePanel] = useState("dp-trajectory");
+  const bodyRef = useRef(null);
 
   useEffect(() => {
     let on = true;
@@ -426,6 +455,34 @@ function ActorDrawer({ name, seminarId, wk, onClose, onSaved }) {
   }, [onClose]);
 
   const card = actor && actor.card;
+
+  // Mini-nav scroll-spy inside the drawer body (root = the scrolling body).
+  useEffect(() => {
+    if (!card || !bodyRef.current) return;
+    const root = bodyRef.current;
+    const els = DRAWER_PANELS.map((p) => root.querySelector("#" + p.id)).filter(Boolean);
+    if (!els.length) return;
+    const ratios = new Map();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0));
+        let best = null, bestR = -1;
+        DRAWER_PANELS.forEach((p) => { const r = ratios.get(p.id) || 0; if (r > bestR) { bestR = r; best = p.id; } });
+        if (best && bestR > 0) setActivePanel(best);
+      },
+      { root, rootMargin: "-10px 0px -60% 0px", threshold: [0, 0.2, 0.5, 1] }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [card]);
+
+  function jumpPanel(e, id) {
+    e.preventDefault();
+    const root = bodyRef.current;
+    const el = root && root.querySelector("#" + id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActivePanel(id);
+  }
 
   function serveTag(v) {
     const s = String(v || "").toLowerCase();
@@ -488,14 +545,30 @@ function ActorDrawer({ name, seminarId, wk, onClose, onSaved }) {
           <button className="sem-drawer-x" onClick={onClose} aria-label="Close"><X size={20} /></button>
         </div>
 
-        <div className="sem-drawer-body">
+        {!loading && card && (
+          <nav className="sem-drawer-nav" aria-label="Dossier panels">
+            {DRAWER_PANELS.map((p) => (
+              <a
+                key={p.id}
+                href={`#${p.id}`}
+                className={`sem-dpill ${activePanel === p.id ? "active" : ""}`}
+                onClick={(e) => jumpPanel(e, p.id)}
+                aria-current={activePanel === p.id ? "true" : undefined}
+              >
+                {p.label}
+              </a>
+            ))}
+          </nav>
+        )}
+
+        <div className="sem-drawer-body" ref={bodyRef}>
           {loading && <div className="sem-drawer-loading"><Loader2 className="sem-spin" /> Building the dossier…<span>First open generates it; later visits are instant.</span></div>}
           {!loading && err && <div className="sem-drawer-err">{err}</div>}
 
           {!loading && card && (
             <>
               {/* Panel 1 — Historical trajectory */}
-              <div className="sem-panel">
+              <div className="sem-panel" id="dp-trajectory">
                 <div className="sem-panel-h"><Clock size={15} /> Historical trajectory</div>
                 <ol className="sem-traj">
                   {(card.trajectory || []).map((t, i) => (
@@ -514,25 +587,25 @@ function ActorDrawer({ name, seminarId, wk, onClose, onSaved }) {
               </div>
 
               {/* Panel 2 — Current position decoded */}
-              <div className="sem-panel">
+              <div className="sem-panel" id="dp-decoded">
                 <div className="sem-panel-h"><Eye size={15} /> Current position, decoded</div>
                 <p className="sem-panel-p">{card.current_position_decoded}</p>
               </div>
 
               {/* Panels 3 + 4 — Action / Inaction upside */}
               <div className="sem-panel-row">
-                <div className="sem-panel half">
+                <div className="sem-panel half" id="dp-act">
                   <div className="sem-panel-h up"><TrendingUp size={15} /> If they act</div>
                   <ul className="sem-upside">{(card.action_upside || []).map((b, i) => <li key={i}>{b}</li>)}</ul>
                 </div>
-                <div className="sem-panel half">
+                <div className="sem-panel half" id="dp-inact">
                   <div className="sem-panel-h down"><Pause size={15} /> If they don't</div>
                   <ul className="sem-upside">{(card.inaction_upside || []).map((b, i) => <li key={i}>{b}</li>)}</ul>
                 </div>
               </div>
 
               {/* Panel 5 — Faction sub-map */}
-              <div className="sem-panel">
+              <div className="sem-panel" id="dp-factions">
                 <div className="sem-panel-h"><Users size={15} /> Faction sub-map</div>
                 <div className="sem-submap">
                   <div className="sem-submap-head"><span>Faction</span><span>What it wants</span><span>Serves today?</span></div>
@@ -591,7 +664,7 @@ function DebateRoom({ seminarId, wk, onSaved }) {
   }
 
   return (
-    <section className="sem-sec">
+    <section id="debate" className="sem-sec">
       <h2 className="sem-h2"><Swords size={18} /> Debate Room</h2>
 
       {phase === "idle" && (
@@ -770,6 +843,78 @@ function DebateThread({ persona, seminarId, wk, onBack, onSaved }) {
         </button>
       </div>
     </div>
+  );
+}
+
+// Sticky horizontal section nav. Smooth-scrolls to each <section id>, tracks
+// the in-view section with an IntersectionObserver, and keeps the URL hash in
+// sync so a refresh restores the reader's place. Pills scroll horizontally on
+// phones (no wrap).
+function SectionNav({ items }) {
+  const [active, setActive] = useState(items[0] ? items[0].id : "");
+  const ids = items.map((i) => i.id).join(",");
+
+  // Scroll-spy: pick the most-visible section.
+  useEffect(() => {
+    const idList = ids ? ids.split(",") : [];
+    const els = idList.map((id) => document.getElementById(id)).filter(Boolean);
+    if (!els.length) return;
+    const ratios = new Map();
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0));
+        let best = null, bestR = -1;
+        idList.forEach((id) => {
+          const r = ratios.get(id) || 0;
+          if (r > bestR) { bestR = r; best = id; }
+        });
+        if (best && bestR > 0) setActive(best);
+      },
+      { rootMargin: "-58px 0px -55% 0px", threshold: [0, 0.12, 0.25, 0.5, 1] }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [ids]);
+
+  // On mount, honour an inbound #hash (sections exist by now).
+  useEffect(() => {
+    const h = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
+    if (h && ids.split(",").includes(h)) {
+      const el = document.getElementById(h);
+      if (el) {
+        setActive(h);
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function go(e, id) {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActive(id);
+    if (typeof history !== "undefined" && history.replaceState) {
+      history.replaceState(null, "", "#" + id);
+    }
+  }
+
+  return (
+    <nav className="sem-nav" aria-label="Seminar sections">
+      <div className="sem-nav-row">
+        {items.map((it) => (
+          <a
+            key={it.id}
+            href={`#${it.id}`}
+            className={`sem-pill ${active === it.id ? "active" : ""}`}
+            onClick={(e) => go(e, it.id)}
+            aria-current={active === it.id ? "true" : undefined}
+          >
+            {it.label}
+          </a>
+        ))}
+      </div>
+    </nav>
   );
 }
 
