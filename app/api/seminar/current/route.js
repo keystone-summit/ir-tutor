@@ -54,11 +54,33 @@ export async function GET(req) {
       [edition.id]
     );
 
+    // Phase 3b — "Pattern Echoes": this edition's events matched to the
+    // historical-pattern library. Full pattern fields are returned inline so
+    // the reader's pattern modal opens without a second fetch.
+    let echoes = [];
+    try {
+      const pe = await query(
+        `select ev.id as event_id, ev.rank as event_rank, ev.title as event_title,
+                pm.match_strength, pm.explanation,
+                p.id as pattern_id, p.name, p.pattern_type, p.era, p.date_range, p.region,
+                p.parties, p.description, p.what_happened, p.outcome, p.lessons,
+                p.modern_relevance_keywords
+           from public.seminar_pattern_matches pm
+           join public.seminar_events ev on ev.id = pm.seminar_event_id
+           join public.seminar_historical_patterns p on p.id = pm.historical_pattern_id
+          where ev.seminar_id = $1
+          order by ev.rank asc, pm.match_strength desc`,
+        [edition.id]
+      );
+      echoes = pe.rows;
+    } catch { /* table may not exist yet pre-migration — degrade gracefully */ }
+
     return Response.json({
       ok: true,
       edition,
       events: ev.rows,
       deep_dive: dd.rows[0] || null,
+      pattern_echoes: echoes,
     });
   } catch (e) {
     return Response.json({ ok: false, error: "DB error.", detail: String(e.message) }, { status: 500 });

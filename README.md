@@ -45,7 +45,7 @@ You do not need to be a programmer to deploy this. Follow the steps in order.
    | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | your Supabase **anon public** key |
    | `ANTHROPIC_API_KEY` | your `sk-ant-…` key |
 
-3. Click **Deploy**. After ~1 minute you get a live link like `https://ir-tutor-app.vercel.app`.
+3. Click **Deploy**. After ~1 minute you get a live link. The canonical production URL for this app is `https://ir-tutor.vercel.app`.
 4. Open it, create an account, and try the tutor. Progress and chats now save automatically.
 
 ---

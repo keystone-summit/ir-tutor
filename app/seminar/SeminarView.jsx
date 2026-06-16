@@ -17,9 +17,11 @@ import {
   Globe, ArrowLeft, BookmarkPlus, Check, ExternalLink, Eye, Scale,
   Layers as LayersIcon, Search, Building2, Users, MessageSquare, Loader2,
   X, Clock, TrendingUp, ThumbsUp, Pause, Network, Send, ChevronRight, Swords,
+  History, Library,
 } from "lucide-react";
 import { authFetch } from "../../lib/clientAuth";
 import StudySaves from "../../components/StudySaves";
+import PatternModal, { patternTypeLabel } from "../../components/PatternModal";
 
 const LAYER_DEFS = [
   ["world_order", "Layer 1 · World Order", "How this reshapes the global system & great-power balance."],
@@ -67,7 +69,8 @@ function fmtRange(a, b) {
 }
 
 // POST a save into chat_saves under the fp_seminar course (Option 3 flow).
-async function postModuleSave({ wk, summary, transcript, title }) {
+// Exported so the Phase 3a Actor Graph can reuse the same save surface.
+export async function postModuleSave({ wk, summary, transcript, title }) {
   const r = await authFetch("/api/chat-saves", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -123,6 +126,7 @@ export default function SeminarView() {
   const [savedKeys, setSavedKeys] = useState({});       // per-block "Saved ✓" (notes)
   const [savedCount, setSavedCount] = useState(0);
   const [activeParty, setActiveParty] = useState("");
+  const [activePattern, setActivePattern] = useState(null);  // Phase 3b pattern modal
   const [studyRefresh, setStudyRefresh] = useState(0);  // bump to reload Study Saves
 
   const edition = data && data.edition;
@@ -133,6 +137,7 @@ export default function SeminarView() {
   const gaps = (dd && dd.gaps) || {};
   const implications = (dd && dd.implications) || {};
   const parties = (layers && layers._parties) || [];
+  const echoes = (data && data.pattern_echoes) || [];
   const wk = edition ? weekKeyOf(edition.week_start_date) : 0;
   const seminarId = edition ? edition.id : null;
 
@@ -239,8 +244,24 @@ export default function SeminarView() {
     ...(dd ? [{ id: "implications", label: "Implications" }] : []),
     ...(dd && seminarId != null ? [{ id: "debate", label: "Debate" }] : []),
     ...(dd && dd.what_to_watch ? [{ id: "what-to-watch", label: "What to Watch" }] : []),
+    ...(echoes.length ? [{ id: "pattern-echoes", label: "Pattern Echoes" }] : []),
     { id: "carry-forward", label: "Carry-Forward" },
   ];
+
+  // Phase 3b — group this edition's pattern echoes by event (rank order).
+  const echoGroups = [];
+  {
+    const byEvent = new Map();
+    for (const e of echoes) {
+      const key = e.event_id;
+      if (!byEvent.has(key)) {
+        byEvent.set(key, { event_id: e.event_id, event_rank: e.event_rank, event_title: e.event_title, matches: [] });
+        echoGroups.push(byEvent.get(key));
+      }
+      byEvent.get(key).matches.push(e);
+    }
+    echoGroups.sort((a, b) => (a.event_rank || 99) - (b.event_rank || 99));
+  }
 
   return (
     <div className="sem-wrap">
@@ -254,6 +275,15 @@ export default function SeminarView() {
           seminarId={seminarId}
           wk={wk}
           onClose={() => setActiveParty("")}
+          onSaved={onModuleSaved}
+        />
+      )}
+
+      {activePattern && (
+        <PatternModal
+          pattern={activePattern}
+          wk={wk}
+          onClose={() => setActivePattern(null)}
           onSaved={onModuleSaved}
         />
       )}
@@ -387,6 +417,42 @@ export default function SeminarView() {
         </section>
       )}
 
+      {/* 6b — Pattern Echoes (Phase 3b) — between What to Watch and Carry-Forward */}
+      {echoes.length > 0 && (
+        <section id="pattern-echoes" className="sem-sec">
+          <h2 className="sem-h2"><History size={18} /> Pattern Echoes</h2>
+          <div className="pe-intro">
+            How this week rhymes with the past. Each event is matched against the{" "}
+            <a href="/seminar/patterns" className="sem-cf-link"><Library size={13} /> Library of Patterns</a>.
+            Tap a pattern to open its full history.
+          </div>
+          <div className="pe-groups">
+            {echoGroups.map((g) => (
+              <div key={g.event_id} className="pe-group">
+                <div className="pe-event">
+                  {g.event_rank != null && <span className="pe-rank">{g.event_rank}</span>}
+                  <span className="pe-event-title">{g.event_title}</span>
+                </div>
+                <div className="pe-echoes">
+                  {g.matches.map((m, i) => (
+                    <div key={i} className="pe-echo">
+                      <button className="pe-echo-head" onClick={() => setActivePattern(m)}>
+                        <span className="pe-echo-name">Echoes {m.name}</span>
+                        <span className="pe-echo-meta">
+                          {m.era || patternTypeLabel(m.pattern_type)}
+                          {m.match_strength != null && <span className="pe-str">{m.match_strength}/10</span>}
+                        </span>
+                      </button>
+                      <p className="pe-echo-expl">{m.explanation}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* 7 — Study Saves (Option 3 review surface for fp_seminar) */}
       <section className="sem-sec">
         <h2 className="sem-h2"><BookmarkPlus size={18} /> My Saved Cards &amp; Debates</h2>
@@ -401,9 +467,12 @@ export default function SeminarView() {
       <section id="carry-forward" className="sem-sec">
         <h2 className="sem-h2"><Users size={18} /> Carry-Forward</h2>
         <div className="sem-stub">
-          A cross-week <strong>actor map</strong> (who connects to whom over time) and a{" "}
-          <strong>cui-bono ledger</strong> (who profits, drawn from the Marxist lens + faction
-          sub-maps) arrive in <strong>Phase 3</strong>.
+          The cross-week <strong>actor map</strong> — who connects to whom over time — is now live.{" "}
+          <a href="/seminar/graph" className="sem-cf-link"><Network size={14} /> Open the Live Actor Graph →</a>
+          <div style={{ marginTop: 8, opacity: 0.8 }}>
+            A <strong>cui-bono ledger</strong> (who profits, drawn from the Marxist lens + faction
+            sub-maps) arrives in a later phase.
+          </div>
         </div>
       </section>
     </div>
@@ -421,7 +490,7 @@ const DRAWER_PANELS = [
   { id: "dp-factions", label: "Factions" },
 ];
 
-function ActorDrawer({ name, seminarId, wk, onClose, onSaved }) {
+export function ActorDrawer({ name, seminarId, wk, onClose, onSaved }) {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
   const [actor, setActor] = useState(null);
@@ -922,6 +991,8 @@ function TopBar({ savedCount }) {
   return (
     <div className="sem-topbar">
       <a href="/" className="sem-back"><ArrowLeft size={15} /> Portal</a>
+      <a href="/seminar/graph" className="sem-archlink"><Network size={13} /> Actor Graph</a>
+      <a href="/seminar/patterns" className="sem-archlink"><Library size={13} /> Patterns</a>
       <a href="/seminar/archive" className="sem-archlink">Archive</a>
       <span className="sem-savecount">{savedCount > 0 ? `${savedCount} saved this week` : ""}</span>
     </div>
