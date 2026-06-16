@@ -64,3 +64,5 @@ You do not need to be a programmer to deploy this. Follow the steps in order.
 - The Anthropic key lives only on the server (`/app/api/tutor`); browsers never see it.
 - Supabase Row-Level Security means each student can only ever read their own data.
 - Each tutor reply costs a small amount of Anthropic credit — watch usage in the Anthropic console.
+
+<!-- Vercel GitHub auto-deploy verified 2026-06-16 -->
