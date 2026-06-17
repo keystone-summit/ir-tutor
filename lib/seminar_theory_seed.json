@@ -1,0 +1,1753 @@
+{
+ "theories": [
+  {
+   "slug": "thucydides",
+   "name": "Thucydides & the Melian Dialogue",
+   "school": "Realism",
+   "sub_school": "Classical Realism",
+   "era": "Classical",
+   "classic_thinker": "Thucydides, ancient historian of the Peloponnesian War",
+   "definition": "The foundational realist claim that international politics is governed by power, not justice: the strong do what they can and the weak suffer what they must. Survival and necessity, not moral appeals, dictate state behavior under anarchy.",
+   "canonical_example": "In 416 BCE Athens demanded the neutral island of Melos submit or be destroyed. When the Melians appealed to justice, fairness, and the gods, the Athenian envoys dismissed these as irrelevant given the imbalance of power. Melos refused, and Athens executed the men and enslaved the women and children.",
+   "modern_echo": "Russia's 2014 annexation of Crimea and 2022 full invasion of Ukraine echo the Melian logic: a great power asserting that spheres of influence and raw capability override a smaller neighbor's sovereignty and legal rights. Western diplomatic and legal protests, like Melian appeals, did not by themselves deter the stronger party.",
+   "related_slugs": [
+    "morgenthau",
+    "balance_of_power",
+    "security_dilemma",
+    "thucydides_trap"
+   ],
+   "match_terms": [
+    "thucydides",
+    "melian dialogue",
+    "the strong do what they can",
+    "peloponnesian war"
+   ]
+  },
+  {
+   "slug": "machiavelli",
+   "name": "Machiavelli's Realpolitik",
+   "school": "Realism",
+   "sub_school": "Classical Realism",
+   "era": "Classical",
+   "classic_thinker": "Niccolò Machiavelli, author of The Prince",
+   "definition": "Statecraft must be guided by how the world actually is, not how it ought to be: rulers should be prepared to act immorally when necessity (necessità) and the preservation of the state require it. Power, prudence, and reputation outrank conventional virtue in politics.",
+   "canonical_example": "In The Prince (1513), Machiavelli praised Cesare Borgia's ruthless consolidation of the Romagna, arguing it is safer to be feared than loved when one cannot be both. He drew on Renaissance Italy's shifting alliances among Florence, Venice, the Papacy, and foreign powers to show that survival demanded flexible, sometimes brutal, calculation.",
+   "modern_echo": "Vladimir Putin's willingness to use assassination, energy coercion, and proxy force to project Russian power, while cultivating a fearsome reputation, reflects a Machiavelli-style calculus that fear and capability secure the state. Similarly, transactional great-power dealmaking that subordinates stated values to interest is routinely labeled realpolitik.",
+   "related_slugs": [
+    "hobbes",
+    "morgenthau",
+    "carr_twenty_years",
+    "economic_statecraft"
+   ],
+   "match_terms": [
+    "machiavelli",
+    "realpolitik",
+    "the prince",
+    "better to be feared than loved",
+    "necessità"
+   ]
+  },
+  {
+   "slug": "hobbes",
+   "name": "Hobbes & the State of Nature",
+   "school": "Realism",
+   "sub_school": "Classical Realism",
+   "era": "Classical",
+   "classic_thinker": "Thomas Hobbes, author of Leviathan",
+   "definition": "Absent a common sovereign, actors exist in a state of nature characterized by insecurity, mistrust, and a war of all against all. Applied to world politics, the lack of an overarching authority makes anarchy the permanent condition among states.",
+   "canonical_example": "In Leviathan (1651), Hobbes argued that without a sovereign, life is 'solitary, poor, nasty, brutish, and short,' and states relate to one another as gladiators in a posture of war. Seventeenth-century Europe's incessant dynastic wars served as his backdrop for the dangers of ungoverned competition.",
+   "modern_echo": "The absence of an enforceable global authority over cyberspace and the 'gray zone' produces Hobbesian insecurity: states like Russia, China, Iran, and North Korea conduct hacks, sabotage, and disinformation with little fear of binding punishment. Each must self-help because no Leviathan reliably enforces order online.",
+   "related_slugs": [
+    "machiavelli",
+    "morgenthau",
+    "security_dilemma",
+    "gray_zone"
+   ],
+   "match_terms": [
+    "hobbes",
+    "state of nature",
+    "leviathan",
+    "war of all against all",
+    "anarchy"
+   ]
+  },
+  {
+   "slug": "morgenthau",
+   "name": "Morgenthau's Six Principles",
+   "school": "Realism",
+   "sub_school": "Classical Realism",
+   "era": "Mid-century",
+   "classic_thinker": "Hans Morgenthau, author of Politics Among Nations",
+   "definition": "Classical realism's systematic statement: politics is rooted in a fixed human nature, and states act according to interest defined as power. Statesmen should pursue the national interest prudently rather than crusade for abstract moral ideals.",
+   "canonical_example": "In Politics Among Nations (1948), Morgenthau distilled six principles, including that 'interest defined as power' is the central concept and that universal moral principles cannot be applied to states in the abstract. He criticized Wilsonian idealism for misreading the permanent role of power in human affairs.",
+   "modern_echo": "Realist critiques of US 'liberal hegemony,' such as warnings that nation-building in the Middle East ignored power realities, draw directly on Morgenthau's prudence. Debates over whether Washington should accommodate Chinese and Russian spheres rather than moralize about them reprise his interest-over-ideology counsel.",
+   "related_slugs": [
+    "machiavelli",
+    "carr_twenty_years",
+    "niebuhr",
+    "balance_of_power"
+   ],
+   "match_terms": [
+    "morgenthau",
+    "politics among nations",
+    "interest defined as power",
+    "six principles",
+    "classical realism"
+   ]
+  },
+  {
+   "slug": "carr_twenty_years",
+   "name": "E.H. Carr — The Twenty Years' Crisis",
+   "school": "Realism",
+   "sub_school": "Classical Realism",
+   "era": "Mid-century",
+   "classic_thinker": "E.H. Carr, interwar realist historian",
+   "definition": "A foundational critique of interwar 'utopianism' arguing that liberal ideals like the harmony of interests mask the power and preferences of satisfied states. Carr insisted that any durable order must reckon with power and accommodate change, blending realism with an awareness of morality's role.",
+   "canonical_example": "In The Twenty Years' Crisis (1939), Carr argued that the League of Nations and the post-Versailles order reflected the interests of status-quo powers dressed up as universal morality. He warned that ignoring revisionist demands and the realities of power had helped produce the collapse into renewed great-power war.",
+   "modern_echo": "Carr's logic informs claims that the US-led liberal international order serves Western incumbents and that rising powers like China and the BRICS bloc are revisionists demanding a redistribution of influence. Debates over whether to accommodate or resist these demands replay his status-quo-versus-revisionist framing.",
+   "related_slugs": [
+    "morgenthau",
+    "machiavelli",
+    "power_transition",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "e.h. carr",
+    "twenty years' crisis",
+    "utopianism",
+    "harmony of interests",
+    "status quo powers"
+   ]
+  },
+  {
+   "slug": "niebuhr",
+   "name": "Niebuhr's Christian Realism",
+   "school": "Realism",
+   "sub_school": "Classical Realism",
+   "era": "Mid-century",
+   "classic_thinker": "Reinhold Niebuhr, theologian of moral man and immoral society",
+   "definition": "A realism grounded in a theological account of human sinfulness and the limits of collective virtue: groups and nations are more selfish and self-deceiving than individuals. Power must be balanced by countervailing power, and even justified action is tainted by pride and self-interest.",
+   "canonical_example": "In Moral Man and Immoral Society (1932), Niebuhr argued that nations rationalize self-interest as virtue and that appeals to love or reason cannot tame collective egoism. His thought shaped Cold War liberals who supported containment of the Soviet Union while warning against self-righteous American crusading.",
+   "modern_echo": "Niebuhrian caution appears in critiques of moralized US foreign policy, urging humility about American virtue while still confronting aggressors like Russia. The warning that nations cloak power in righteousness applies equally to Beijing's and Washington's competing claims to represent a just world order.",
+   "related_slugs": [
+    "morgenthau",
+    "carr_twenty_years",
+    "balance_of_power",
+    "deterrence_theory"
+   ],
+   "match_terms": [
+    "niebuhr",
+    "christian realism",
+    "moral man and immoral society",
+    "collective egoism"
+   ]
+  },
+  {
+   "slug": "waltz_neorealism",
+   "name": "Waltz — Structural Realism",
+   "school": "Realism",
+   "sub_school": "Structural Realism",
+   "era": "Modern",
+   "classic_thinker": "Kenneth Waltz, author of Theory of International Politics",
+   "definition": "State behavior is explained by the structure of the international system, especially anarchy and the distribution of capabilities, rather than human nature. Under anarchy, states are functionally alike units that must self-help, and the system pushes them toward balancing.",
+   "canonical_example": "In Theory of International Politics (1979), Waltz argued that bipolarity between the US and USSR was relatively stable because two great powers could manage their rivalry without the miscalculations of multipolar Europe. The recurrence of balancing behavior across centuries, he claimed, reflected systemic pressure, not the traits of particular leaders.",
+   "modern_echo": "Analysts citing Waltz frame US-China rivalry as the structural consequence of a shift from unipolarity toward bipolarity, predicting intensified balancing regardless of who governs in Washington or Beijing. Debates over whether today's system is uni-, bi-, or multipolar are explicitly Waltzian arguments about polarity.",
+   "related_slugs": [
+    "mearsheimer_offensive",
+    "glaser_defensive",
+    "balance_of_power",
+    "polarity"
+   ],
+   "match_terms": [
+    "waltz",
+    "neorealism",
+    "structural realism",
+    "theory of international politics",
+    "self-help",
+    "anarchy"
+   ]
+  },
+  {
+   "slug": "mearsheimer_offensive",
+   "name": "Mearsheimer — Offensive Realism",
+   "school": "Realism",
+   "sub_school": "Structural Realism",
+   "era": "Modern",
+   "classic_thinker": "John Mearsheimer, author of The Tragedy of Great Power Politics",
+   "definition": "Because states can never be certain of others' intentions under anarchy, great powers maximize relative power and ultimately seek regional hegemony as the surest path to survival. The result is a tragic, recurring competition with no benign status quo.",
+   "canonical_example": "In The Tragedy of Great Power Politics (2001), Mearsheimer argued that great powers, like the US in the Western Hemisphere, pursue regional hegemony and then work to prevent rivals from dominating other regions. He explained 20th-century US efforts to block German, Japanese, and Soviet bids for dominance as offensive-realist balancing.",
+   "modern_echo": "Mearsheimer argues China's rise will not be peaceful and that Washington must contain a potential East Asian hegemon, while controversially blaming NATO expansion for provoking Russia's war on Ukraine. His insistence that great powers cannot tolerate rivals on their borders frames much commentary on both theaters.",
+   "related_slugs": [
+    "waltz_neorealism",
+    "walt_balance_of_threat",
+    "glaser_defensive",
+    "power_transition"
+   ],
+   "match_terms": [
+    "mearsheimer",
+    "offensive realism",
+    "tragedy of great power politics",
+    "regional hegemony",
+    "great power competition"
+   ]
+  },
+  {
+   "slug": "walt_balance_of_threat",
+   "name": "Walt — Balance of Threat",
+   "school": "Realism",
+   "sub_school": "Structural Realism",
+   "era": "Modern",
+   "classic_thinker": "Stephen Walt, author of The Origins of Alliances",
+   "definition": "States balance not against raw power alone but against threat, a function of aggregate power, geographic proximity, offensive capabilities, and perceived aggressive intentions. This refines balance-of-power theory by explaining why states sometimes ally with the strongest actor.",
+   "canonical_example": "In The Origins of Alliances (1987), Walt showed that Middle Eastern states aligned according to perceived threat rather than sheer capability, and that postwar states balanced against the threatening USSR by allying with the more powerful US. Proximity and aggressive intent, not power tallies alone, drove alliance choices.",
+   "modern_echo": "Balance-of-threat logic explains why China's neighbors, from Japan to Vietnam to the Philippines, draw closer to the distant US rather than to powerful, nearby Beijing whose assertiveness reads as threatening. Iran's perceived intentions likewise push Gulf Arab states toward US security guarantees and the Abraham Accords.",
+   "related_slugs": [
+    "waltz_neorealism",
+    "mearsheimer_offensive",
+    "balance_of_power",
+    "security_dilemma"
+   ],
+   "match_terms": [
+    "walt",
+    "balance of threat",
+    "origins of alliances",
+    "threat perception",
+    "alliance formation"
+   ]
+  },
+  {
+   "slug": "glaser_defensive",
+   "name": "Glaser — Defensive Realism",
+   "school": "Realism",
+   "sub_school": "Structural Realism",
+   "era": "Modern",
+   "classic_thinker": "Charles Glaser, author of Rational Theory of International Politics",
+   "definition": "Anarchy does not always reward expansion: security-seeking states can often signal benign intentions and achieve security through restraint, especially when defense holds an advantage. Cooperation is possible when states distinguish status-quo powers from genuine aggressors.",
+   "canonical_example": "Defensive realists like Glaser argued that excessive expansion is usually self-defeating, citing how aggressive bids by Germany in both world wars provoked overwhelming counter-coalitions. In Rational Theory of International Politics (2010), Glaser stressed that the offense-defense balance and costly signaling can let security-seekers avoid spirals.",
+   "modern_echo": "Defensive realists contend that the US and China could stabilize relations through reassurance, arms-control-style restraint, and avoiding actions that look like bids for dominance. The argument that NATO and Russia might have de-escalated via mutual reassurance, rather than spiraling toward war, is a defensive-realist reading.",
+   "related_slugs": [
+    "waltz_neorealism",
+    "mearsheimer_offensive",
+    "security_dilemma",
+    "offense_defense_theory"
+   ],
+   "match_terms": [
+    "glaser",
+    "defensive realism",
+    "offense-defense balance",
+    "costly signaling",
+    "security-seeking states"
+   ]
+  },
+  {
+   "slug": "neoclassical_realism",
+   "name": "Neoclassical Realism (Rose)",
+   "school": "Realism",
+   "sub_school": "Neoclassical Realism",
+   "era": "Modern",
+   "classic_thinker": "Gideon Rose, who named the approach",
+   "definition": "Systemic pressures shape foreign policy but are filtered through unit-level intervening variables such as leaders' perceptions and state capacity to extract resources. It marries structural realism's primacy of power with attention to domestic politics to explain specific foreign-policy choices.",
+   "canonical_example": "In a 1998 World Politics review essay, Gideon Rose grouped scholars who argued that relative power sets the broad parameters of policy while perception and the strength of domestic institutions determine actual responses. The approach explains why states with similar capabilities, like rising powers, can pursue strikingly different grand strategies.",
+   "modern_echo": "Neoclassical realism helps explain why China under Xi Jinping translated growing capabilities into assertive expansion while a comparably constrained Russia chose outright war, with domestic regime incentives and leader beliefs acting as the intervening filter. It frames why US responses to rivals vary with partisan politics and bureaucratic capacity.",
+   "related_slugs": [
+    "waltz_neorealism",
+    "schweller_underbalancing",
+    "lobell_state_power",
+    "strategic_restraint"
+   ],
+   "match_terms": [
+    "neoclassical realism",
+    "gideon rose",
+    "intervening variables",
+    "relative power",
+    "domestic politics"
+   ]
+  },
+  {
+   "slug": "schweller_underbalancing",
+   "name": "Schweller — Underbalancing",
+   "school": "Realism",
+   "sub_school": "Neoclassical Realism",
+   "era": "Modern",
+   "classic_thinker": "Randall Schweller, author of Unanswered Threats",
+   "definition": "States facing dangerous rising powers sometimes fail to balance adequately because of elite disagreement, fragmentation, and weak social cohesion. Domestic political constraints can produce dangerous under-reaction rather than the timely balancing structural realism predicts.",
+   "canonical_example": "In Unanswered Threats (2006), Schweller explained how divided, incoherent elites in 1930s Britain and France underbalanced against Nazi Germany, appeasing rather than mobilizing. Internal fragmentation, not misperception alone, blunted the response to a clear and growing menace.",
+   "modern_echo": "Underbalancing illuminates Western hesitation to arm Ukraine decisively or to confront China's rise, as polarized publics and divided elites slow coherent strategy. Debates over whether the US and Europe are doing 'too little, too late' against revisionist powers are arguments about underbalancing.",
+   "related_slugs": [
+    "neoclassical_realism",
+    "lobell_state_power",
+    "balance_of_power",
+    "mearsheimer_offensive"
+   ],
+   "match_terms": [
+    "schweller",
+    "underbalancing",
+    "unanswered threats",
+    "appeasement",
+    "elite fragmentation"
+   ]
+  },
+  {
+   "slug": "lobell_state_power",
+   "name": "Lobell — State Power & Intervening Variables",
+   "school": "Realism",
+   "sub_school": "Neoclassical Realism",
+   "era": "Modern",
+   "classic_thinker": "Steven Lobell, neoclassical realist on grand strategy",
+   "definition": "Foreign policy depends not just on aggregate national power but on the state's ability to access and extract resources from society, mediated by leaders' assessments of specific components of a rival's power. Disaggregating power and the state-society relationship explains variation in grand strategy.",
+   "canonical_example": "In work including Neoclassical Realism, the State, and Foreign Policy (2009), Lobell argued that leaders respond to the particular military and economic components of a rival's power, and that state extractive capacity shapes which responses are feasible. He showed how British decision-makers parsed Germany's commercial versus naval challenge differently when crafting strategy.",
+   "modern_echo": "Lobell's disaggregation explains why the US treats China's technological and naval rise differently from its economic interdependence, tailoring export controls, tariffs, and alliances to specific power components. State capacity questions, such as whether Washington can mobilize industrial policy, shape which counter-China strategies are realistic.",
+   "related_slugs": [
+    "neoclassical_realism",
+    "schweller_underbalancing",
+    "strategic_restraint",
+    "economic_statecraft"
+   ],
+   "match_terms": [
+    "lobell",
+    "state power",
+    "extractive capacity",
+    "intervening variables",
+    "components of power"
+   ]
+  },
+  {
+   "slug": "strategic_restraint",
+   "name": "Strategic Restraint",
+   "school": "Realism",
+   "sub_school": "Neoclassical Realism",
+   "era": "Contemporary",
+   "classic_thinker": "Barry Posen and restraint-school realists",
+   "definition": "A grand-strategic prescription that great powers, especially the US, should conserve power by limiting overseas commitments, avoiding costly interventions, and prioritizing core interests. Restraint treats overextension as the chief threat to long-run security and solvency.",
+   "canonical_example": "In Restraint (2014), Barry Posen argued that US 'liberal hegemony' had bred overextension, free-riding allies, and unnecessary wars, and urged a leaner posture focused on key regions. Realists pointed to the costly, inconclusive wars in Iraq and Afghanistan as evidence that strategic discipline beats expansive crusading.",
+   "modern_echo": "Restraint advocates urge Washington to prioritize Asia and great-power competition over open-ended Middle East commitments, pressing allies to do more for their own defense. Debates over the scale of US aid to Ukraine, burden-sharing in NATO, and avoiding a wider war with Iran are framed in restraint-versus-primacy terms.",
+   "related_slugs": [
+    "neoclassical_realism",
+    "lobell_state_power",
+    "mearsheimer_offensive",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "strategic restraint",
+    "barry posen",
+    "liberal hegemony",
+    "overextension",
+    "burden-sharing",
+    "primacy"
+   ]
+  },
+  {
+   "slug": "democratic_peace",
+   "name": "Democratic Peace Theory",
+   "school": "Liberalism",
+   "sub_school": "Republican liberalism",
+   "era": "Mid-century",
+   "classic_thinker": "Doyle & Kant — perpetual peace among republics",
+   "definition": "Liberal democracies very rarely, if ever, go to war with one another, owing to shared norms of compromise, institutional checks, and transparent signaling. War between democracies is thus structurally suppressed even under anarchy.",
+   "canonical_example": "Doyle's surveys of the modern interstate record find essentially no wars between mature liberal democracies since the early 19th century, even as those same states fought non-democracies frequently. The long peace among Western European democracies after 1945 is the paradigmatic case.",
+   "modern_echo": "Western democracies coordinated sanctions and arms transfers to Ukraine after Russia's 2022 invasion while never contemplating war among themselves, illustrating an in-group peace. Conversely, the autocratic Russia–China alignment underscores how regime type sorts both cooperation and conflict in contemporary strategic competition.",
+   "related_slugs": [
+    "commercial_liberalism",
+    "liberal_international_order",
+    "complex_interdependence"
+   ],
+   "match_terms": [
+    "democratic peace",
+    "liberal democracies",
+    "kantian peace",
+    "peace among democracies",
+    "republican liberalism"
+   ]
+  },
+  {
+   "slug": "keohane_after_hegemony",
+   "name": "Keohane — After Hegemony",
+   "school": "Liberalism",
+   "sub_school": "Neoliberal institutionalism",
+   "era": "Modern",
+   "classic_thinker": "Robert Keohane — cooperation after hegemonic decline",
+   "definition": "International institutions allow states to sustain cooperation even as a dominant hegemon's power wanes, by lowering transaction costs, providing information, and stabilizing expectations. Regimes outlive the hegemony that created them.",
+   "canonical_example": "Keohane argued the Bretton Woods institutions and GATT trade regime persisted and deepened after US relative dominance declined in the 1970s. Cooperation continued because the regimes themselves had become valuable, reducing uncertainty among self-interested states.",
+   "modern_echo": "The WTO and IMF have endured despite eroding US hegemony and rising challenges from China and the BRICS bloc, even as members debate reform. The persistence of multilateral coordination amid great-power rivalry shows institutions outlasting the unipolar moment.",
+   "related_slugs": [
+    "complex_interdependence",
+    "hegemonic_stability",
+    "liberal_international_order",
+    "commercial_liberalism"
+   ],
+   "match_terms": [
+    "after hegemony",
+    "neoliberal institutionalism",
+    "international regimes",
+    "cooperation under anarchy",
+    "transaction costs"
+   ]
+  },
+  {
+   "slug": "complex_interdependence",
+   "name": "Complex Interdependence",
+   "school": "Liberalism",
+   "sub_school": "Neoliberal institutionalism",
+   "era": "Modern",
+   "classic_thinker": "Keohane & Nye — multiple channels, no hierarchy of issues",
+   "definition": "Under complex interdependence, societies are linked by multiple channels (interstate, transgovernmental, transnational), issues lack a clear hierarchy, and military force is largely irrelevant among the connected states. Power flows from asymmetries in dependence rather than coercion.",
+   "canonical_example": "Keohane and Nye described US–Canada and US–Western Europe relations, where economic, environmental, and societal ties dominated and war was unthinkable. Bargaining turned on who was less dependent in a given issue-area rather than on military might.",
+   "modern_echo": "US–China relations exhibit dense trade and financial interdependence alongside acute rivalry, where each side probes the other's vulnerabilities in supply chains and finance. The very thickness of these ties has become a contested terrain of leverage rather than a guarantee of peace.",
+   "related_slugs": [
+    "keohane_after_hegemony",
+    "soft_power",
+    "weaponized_interdependence",
+    "commercial_liberalism"
+   ],
+   "match_terms": [
+    "complex interdependence",
+    "multiple channels",
+    "transnational relations",
+    "asymmetric interdependence",
+    "absence of hierarchy"
+   ]
+  },
+  {
+   "slug": "soft_power",
+   "name": "Soft Power",
+   "school": "Liberalism",
+   "sub_school": "Liberal power theory",
+   "era": "Modern",
+   "classic_thinker": "Joseph Nye — getting others to want what you want",
+   "definition": "Soft power is the ability to shape others' preferences through attraction and legitimacy rather than coercion or payment, resting on a state's culture, values, and foreign policies. It co-opts rather than commands.",
+   "canonical_example": "Nye attributed much of America's Cold War influence to the appeal of its culture, universities, and ideals, which drew allies and dissidents alike toward the Western model. The pull of Hollywood, democratic ideology, and consumer culture extended US reach beyond its military and economy.",
+   "modern_echo": "China's Confucius Institutes, global media expansion, and Belt and Road branding represent a deliberate bid to build soft power and contest Western narratives. Russia's RT and disinformation operations, by contrast, weaponize the information sphere, blurring soft power into influence operations.",
+   "related_slugs": [
+    "smart_power",
+    "complex_interdependence",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "soft power",
+    "attraction not coercion",
+    "cultural appeal",
+    "co-optive power",
+    "getting others to want"
+   ]
+  },
+  {
+   "slug": "smart_power",
+   "name": "Smart Power",
+   "school": "Liberalism",
+   "sub_school": "Liberal power theory",
+   "era": "Contemporary",
+   "classic_thinker": "Joseph Nye — combining hard and soft power",
+   "definition": "Smart power is the strategic integration of hard (military, economic) and soft (attraction, legitimacy) power into a coherent grand strategy. It treats coercion and co-optation as complementary tools to be calibrated by context.",
+   "canonical_example": "Nye and policymakers invoked smart power to argue that US influence required pairing military strength with diplomacy, development aid, and credible values. The concept framed critiques of post-9/11 strategy as over-reliant on force at the expense of legitimacy.",
+   "modern_echo": "US strategic competition with China blends deterrence, tech-export controls, alliance diplomacy, and development financing in a single contest for influence. Effective statecraft toward Iran or in the Indo-Pacific is increasingly judged by how well hard and soft instruments are sequenced together.",
+   "related_slugs": [
+    "soft_power",
+    "economic_statecraft",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "smart power",
+    "combining hard and soft",
+    "integrated statecraft",
+    "calibrated power",
+    "grand strategy toolkit"
+   ]
+  },
+  {
+   "slug": "commercial_liberalism",
+   "name": "Commercial Liberalism",
+   "school": "Liberalism",
+   "sub_school": "Economic liberalism",
+   "era": "Modern",
+   "classic_thinker": "Cobden, Schumpeter, Russett — trade pacifies states",
+   "definition": "Economic interdependence through trade and investment raises the cost of war and creates domestic constituencies invested in peace, inclining commercially open states toward cooperation. Profit and prosperity dampen the appeal of conflict.",
+   "canonical_example": "The classic claim, traced to Cobden and revived by liberal scholars, holds that the dense trade ties of the post-1945 Western order made war among major trading partners prohibitively costly. Bilateral trade flows were shown to correlate with reduced militarized disputes.",
+   "modern_echo": "The EU's integration of formerly hostile states, and pre-2022 hopes that energy trade would bind Russia to Europe, tested commercial liberalism's optimism. Russia's invasion of Ukraine despite deep gas interdependence exposed the theory's limits when regime motives override commercial logic.",
+   "related_slugs": [
+    "democratic_peace",
+    "complex_interdependence",
+    "comparative_advantage",
+    "weaponized_interdependence"
+   ],
+   "match_terms": [
+    "commercial liberalism",
+    "trade promotes peace",
+    "economic interdependence",
+    "capitalist peace",
+    "trade and conflict"
+   ]
+  },
+  {
+   "slug": "english_school_society",
+   "name": "Hedley Bull — The Anarchical Society",
+   "school": "English School",
+   "sub_school": "International society / rationalism",
+   "era": "Mid-century",
+   "classic_thinker": "Hedley Bull — order in anarchy via shared institutions",
+   "definition": "States form an 'anarchical society': despite the absence of world government, they share common interests, rules, and institutions (diplomacy, international law, balance of power, great-power management) that sustain order. Anarchy is socialized, not merely a war of all against all.",
+   "canonical_example": "Bull pointed to the durability of diplomacy, sovereignty norms, and the balance of power across centuries of the European states-system as evidence of genuine society. The Concert of Europe exemplified great powers managing order through shared rules rather than constant war.",
+   "modern_echo": "Debates over whether Russia's 2022 invasion shattered the post-war society of states, or whether shared institutions like the UN still constrain behavior, are English School questions. China's selective embrace of sovereignty norms while contesting Western rules illustrates an evolving, pluralist international society.",
+   "related_slugs": [
+    "wight_three_traditions",
+    "balance_of_power",
+    "liberal_international_order",
+    "finnemore_norms"
+   ],
+   "match_terms": [
+    "anarchical society",
+    "international society",
+    "society of states",
+    "institutions of order",
+    "great-power management"
+   ]
+  },
+  {
+   "slug": "wight_three_traditions",
+   "name": "Wight — Three Traditions",
+   "school": "English School",
+   "sub_school": "International theory typology",
+   "era": "Mid-century",
+   "classic_thinker": "Martin Wight — Realist, Rationalist, Revolutionist",
+   "definition": "Wight organized international thought into three traditions: Realist (Machiavellian, power and anarchy), Rationalist (Grotian, society and law), and Revolutionist (Kantian, moral community and transformation). Most thinkers blend the three rather than fitting one.",
+   "canonical_example": "Wight read the canon of Western political thought as a perpetual conversation among Hobbesian, Grotian, and Kantian voices on the nature of the states-system. Any given crisis could be interpreted through power politics, shared rules, or cosmopolitan transformation depending on the lens.",
+   "modern_echo": "Responses to the Ukraine war map onto the three traditions: realists stress power and spheres of influence, rationalists invoke sovereignty and international law, and revolutionists frame it as a democracy-versus-autocracy struggle. The same triad structures debates over how to handle Iran or a rising China.",
+   "related_slugs": [
+    "english_school_society",
+    "machiavelli",
+    "balance_of_power",
+    "democratic_peace"
+   ],
+   "match_terms": [
+    "three traditions",
+    "realist rationalist revolutionist",
+    "grotian tradition",
+    "kantian tradition",
+    "machiavellian tradition"
+   ]
+  },
+  {
+   "slug": "wendt_anarchy",
+   "name": "Wendt — Anarchy Is What States Make of It",
+   "school": "Constructivism",
+   "sub_school": "Systemic constructivism",
+   "era": "Modern",
+   "classic_thinker": "Alexander Wendt — anarchy has no fixed logic",
+   "definition": "Anarchy carries no single logic; its meaning is constructed through interaction, so identities and interests are socially produced rather than given by structure. Cultures of anarchy range from Hobbesian enmity through Lockean rivalry to Kantian friendship.",
+   "canonical_example": "Wendt argued that whether anarchy breeds war depends on whether states treat each other as enemies, rivals, or friends, citing how the same material structure yields different orders. The peaceful security community among Western states shows anarchy 'made' into friendship.",
+   "modern_echo": "The hardening of US–China relations from engagement-era partners toward strategic rivals illustrates anarchy's logic being remade through shifting mutual identities. Conversely, NATO's cohesion after 2022 reflects a Kantian culture among members even amid systemic anarchy.",
+   "related_slugs": [
+    "onuf_world_of_our_making",
+    "finnemore_norms",
+    "security_dilemma",
+    "ontological_security"
+   ],
+   "match_terms": [
+    "anarchy is what states make",
+    "cultures of anarchy",
+    "socially constructed",
+    "identities and interests",
+    "intersubjective structure"
+   ]
+  },
+  {
+   "slug": "onuf_world_of_our_making",
+   "name": "Onuf — World of Our Making",
+   "school": "Constructivism",
+   "sub_school": "Rule-oriented constructivism",
+   "era": "Modern",
+   "classic_thinker": "Nicholas Onuf — speech acts and rules constitute politics",
+   "definition": "Social reality, including international politics, is constructed through speech acts and rules that connect people and resources into stable practices and institutions. Agents and structures co-constitute one another through rule-governed action.",
+   "canonical_example": "Onuf, who coined 'constructivism' in IR, showed how directive, commissive, and assertive speech acts generate the rules and conventions that make sovereignty and treaties possible. The institution of sovereignty exists only because actors continually enact the rules that define it.",
+   "modern_echo": "Contests over what counts as a 'genocide,' an 'invasion,' or a 'terrorist organization' in Ukraine, Gaza, and Iran policy are struggles over the rules and speech acts that constitute legitimacy. Whoever fixes the authoritative language shapes the political world that follows.",
+   "related_slugs": [
+    "wendt_anarchy",
+    "finnemore_norms",
+    "securitization",
+    "english_school_society"
+   ],
+   "match_terms": [
+    "world of our making",
+    "speech acts",
+    "rules constitute",
+    "co-constitution",
+    "constructivism coined"
+   ]
+  },
+  {
+   "slug": "finnemore_norms",
+   "name": "Finnemore — Norm Entrepreneurs",
+   "school": "Constructivism",
+   "sub_school": "Norms research / norm life-cycle",
+   "era": "Modern",
+   "classic_thinker": "Finnemore & Sikkink — norm life-cycle and cascades",
+   "definition": "International norms emerge, spread, and become taken for granted through a life-cycle in which norm entrepreneurs persuade states, a tipping point triggers a cascade, and norms are finally internalized. Ideas, not just interests, reshape what states want.",
+   "canonical_example": "Finnemore and Sikkink traced how norms against the use of force for conquest, or for the abolition of practices like slavery, diffused from advocates to a cascade of adopting states. The spread of human-rights and humanitarian-intervention norms shows entrepreneurs reshaping legitimacy.",
+   "modern_echo": "Campaigns to establish norms against autonomous weapons, or to brand Russia's annexations as illegitimate, show norm entrepreneurs at work in contemporary order. The contested 'Responsibility to Protect' and shifting norms around cyber conduct reveal cascades that stall when great powers resist.",
+   "related_slugs": [
+    "wendt_anarchy",
+    "onuf_world_of_our_making",
+    "english_school_society",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "norm entrepreneurs",
+    "norm life-cycle",
+    "norm cascade",
+    "norm internalization",
+    "norm diffusion"
+   ]
+  },
+  {
+   "slug": "securitization",
+   "name": "Securitization (Copenhagen School)",
+   "school": "Constructivism",
+   "sub_school": "Copenhagen School",
+   "era": "Contemporary",
+   "classic_thinker": "Buzan, Wæver — security as a speech act",
+   "definition": "Securitization is the process by which an actor frames an issue as an existential threat requiring emergency measures beyond normal politics, and an audience accepts that framing. Security is performed through speech, not given by objective danger.",
+   "canonical_example": "The Copenhagen School analyzed how migration, the environment, or identity get 'securitized' when leaders cast them as existential threats to justify extraordinary measures. Post-9/11 counterterrorism showed an issue elevated above ordinary law through threat-framing.",
+   "modern_echo": "States securitize migration at the US–Mexico border, cartels as national-security threats, and TikTok or Huawei as existential dangers to justify bans and deployments. Russia's framing of NATO and Ukraine as existential threats was a securitizing move legitimizing war.",
+   "related_slugs": [
+    "onuf_world_of_our_making",
+    "ontological_security",
+    "gray_zone",
+    "clash_of_civilizations"
+   ],
+   "match_terms": [
+    "securitization",
+    "speech act security",
+    "existential threat framing",
+    "copenhagen school",
+    "extraordinary measures"
+   ]
+  },
+  {
+   "slug": "ontological_security",
+   "name": "Ontological Security",
+   "school": "Constructivism",
+   "sub_school": "Identity / security-of-being",
+   "era": "Contemporary",
+   "classic_thinker": "Mitzen, Steele — security of identity, not just survival",
+   "definition": "States seek ontological security — a stable sense of self and biographical continuity — not only physical survival, and will sustain even harmful conflicts to preserve identity. Routines and recognized identities anchor an actor's sense of being.",
+   "canonical_example": "Scholars argued states cling to enduring rivalries because the relationship itself stabilizes their identity, explaining why some conflicts persist past material rationality. Cold War antagonism, for instance, gave both blocs a coherent sense of self.",
+   "modern_echo": "Russia's pursuit of great-power recognition and a civilizational identity, even at ruinous cost in Ukraine, is read as a quest for ontological security. China's insistence on reunification narratives and demands for status reflect identity needs that material bargaining alone cannot satisfy.",
+   "related_slugs": [
+    "securitization",
+    "wendt_anarchy",
+    "clash_of_civilizations",
+    "spiral_model"
+   ],
+   "match_terms": [
+    "ontological security",
+    "security of identity",
+    "biographical continuity",
+    "sense of self",
+    "identity-driven conflict"
+   ]
+  },
+  {
+   "slug": "lenin_imperialism",
+   "name": "Lenin — Imperialism, the Highest Stage of Capitalism",
+   "school": "Marxist / Critical",
+   "sub_school": "Theory of imperialism",
+   "era": "Mid-century",
+   "classic_thinker": "V.I. Lenin — monopoly capital exports and divides the world",
+   "definition": "Imperialism is the monopoly stage of capitalism in which finance capital, compelled to export surplus and secure markets and raw materials, drives great powers to partition the globe. Inter-imperialist rivalry over this division makes war systemic.",
+   "canonical_example": "Lenin explained the scramble for colonies and World War I as the violent redivision of an already-partitioned world by rival finance-capitalist powers. The pre-1914 carve-up of Africa and Asia exemplified capital's outward drive turning into great-power war.",
+   "modern_echo": "Critical analysts read competition over Africa's minerals, the contest between US and Chinese capital across the Global South, and resource scrambles as latter-day inter-imperialist rivalry. BRICS framings of a multipolar challenge to Western finance echo Lenin's account of redividing global economic spheres.",
+   "related_slugs": [
+    "wallerstein_world_systems",
+    "dependency_theory",
+    "cox_gramscian",
+    "mercantilism"
+   ],
+   "match_terms": [
+    "imperialism highest stage",
+    "finance capital",
+    "export of capital",
+    "inter-imperialist rivalry",
+    "monopoly capitalism"
+   ]
+  },
+  {
+   "slug": "wallerstein_world_systems",
+   "name": "Wallerstein — World-Systems Theory",
+   "school": "Marxist / Critical",
+   "sub_school": "World-systems analysis",
+   "era": "Modern",
+   "classic_thinker": "Immanuel Wallerstein — core, periphery, semi-periphery",
+   "definition": "The modern world is a single capitalist world-economy structured into a wealthy core, an exploited periphery, and an intermediate semi-periphery, with surplus flowing from periphery to core. States' fortunes are set by their position in this hierarchical division of labor.",
+   "canonical_example": "Wallerstein traced how the long sixteenth century built a world-economy in which Western European cores extracted surplus from peripheral zones supplying raw materials and cheap labor. Colonial plantation economies feeding European industry illustrate the core–periphery transfer.",
+   "modern_echo": "Debates over whether China is rising from semi-periphery toward core status, and whether Global South commodity exporters remain locked in peripheral roles, are world-systems questions. BRICS efforts to build alternative finance and de-dollarize are read as bids to renegotiate position within the world-economy.",
+   "related_slugs": [
+    "dependency_theory",
+    "lenin_imperialism",
+    "cox_gramscian",
+    "postcolonial_ir"
+   ],
+   "match_terms": [
+    "world-systems",
+    "core periphery",
+    "semi-periphery",
+    "capitalist world-economy",
+    "unequal exchange"
+   ]
+  },
+  {
+   "slug": "cox_gramscian",
+   "name": "Cox — Gramscian Critical IR",
+   "school": "Marxist / Critical",
+   "sub_school": "Neo-Gramscian / critical theory",
+   "era": "Modern",
+   "classic_thinker": "Robert Cox — 'theory is always for someone'",
+   "definition": "Cox applied Gramsci to IR, arguing world order rests on hegemony as a fusion of material capabilities, ideas, and institutions that secures consent, and that theory is never neutral but serves particular interests. Critical theory exposes and seeks to transform these historical structures.",
+   "canonical_example": "Cox distinguished problem-solving theory, which takes the order as given, from critical theory, which asks how that order arose and whom it serves. He read post-war US hegemony as a Gramscian historic bloc that universalized liberal-capitalist norms through institutions like Bretton Woods.",
+   "modern_echo": "Critics analyze the liberal international order as a hegemonic project now contested by counter-hegemonic blocs around China and BRICS seeking alternative institutions. Struggles over the rules of trade, tech, and finance are read as contests for ideological as well as material leadership.",
+   "related_slugs": [
+    "wallerstein_world_systems",
+    "lenin_imperialism",
+    "postcolonial_ir",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "gramscian",
+    "historic bloc",
+    "theory is always for someone",
+    "problem-solving vs critical",
+    "hegemony as consent"
+   ]
+  },
+  {
+   "slug": "dependency_theory",
+   "name": "Dependency Theory",
+   "school": "Marxist / Critical",
+   "sub_school": "Latin American structuralism",
+   "era": "Modern",
+   "classic_thinker": "Prebisch, Frank, Cardoso — development of underdevelopment",
+   "definition": "Underdevelopment in the periphery is actively produced by its dependent integration into a world economy that channels surplus to the industrialized core. Poor nations are not 'behind' but structurally subordinated by the same system that enriches the center.",
+   "canonical_example": "Prebisch and dependency theorists argued declining terms of trade and reliance on primary exports trapped Latin America in subordination to industrial cores. Frank's 'development of underdevelopment' showed how core demand shaped and stunted peripheral economies.",
+   "modern_echo": "Debtor states caught in commodity dependence, and critiques that Chinese 'debt-trap' lending or Western conditionality reproduce dependency, revive these arguments. Global South demands to move up value chains and escape raw-material reliance echo the dependency agenda within BRICS-era debates.",
+   "related_slugs": [
+    "wallerstein_world_systems",
+    "lenin_imperialism",
+    "postcolonial_ir",
+    "comparative_advantage"
+   ],
+   "match_terms": [
+    "dependency theory",
+    "development of underdevelopment",
+    "terms of trade",
+    "core-periphery dependence",
+    "structural subordination"
+   ]
+  },
+  {
+   "slug": "postcolonial_ir",
+   "name": "Post-colonial IR",
+   "school": "Marxist / Critical",
+   "sub_school": "Postcolonial / decolonial theory",
+   "era": "Contemporary",
+   "classic_thinker": "Said, Spivak, Chakrabarty — provincializing the West",
+   "definition": "Post-colonial IR exposes how the discipline's concepts (sovereignty, anarchy, development) carry Eurocentric and imperial assumptions, and centers the experience and agency of the colonized. It treats the colonial encounter as constitutive of the modern international, not a footnote to it.",
+   "canonical_example": "Drawing on Said's Orientalism, postcolonial scholars showed how Western representations of the non-European world legitimated domination and shaped 'objective' IR categories. The standard story of a Westphalian states-system is rewritten to foreground empire and racial hierarchy.",
+   "modern_echo": "Global South critiques of a Western-defined 'rules-based order,' and debates over double standards in responses to Ukraine versus Gaza, draw on postcolonial arguments. Calls to decolonize global governance and the rise of non-Western blocs reframe whose order the international system serves.",
+   "related_slugs": [
+    "cox_gramscian",
+    "dependency_theory",
+    "feminist_ir",
+    "clash_of_civilizations"
+   ],
+   "match_terms": [
+    "postcolonial",
+    "orientalism",
+    "eurocentrism",
+    "decolonial",
+    "provincializing europe"
+   ]
+  },
+  {
+   "slug": "feminist_ir",
+   "name": "Feminist IR",
+   "school": "Marxist / Critical",
+   "sub_school": "Gender and international relations",
+   "era": "Contemporary",
+   "classic_thinker": "Enloe, Tickner — gendered foundations of world politics",
+   "definition": "Feminist IR asks where the women are and how gendered assumptions underpin concepts of power, security, and the state, revealing the masculinized and gendered foundations of world politics. It redefines security to include structural and everyday violence often rendered invisible.",
+   "canonical_example": "Tickner critiqued realism's masculinized notion of security, while Enloe traced how the global system depends on women's often-invisible labor on military bases, in diplomacy, and in supply chains. Such work showed 'high politics' resting on gendered social arrangements.",
+   "modern_echo": "The Women, Peace and Security agenda, analyses of wartime sexual violence in Ukraine, and the gendered dimensions of cartel violence and migration apply feminist IR. Debates over 'feminist foreign policy' adopted by several states test whether gender analysis can reshape statecraft.",
+   "related_slugs": [
+    "postcolonial_ir",
+    "cox_gramscian",
+    "securitization",
+    "ontological_security"
+   ],
+   "match_terms": [
+    "feminist ir",
+    "gender and security",
+    "where are the women",
+    "masculinized security",
+    "gendered world politics"
+   ]
+  },
+  {
+   "slug": "prisoners_dilemma",
+   "name": "Prisoner's Dilemma",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Mid-century",
+   "classic_thinker": "Tucker & Flood/Dresher — dominant defection",
+   "definition": "A two-player game in which mutual cooperation yields the best collective outcome, yet each player's dominant strategy is to defect, producing a Pareto-inferior equilibrium. It models how individually rational choices generate collectively irrational results.",
+   "canonical_example": "Two arrested suspects, held separately, each face a lighter sentence if they cooperate (stay silent) but a dominant incentive to betray the other for leniency. Both defect and serve more time than if they had jointly cooperated — the inescapable logic of self-interest under non-cooperation.",
+   "modern_echo": "US-China trade and tech competition recurs as a prisoner's dilemma: both states would gain from open exchange, yet each defects via tariffs and export controls (e.g., 2022-2024 semiconductor restrictions) fearing the other's defection. Arms-control collapse between Russia and the US similarly reflects mutual defection over mutual restraint.",
+   "related_slugs": [
+    "security_dilemma",
+    "stag_hunt",
+    "iterated_games",
+    "nash_equilibrium"
+   ],
+   "match_terms": [
+    "prisoner's dilemma",
+    "prisoners dilemma",
+    "dominant strategy to defect",
+    "mutual defection",
+    "collectively irrational"
+   ]
+  },
+  {
+   "slug": "chicken_game",
+   "name": "Game of Chicken",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Mid-century",
+   "classic_thinker": "Russell & Kahn — who swerves first",
+   "definition": "A game in which two players hurtle toward catastrophe and the one who yields ('swerves') loses face, while the one who holds wins — but mutual non-yielding produces disaster for both. It rewards credibly committing to recklessness.",
+   "canonical_example": "Two drivers speed toward each other; whoever swerves is the 'chicken,' but if neither swerves both crash. The classic strategy is to visibly throw the steering wheel out the window, forcing the rival to yield by removing one's own option to back down.",
+   "modern_echo": "Russia's 2022-2024 nuclear signaling over Ukraine functions as chicken: Moscow brandishes escalation to make NATO swerve on arms deliveries. Iran-Israel exchanges and US-China brinkmanship over Taiwan likewise hinge on which side credibly refuses to yield first.",
+   "related_slugs": [
+    "schelling_commitment",
+    "deterrence_theory",
+    "mutual_assured_destruction",
+    "prisoners_dilemma"
+   ],
+   "match_terms": [
+    "game of chicken",
+    "brinkmanship",
+    "swerve first",
+    "credibly commit",
+    "throw the steering wheel"
+   ]
+  },
+  {
+   "slug": "stag_hunt",
+   "name": "Stag Hunt",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Classical",
+   "classic_thinker": "Rousseau — cooperate for the stag",
+   "definition": "A coordination game with two equilibria — mutual cooperation (hunting the stag) yields the highest payoff but requires trust, while defecting to a safe lesser prize (the hare) is risk-dominant. It captures the tension between collective gain and fear of being abandoned.",
+   "canonical_example": "Rousseau's hunters can jointly take a stag (feeding all) only if every hunter holds position; but any hunter, tempted or fearful, may break off to catch a passing hare, dooming the collective hunt. Cooperation is best for all yet fragile under uncertainty about others' resolve.",
+   "modern_echo": "Collective-defense and climate cooperation echo the stag hunt: NATO burden-sharing and EU sanctions on Russia (2022-2024) hold only if no member defects to a separate peace or cheaper energy deal. China-Taiwan deterrence coalitions face the same fear that a partner will chase the 'hare' of bilateral accommodation.",
+   "related_slugs": [
+    "coordination_game",
+    "prisoners_dilemma",
+    "security_dilemma",
+    "balance_of_power"
+   ],
+   "match_terms": [
+    "stag hunt",
+    "hunt the stag",
+    "risk-dominant",
+    "fear of abandonment",
+    "assurance problem"
+   ]
+  },
+  {
+   "slug": "coordination_game",
+   "name": "Coordination Games",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Mid-century",
+   "classic_thinker": "Schelling — converging on focal points",
+   "definition": "Games in which players share an interest in matching their choices and the challenge is selecting among multiple equilibria rather than overcoming conflict. Outcomes hinge on focal points, conventions, and signaling that let players converge without communication.",
+   "canonical_example": "Two people told to meet in New York with no prior arrangement tend to pick a salient 'focal point' (Grand Central at noon); driving on a shared side of the road is a self-enforcing convention. The problem is not motive but mutual expectation about where others will go.",
+   "modern_echo": "International standard-setting and tech-bloc alignment are coordination games: states and firms converge on 5G, AI-governance, or payment-system standards (US vs. China spheres, 2020-2025) where matching matters more than the specific rule. Sanctions coalitions also coordinate on focal 'red lines' to signal expected behavior.",
+   "related_slugs": [
+    "stag_hunt",
+    "schelling_commitment",
+    "nash_equilibrium",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "coordination game",
+    "focal point",
+    "multiple equilibria",
+    "self-enforcing convention",
+    "tacit coordination"
+   ]
+  },
+  {
+   "slug": "iterated_games",
+   "name": "Iterated Games & Tit-for-Tat",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Modern",
+   "classic_thinker": "Axelrod — cooperation under the shadow of the future",
+   "definition": "When a game repeats indefinitely, the 'shadow of the future' lets reciprocal strategies like Tit-for-Tat sustain cooperation that one-shot play would unravel. Robust strategies are nice, retaliatory, forgiving, and clear.",
+   "canonical_example": "In Axelrod's computer tournaments, the simple Tit-for-Tat rule — cooperate first, then mirror the opponent's last move — outperformed complex strategies by rewarding cooperation and swiftly punishing defection. The 'live-and-let-live' trench truces of WWI illustrate the same emergent reciprocity.",
+   "modern_echo": "Tacit arms-restraint and cyber norms among great powers (US-China-Russia, 2014-2025) work like iterated games where measured retaliation deters escalation while leaving room to de-escalate. Sanctions-and-relief bargaining with Iran similarly rewards reciprocated compliance under a long shadow of future rounds.",
+   "related_slugs": [
+    "prisoners_dilemma",
+    "schelling_commitment",
+    "deterrence_theory",
+    "nash_equilibrium"
+   ],
+   "match_terms": [
+    "iterated games",
+    "tit-for-tat",
+    "shadow of the future",
+    "reciprocity",
+    "repeated play"
+   ]
+  },
+  {
+   "slug": "nash_equilibrium",
+   "name": "Nash Equilibrium",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Mid-century",
+   "classic_thinker": "John Nash — no profitable unilateral deviation",
+   "definition": "A strategy profile in which no player can improve their payoff by unilaterally changing strategy, given the others' choices. It is the foundational solution concept for predicting stable outcomes in strategic interaction.",
+   "canonical_example": "In the Prisoner's Dilemma, mutual defection is the unique Nash equilibrium — neither prisoner gains by switching to silence while the other betrays. The concept generalizes: any self-enforcing outcome where every actor is best-responding to every other defines an equilibrium.",
+   "modern_echo": "Analysts model great-power postures as Nash equilibria: each of the US, China, and Russia sustains arms levels and alliance commitments (2014-2025) that none can profitably abandon unilaterally. Deterrence stalemates over Taiwan persist precisely because no side can deviate to coercion or concession without losing.",
+   "related_slugs": [
+    "prisoners_dilemma",
+    "subgame_perfect",
+    "bayesian_games",
+    "rational_actor_model"
+   ],
+   "match_terms": [
+    "nash equilibrium",
+    "best response",
+    "no unilateral deviation",
+    "solution concept",
+    "self-enforcing outcome"
+   ]
+  },
+  {
+   "slug": "subgame_perfect",
+   "name": "Subgame Perfect Equilibrium",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Modern",
+   "classic_thinker": "Selten — backward induction & credibility",
+   "definition": "A refinement of Nash equilibrium for sequential games requiring that strategies be optimal in every subgame, eliminating non-credible threats. It is found by backward induction from the end of the game tree.",
+   "canonical_example": "In an entry-deterrence game, an incumbent's threat to start a price war if a rival enters is not subgame perfect if, once entry occurs, fighting is costlier than accommodating — so backward induction predicts the rival enters. Only threats one would actually carry out survive.",
+   "modern_echo": "Credibility of deterrent threats hinges on subgame perfection: a US pledge to defend Taiwan or punish Russian nuclear use (2022-2025) deters only if execution remains rational once the moment arrives. Tripwire forces and automaticity are devices to make otherwise non-credible retaliation subgame perfect.",
+   "related_slugs": [
+    "nash_equilibrium",
+    "schelling_commitment",
+    "deterrence_theory",
+    "bayesian_games"
+   ],
+   "match_terms": [
+    "subgame perfect",
+    "backward induction",
+    "non-credible threat",
+    "sequential game",
+    "credible threat"
+   ]
+  },
+  {
+   "slug": "bayesian_games",
+   "name": "Bayesian Games & Incomplete Information",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Modern",
+   "classic_thinker": "Harsanyi — types & private information",
+   "definition": "Games in which players hold private information ('types') and form probabilistic beliefs about others, choosing strategies that are best responses in expectation. They formalize bargaining and conflict under uncertainty about resolve or capability.",
+   "canonical_example": "Harsanyi modeled incomplete information by assigning each player a 'type' drawn from a known distribution, so rivals bargain while uncertain whether the other is, say, resolute or bluffing. War can result when a state cannot credibly reveal its true type and the other miscalculates the odds.",
+   "modern_echo": "Crisis bargaining over Ukraine and Iran's nuclear program (2014-2025) is shaped by incomplete information: each side guesses the other's hidden resolve and red lines, and costly signals (mobilizations, strikes) aim to reveal type. Misjudged resolve — Russia's 2022 assumption of Ukrainian collapse — exemplifies bargaining failure under uncertainty.",
+   "related_slugs": [
+    "nash_equilibrium",
+    "subgame_perfect",
+    "schelling_commitment",
+    "spiral_model"
+   ],
+   "match_terms": [
+    "bayesian games",
+    "incomplete information",
+    "private information",
+    "player types",
+    "costly signaling"
+   ]
+  },
+  {
+   "slug": "schelling_commitment",
+   "name": "Schelling — Credible Commitment & Focal Points",
+   "school": "Strategic Studies",
+   "sub_school": "Game Theory",
+   "era": "Mid-century",
+   "classic_thinker": "Thomas Schelling — the power of binding oneself",
+   "definition": "Strategic advantage can come from credibly constraining one's own options — burning bridges, automaticity, or public pledges — so that a threat or promise becomes believable. Focal points and shared expectations let parties coordinate or signal without explicit agreement.",
+   "canonical_example": "Schelling showed that a general who burns the bridge behind his army strengthens his position by making retreat impossible, forcing the enemy to take his resolve seriously. The 'threat that leaves something to chance' deters by tying outcomes to uncontrollable escalation rather than a deliberate choice to fight.",
+   "modern_echo": "Tripwire deployments — US forces in the Baltics and Taiwan-adjacent postures (2014-2025) — embody Schelling's commitment: small units make great-power retaliation automatic and thus credible. Russia's deliberately ambiguous nuclear doctrine is a 'leave-something-to-chance' device to deter Western intervention.",
+   "related_slugs": [
+    "deterrence_theory",
+    "chicken_game",
+    "subgame_perfect",
+    "mutual_assured_destruction"
+   ],
+   "match_terms": [
+    "credible commitment",
+    "focal point",
+    "burning bridges",
+    "leave something to chance",
+    "tying hands"
+   ]
+  },
+  {
+   "slug": "security_dilemma",
+   "name": "Security Dilemma",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Mid-century",
+   "classic_thinker": "Herz, Jervis, Glaser — defensive steps that menace",
+   "definition": "Under anarchy, measures one state takes to make itself more secure inherently diminish the security of others, prompting countermeasures that leave all less safe. Even purely defensive intentions can spark arms races and conflict.",
+   "canonical_example": "A state that builds up arms for defense cannot perfectly signal its benign intent, so neighbors read the buildup as threatening and arm in response, fueling a spiral neither side wanted. Pre-1914 European mobilization schedules are the textbook case of defensive preparations producing collective insecurity.",
+   "modern_echo": "US-China dynamics in the Indo-Pacific (2014-2025) display the security dilemma: Chinese island-building and naval expansion meant to secure sea lanes provoke US and allied buildups read by Beijing as containment. NATO enlargement and Russian countermoves before 2022 followed the same self-defeating logic.",
+   "related_slugs": [
+    "spiral_model",
+    "offense_defense_theory",
+    "waltz_neorealism",
+    "glaser_defensive"
+   ],
+   "match_terms": [
+    "security dilemma",
+    "defensive intentions",
+    "arms race",
+    "mutual insecurity",
+    "spiral of insecurity"
+   ]
+  },
+  {
+   "slug": "spiral_model",
+   "name": "Spiral Model",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Modern",
+   "classic_thinker": "Robert Jervis — escalation from misperceived threat",
+   "definition": "A model in which mutual fear and worst-case perception drive reciprocal hostility upward, so that conciliation, not firmness, is the prescribed remedy. It is the counterpoint to the deterrence model's emphasis on resolve.",
+   "canonical_example": "Jervis contrasted the spiral model with deterrence: where deterrence sees aggressors needing to be faced down, the spiral model sees a frightened, status-quo adversary whose hostility hardens when met with threats. Misperceiving a defensive rival as an aggressor and responding harshly escalates a conflict that accommodation could have defused.",
+   "modern_echo": "Debates over Russia and China (2014-2025) split along spiral-vs-deterrence lines: spiral theorists argue Western pressure deepened Moscow's siege mentality before 2022, while US-China hawks risk a self-fulfilling spiral by treating every Chinese move as hostile. The Iran nuclear standoff likewise oscillates between coercion and spiral-driven escalation.",
+   "related_slugs": [
+    "security_dilemma",
+    "deterrence_theory",
+    "offense_defense_theory",
+    "glaser_defensive"
+   ],
+   "match_terms": [
+    "spiral model",
+    "misperception",
+    "escalation spiral",
+    "worst-case thinking",
+    "reciprocal hostility"
+   ]
+  },
+  {
+   "slug": "deterrence_theory",
+   "name": "Deterrence Theory",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Mid-century",
+   "classic_thinker": "Brodie & Schelling — dissuasion by threat",
+   "definition": "The theory that an adversary can be prevented from acting by credibly threatening costs that outweigh the gains of acting. Effective deterrence requires capability, credibility, and clear communication of the threat.",
+   "canonical_example": "Brodie argued after 1945 that nuclear weapons shifted militaries from winning wars to averting them, since the threat of unacceptable retaliation could dissuade attack. The 1962 Cuban Missile Crisis is the canonical test: superpower restraint flowed from each side's credible threat of devastating response.",
+   "modern_echo": "Deterrence is reasserted across 2014-2025 flashpoints: US 'integrated deterrence' against China over Taiwan, NATO's reinforcement to deter further Russian advance, and Israel's posture toward Iran and Hezbollah. The core debate is whether conventional and nuclear threats remain credible enough to dissuade revisionist moves.",
+   "related_slugs": [
+    "mutual_assured_destruction",
+    "schelling_commitment",
+    "spiral_model",
+    "cyber_deterrence"
+   ],
+   "match_terms": [
+    "deterrence theory",
+    "credible threat",
+    "dissuasion",
+    "unacceptable retaliation",
+    "deter aggression"
+   ]
+  },
+  {
+   "slug": "mutual_assured_destruction",
+   "name": "Mutual Assured Destruction (MAD)",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Mid-century",
+   "classic_thinker": "Wohlstetter & McNamara — survivable second strike",
+   "definition": "A condition in which two nuclear powers each retain an assured ability to destroy the other after absorbing a first strike, making nuclear war suicidal and thus deterring it. Stability rests on secure, survivable second-strike forces.",
+   "canonical_example": "During the Cold War, US and Soviet submarine and silo-based forces guaranteed devastating retaliation no first strike could disarm, so neither could rationally initiate nuclear war. Arms-control treaties like the ABM Treaty deliberately preserved mutual vulnerability to keep deterrence stable.",
+   "modern_echo": "MAD logic persists in US-Russia signaling over Ukraine (2022-2025), where nuclear threats are calibrated against assured retaliation, and increasingly shapes US-China relations as China expands its arsenal toward a secure second strike. Missile-defense and hypersonic advances reignite debates over whether mutual vulnerability still holds.",
+   "related_slugs": [
+    "deterrence_theory",
+    "schelling_commitment",
+    "balance_of_power",
+    "offense_defense_theory"
+   ],
+   "match_terms": [
+    "mutual assured destruction",
+    "second strike",
+    "assured retaliation",
+    "nuclear deterrence",
+    "mutual vulnerability"
+   ]
+  },
+  {
+   "slug": "offense_defense_theory",
+   "name": "Offense-Defense Theory",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Modern",
+   "classic_thinker": "Quester, Van Evera, Glaser — when conquest is easy",
+   "definition": "The claim that war and arms-racing are more likely when prevailing technology and geography favor offense, and peace more durable when defense dominates and is distinguishable from offense. The offense-defense balance shapes the intensity of the security dilemma.",
+   "canonical_example": "Van Evera argued that perceived offensive advantage in 1914 — the 'cult of the offensive' and rigid mobilization — made war seem necessary and winnable, fueling escalation. By contrast, defense-dominant eras with clear fortifications lower the premium on striking first.",
+   "modern_echo": "Drones, precision missiles, and contested A2/AD zones reshape the offense-defense balance in the Taiwan Strait and Ukraine (2022-2025), where cheap defenses can blunt costly offensives. Cyber and space are debated as offense-dominant domains that intensify first-mover incentives and instability.",
+   "related_slugs": [
+    "security_dilemma",
+    "spiral_model",
+    "mearsheimer_offensive",
+    "glaser_defensive"
+   ],
+   "match_terms": [
+    "offense-defense theory",
+    "offense-defense balance",
+    "cult of the offensive",
+    "first-strike advantage",
+    "defense dominant"
+   ]
+  },
+  {
+   "slug": "balance_of_power",
+   "name": "Balance of Power",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Classical",
+   "classic_thinker": "Hume & Waltz — equilibrium checks hegemony",
+   "definition": "A recurring pattern in which states align and arm to prevent any single power from dominating the system, producing rough equilibrium. Balancing may be automatic (structural) or the product of deliberate statecraft.",
+   "canonical_example": "For centuries Britain played 'balancer,' throwing its weight against whichever continental power (Habsburg Spain, Napoleonic France, Imperial Germany) threatened to dominate Europe. The result was a self-correcting equilibrium in which coalitions formed to check aspiring hegemons.",
+   "modern_echo": "Indo-Pacific alignments — the Quad, AUKUS, and deepening US-Japan-Philippines ties (2014-2025) — represent balancing against rising Chinese power. Russia and China's partnership, and Gulf states hedging between Washington and Beijing, likewise reflect contemporary balance-of-power maneuvering.",
+   "related_slugs": [
+    "waltz_neorealism",
+    "walt_balance_of_threat",
+    "power_transition",
+    "hegemonic_stability"
+   ],
+   "match_terms": [
+    "balance of power",
+    "balancing",
+    "aspiring hegemon",
+    "equilibrium",
+    "counterbalancing coalition"
+   ]
+  },
+  {
+   "slug": "hegemonic_stability",
+   "name": "Hegemonic Stability Theory",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Modern",
+   "classic_thinker": "Kindleberger & Gilpin — a leader sustains order",
+   "definition": "The theory that an open, stable international economic and political order requires a dominant hegemon willing and able to supply public goods and enforce rules. Order erodes as the hegemon declines or withdraws.",
+   "canonical_example": "Kindleberger blamed the Depression's severity on the absence of a stabilizer after British decline and before US leadership; Gilpin generalized that hegemons like 19th-century Britain and postwar America underwrite free trade and security. When no power provides these goods, the system fragments.",
+   "modern_echo": "Debates over US retrenchment and Chinese ambition (2014-2025) turn on hegemonic stability: whether a receding American order leaves a 'Kindleberger trap' of under-provided global goods, and whether Beijing's Belt and Road offers an alternative order. Strains on the liberal international order frame the contest over who underwrites stability.",
+   "related_slugs": [
+    "power_transition",
+    "balance_of_power",
+    "keohane_after_hegemony",
+    "liberal_international_order"
+   ],
+   "match_terms": [
+    "hegemonic stability",
+    "public goods",
+    "hegemon",
+    "kindleberger trap",
+    "order provider"
+   ]
+  },
+  {
+   "slug": "power_transition",
+   "name": "Power Transition Theory",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Modern",
+   "classic_thinker": "Organski & Kugler — war as rising power overtakes",
+   "definition": "The theory that major war is most likely when a dissatisfied rising challenger approaches parity with a declining dominant power atop a hierarchical order. Stability is greatest when the leader enjoys a clear preponderance and the challenger is satisfied.",
+   "canonical_example": "Organski reframed international politics as a hierarchy, not a balance, arguing that the danger point comes as a fast-rising, status-quo-dissatisfied state catches the leader — as Germany overtaking Britain helped produce two world wars. Parity plus dissatisfaction, not equilibrium, breeds conflict.",
+   "modern_echo": "China's rise toward parity with the United States (2014-2025) is the paradigmatic modern power transition, with the central question being whether Beijing is a satisfied or revisionist challenger. Disputes over Taiwan, trade, and the rules of the order test whether the transition can stay peaceful.",
+   "related_slugs": [
+    "thucydides_trap",
+    "hegemonic_stability",
+    "balance_of_power",
+    "long_cycle_theory"
+   ],
+   "match_terms": [
+    "power transition",
+    "rising challenger",
+    "parity",
+    "dissatisfied power",
+    "hierarchy of power"
+   ]
+  },
+  {
+   "slug": "thucydides_trap",
+   "name": "Thucydides Trap",
+   "school": "Strategic Studies",
+   "sub_school": "Security Studies",
+   "era": "Contemporary",
+   "classic_thinker": "Graham Allison — rising power meets ruling power",
+   "definition": "The dangerous structural stress that arises when a rapidly rising power threatens to displace an established ruling power, raising the risk of war driven by fear, honor, and interest. Named for Thucydides' diagnosis of Athens and Sparta.",
+   "canonical_example": "Allison drew on Thucydides' line that 'it was the rise of Athens and the fear it instilled in Sparta that made war inevitable,' and surveyed sixteen historical cases of rising-vs-ruling powers, most of which ended in war. The trap is structural pressure, not destiny.",
+   "modern_echo": "Allison applied the concept directly to US-China relations (2015-2025), warning that a rising China and an anxious America could stumble into war over Taiwan or the South China Sea absent deliberate statecraft. The framing shapes Washington and Beijing's debates over whether competition can avoid catastrophe.",
+   "related_slugs": [
+    "power_transition",
+    "thucydides",
+    "balance_of_power",
+    "strategic_competition"
+   ],
+   "match_terms": [
+    "thucydides trap",
+    "rising power",
+    "ruling power",
+    "rise of athens",
+    "fear it instilled"
+   ]
+  },
+  {
+   "slug": "rational_actor_model",
+   "name": "Rational Actor Model",
+   "school": "Decision-Making",
+   "sub_school": "Foreign-Policy Analysis",
+   "era": "Modern",
+   "classic_thinker": "Allison's Model I; unitary value-maximizer",
+   "definition": "Treats the state as a single rational agent that selects the option maximizing expected utility given consistent goals and ranked preferences. Foreign policy is read as purposive choice solving a strategic problem.",
+   "canonical_example": "In Allison's Cuban Missile Crisis analysis, Model I explains the US naval blockade as the optimal calculated response weighing costs and benefits against Soviet missile emplacement. Each move is reconstructed as a deliberate cost-benefit calculation by a coherent 'United States.'",
+   "modern_echo": "Analysts framing the 2022 Western sanctions on Russia as a rational deterrent assume Putin's Kremlin weighs costs and benefits as a unitary actor. The model's predictive failure—Moscow invading Ukraine despite forecasted economic pain—shows why critics reach for bureaucratic and prospect-theory alternatives.",
+   "related_slugs": [
+    "bureaucratic_politics",
+    "prospect_theory",
+    "deterrence_theory",
+    "nash_equilibrium"
+   ],
+   "match_terms": [
+    "rational actor",
+    "unitary actor",
+    "expected utility",
+    "cost-benefit calculation",
+    "model i"
+   ]
+  },
+  {
+   "slug": "prospect_theory",
+   "name": "Prospect Theory",
+   "school": "Decision-Making",
+   "sub_school": "Behavioral",
+   "era": "Modern",
+   "classic_thinker": "Kahneman & Tversky; losses loom larger",
+   "definition": "A behavioral model in which leaders evaluate options relative to a reference point, are risk-averse over gains but risk-acceptant to avoid losses, and overweight certainty. It predicts gambling to recover a perceived loss.",
+   "canonical_example": "Scholars use prospect theory to explain why states accept reckless risks in the 'domain of losses,' as with Egypt's 1973 attack on Israel to reverse the humiliating loss of the Sinai. The reference point of pre-1967 status made the war a loss-recovery gamble rather than a gain-seeking bet.",
+   "modern_echo": "Putin's 2022 escalation in Ukraine reads as risk-acceptant behavior in a domain of losses—NATO enlargement framed as Russia sliding below its great-power reference point. Iran's willingness to absorb sanctions rather than concede on enrichment similarly reflects loss-aversion over a nuclear-status reference point.",
+   "related_slugs": [
+    "rational_actor_model",
+    "groupthink",
+    "ontological_security",
+    "deterrence_theory"
+   ],
+   "match_terms": [
+    "prospect theory",
+    "domain of losses",
+    "loss aversion",
+    "reference point",
+    "risk-acceptant"
+   ]
+  },
+  {
+   "slug": "bureaucratic_politics",
+   "name": "Bureaucratic Politics (Essence of Decision)",
+   "school": "Decision-Making",
+   "sub_school": "Foreign-Policy Analysis",
+   "era": "Modern",
+   "classic_thinker": "Allison's Model III; 'where you stand depends on where you sit'",
+   "definition": "Foreign-policy outcomes are the resultant of bargaining among officials with divergent agency interests, not a single rational choice. Policy reflects political pulling and hauling, deadlines, and relative bargaining power.",
+   "canonical_example": "Allison's Model III explains Cuban Missile Crisis decisions as the product of ExComm bargaining—Air Force, Navy, State, and political advisers pushing rival options reflecting their organizational stakes. The blockade emerged as a compromise resultant, not a clean optimum.",
+   "modern_echo": "US China policy from 2018-2025 reflects bargaining among Treasury, USTR, Defense, and Commerce with clashing stakes on tariffs, chip export controls, and TikTok. The zig-zag between decoupling and engagement looks less like grand strategy than the resultant of agency pulling-and-hauling.",
+   "related_slugs": [
+    "organizational_process",
+    "rational_actor_model",
+    "groupthink",
+    "two_level_games"
+   ],
+   "match_terms": [
+    "bureaucratic politics",
+    "pulling and hauling",
+    "where you sit",
+    "model iii",
+    "essence of decision"
+   ]
+  },
+  {
+   "slug": "organizational_process",
+   "name": "Organizational Process Model",
+   "school": "Decision-Making",
+   "sub_school": "Foreign-Policy Analysis",
+   "era": "Modern",
+   "classic_thinker": "Allison's Model II; outputs of standard routines",
+   "definition": "Government behavior is the output of large organizations following standard operating procedures and pre-set repertoires rather than fresh optimization. Choices are constrained by existing programs, capabilities, and bureaucratic routine.",
+   "canonical_example": "Model II explains the Soviet missile sites in Cuba being built to the same detectable patterns as those in the USSR—organizations executing standard engineering routines rather than concealment-optimized designs. The US response options were likewise bounded by what the military's existing repertoires could execute.",
+   "modern_echo": "Russia's 2022 invasion exposed organizational-process pathologies—logistics columns following peacetime road-march routines, stalling outside Kyiv. Bureaucratic SOPs, not a grand rational plan, shaped the visibly dysfunctional opening campaign.",
+   "related_slugs": [
+    "bureaucratic_politics",
+    "rational_actor_model",
+    "groupthink",
+    "two_level_games"
+   ],
+   "match_terms": [
+    "organizational process",
+    "standard operating procedures",
+    "sops",
+    "model ii",
+    "organizational routines"
+   ]
+  },
+  {
+   "slug": "groupthink",
+   "name": "Groupthink",
+   "school": "Decision-Making",
+   "sub_school": "Behavioral",
+   "era": "Modern",
+   "classic_thinker": "Janis; concurrence-seeking over appraisal",
+   "definition": "A mode of cohesive-group decision-making where the drive for unanimity overrides realistic appraisal of alternatives. Symptoms include illusions of invulnerability, suppression of dissent, and self-appointed mindguards.",
+   "canonical_example": "Janis's archetype is the 1961 Bay of Pigs fiasco, where Kennedy's tight advisory circle suppressed doubts and convinced itself an improbable invasion would succeed. Premature consensus and unchallenged assumptions produced a defective decision.",
+   "modern_echo": "The 2003 Iraq WMD consensus and, more recently, the 2021 US intelligence over-confidence that Kabul would hold for months show concurrence-seeking crowding out dissent. Insulated war-cabinet dynamics in Russia's 2022 invasion planning—few advisers willing to contradict Putin—display the same pathology.",
+   "related_slugs": [
+    "bureaucratic_politics",
+    "prospect_theory",
+    "organizational_process",
+    "two_level_games"
+   ],
+   "match_terms": [
+    "groupthink",
+    "concurrence-seeking",
+    "illusion of invulnerability",
+    "mindguards",
+    "suppression of dissent"
+   ]
+  },
+  {
+   "slug": "two_level_games",
+   "name": "Two-Level Games",
+   "school": "Decision-Making",
+   "sub_school": "Foreign-Policy Analysis",
+   "era": "Modern",
+   "classic_thinker": "Putnam; diplomacy as nested bargaining",
+   "definition": "International negotiation is a simultaneous game played at two boards: bargaining abroad and ratification at home. A deal must fall within both sides' domestic 'win-sets' to be struck and survive.",
+   "canonical_example": "Putnam's framework illuminates the 1978 Bonn summit, where leaders used international agreements to shift domestic coalitions and vice versa. Negotiators exploit the constraint of a narrow home win-set as leverage at the international table.",
+   "modern_echo": "The 2015 Iran nuclear deal (JCPOA) is a textbook two-level game—Obama and Rouhani each constrained by hardliners at home, and US congressional ratification politics ultimately unraveling it in 2018. Ukraine-Russia ceasefire talks repeatedly founder because no settlement fits both leaders' domestic win-sets.",
+   "related_slugs": [
+    "bureaucratic_politics",
+    "rational_actor_model",
+    "complex_interdependence",
+    "economic_statecraft"
+   ],
+   "match_terms": [
+    "two-level game",
+    "win-set",
+    "domestic ratification",
+    "nested bargaining",
+    "domestic constraints"
+   ]
+  },
+  {
+   "slug": "comparative_advantage",
+   "name": "Comparative Advantage",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Political Economy",
+   "era": "Classical",
+   "classic_thinker": "Ricardo; gains from relative-cost specialization",
+   "definition": "Nations gain by specializing in goods they produce at lower opportunity cost and trading for the rest, even if one is absolutely more efficient at everything. It is the liberal economic case for open trade and mutual gain.",
+   "canonical_example": "Ricardo's classic illustration is England trading cloth for Portuguese wine: both gain by specializing where their relative costs are lowest. The principle underwrote 19th-century free-trade liberalism and the repeal of the Corn Laws.",
+   "modern_echo": "The post-2018 US-China decoupling and 'friend-shoring' of semiconductor and battery supply chains is a deliberate retreat from pure comparative advantage toward security-weighted sourcing. Debates over Mexican nearshoring under USMCA pit efficiency gains against resilience and political-risk concerns.",
+   "related_slugs": [
+    "mercantilism",
+    "commercial_liberalism",
+    "economic_statecraft",
+    "weaponized_interdependence"
+   ],
+   "match_terms": [
+    "comparative advantage",
+    "gains from trade",
+    "specialization",
+    "opportunity cost",
+    "free trade"
+   ]
+  },
+  {
+   "slug": "mercantilism",
+   "name": "Mercantilism / Economic Nationalism",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Political Economy",
+   "era": "Classical",
+   "classic_thinker": "Hamilton & List; wealth as state power",
+   "definition": "An economic-nationalist doctrine treating trade as zero-sum and the state's task as maximizing trade surpluses, reserves, and strategic industries to build relative power. Protection and industrial policy serve national strength, not consumer welfare.",
+   "canonical_example": "Early-modern European states hoarded bullion and chartered monopoly trading companies to run surpluses against rivals. Friedrich List and Alexander Hamilton later justified tariffs to shield 'infant industries' until they could compete.",
+   "modern_echo": "China's state-led 'Made in China 2025' industrial policy and export-surplus mercantilism revived the doctrine at scale, prompting reciprocal US tariffs and CHIPS Act subsidies. The 2018-2025 tariff wars and BRICS de-dollarization talk reflect a broad return of economic nationalism.",
+   "related_slugs": [
+    "comparative_advantage",
+    "economic_statecraft",
+    "geoeconomics",
+    "hegemonic_stability"
+   ],
+   "match_terms": [
+    "mercantilism",
+    "economic nationalism",
+    "trade surplus",
+    "infant industry",
+    "industrial policy"
+   ]
+  },
+  {
+   "slug": "economic_statecraft",
+   "name": "Economic Statecraft",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Political Economy",
+   "era": "Modern",
+   "classic_thinker": "Hirschman & Baldwin; trade as influence",
+   "definition": "The use of economic instruments—trade, aid, investment, finance, asymmetric dependence—as tools of foreign-policy influence. Hirschman showed how trade relationships create exploitable dependence and political leverage.",
+   "canonical_example": "Hirschman's study of 1930s Nazi Germany showed how Berlin deliberately structured trade with smaller Balkan states to make them dependent and politically pliable. Asymmetric trade ties became instruments of coercion and influence.",
+   "modern_echo": "China's Belt and Road lending, rare-earth export leverage, and economic coercion of Australia and Lithuania exemplify modern statecraft. US export controls on advanced chips to China and Iran sanctions weaponize financial and technological dependence for strategic ends.",
+   "related_slugs": [
+    "sanctions_theory",
+    "weaponized_interdependence",
+    "geoeconomics",
+    "mercantilism"
+   ],
+   "match_terms": [
+    "economic statecraft",
+    "asymmetric dependence",
+    "economic coercion",
+    "trade leverage",
+    "economic instruments"
+   ]
+  },
+  {
+   "slug": "sanctions_theory",
+   "name": "Sanctions Theory",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Political Economy",
+   "era": "Modern",
+   "classic_thinker": "Pape & Drezner; coercion's limits",
+   "definition": "The study of when and how economic sanctions change target behavior, including their frequent failure, signaling and domestic functions, and the 'sanctions paradox' that threats often work better than imposition. It probes the gap between economic pain and political concession.",
+   "canonical_example": "Pape's influential critique argued sanctions rarely coerce major policy change, citing decades of cases from Rhodesia to Iraq where targets absorbed pain without conceding. Drezner's 'sanctions paradox' showed threats against allies often succeed while imposed sanctions on adversaries underperform.",
+   "modern_echo": "The unprecedented 2022 freeze of $300bn in Russian central-bank reserves and SWIFT cutoffs tested whether maximal sanctions could coerce withdrawal from Ukraine—Moscow adapted via sanctions-busting trade with China and India. Decades of Iran and Venezuela sanctions illustrate resilience, evasion, and the rally-around-the-flag effect.",
+   "related_slugs": [
+    "economic_statecraft",
+    "weaponized_interdependence",
+    "geoeconomics",
+    "deterrence_theory"
+   ],
+   "match_terms": [
+    "sanctions",
+    "sanctions paradox",
+    "secondary sanctions",
+    "sanctions evasion",
+    "economic coercion"
+   ]
+  },
+  {
+   "slug": "geoeconomics",
+   "name": "Geoeconomics",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Political Economy",
+   "era": "Contemporary",
+   "classic_thinker": "Luttwak; Blackwill & Harris",
+   "definition": "The use of economic instruments to pursue geopolitical objectives, and the projection of state power through economic means rather than military force. It treats markets, finance, and supply chains as primary terrain of great-power rivalry.",
+   "canonical_example": "Luttwak's 1990 thesis predicted that with the Cold War ending, states would compete via 'the logic of conflict in the grammar of commerce.' Blackwill and Harris later catalogued China's systematic deployment of trade, investment, and currency as geopolitical weapons.",
+   "modern_echo": "US-China competition is now fought largely on geoeconomic terrain—chip export controls, the Inflation Reduction Act, BRI infrastructure, and de-dollarization moves by BRICS. Control of critical minerals, semiconductors, and payment rails has become as strategic as territory.",
+   "related_slugs": [
+    "weaponized_interdependence",
+    "economic_statecraft",
+    "mercantilism",
+    "strategic_competition"
+   ],
+   "match_terms": [
+    "geoeconomics",
+    "supply chain leverage",
+    "critical minerals",
+    "economic power projection",
+    "grammar of commerce"
+   ]
+  },
+  {
+   "slug": "weaponized_interdependence",
+   "name": "Weaponized Interdependence",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Political Economy",
+   "era": "Contemporary",
+   "classic_thinker": "Farrell & Newman; networks as chokepoints",
+   "definition": "States that sit at the hubs of asymmetric economic networks can weaponize them, gaining a 'panopticon effect' (surveillance) and 'chokepoint effect' (denial of access). Interdependence becomes a coercive instrument, not a pacifying one.",
+   "canonical_example": "Farrell and Newman's exemplar is US leverage over global finance via SWIFT and the dollar-clearing system, which Washington used to surveil and cut off targets after 9/11. Central network position converts connectivity into coercive power.",
+   "modern_echo": "The 2022 cutoff of major Russian banks from SWIFT and dollar reserves weaponized the financial network exactly as the theory predicts—spurring China's CIPS and BRICS de-dollarization as chokepoint-evasion. US chip export controls similarly weaponize chokepoints over EUV lithography and advanced semiconductors.",
+   "related_slugs": [
+    "economic_statecraft",
+    "sanctions_theory",
+    "geoeconomics",
+    "networked_realism"
+   ],
+   "match_terms": [
+    "weaponized interdependence",
+    "chokepoint effect",
+    "panopticon effect",
+    "swift",
+    "network centrality"
+   ]
+  },
+  {
+   "slug": "clash_of_civilizations",
+   "name": "Clash of Civilizations",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Civilizational",
+   "era": "Modern",
+   "classic_thinker": "Huntington; fault-line conflict",
+   "definition": "Huntington's thesis that post-Cold War conflict would arise principally along the fault lines between great civilizations defined by culture and religion rather than ideology or economics. Identity and culture, not states alone, become the prime axis of conflict.",
+   "canonical_example": "Huntington pointed to the Balkan wars and Islamic-Western friction as harbingers of civilizational fault-line conflict. He grouped the world into Western, Sinic, Islamic, Orthodox and other civilizations destined to clash at their borders.",
+   "modern_echo": "Putin's framing of Russia as a distinct Orthodox-Eurasian civilization defending itself against a decadent West rationalizes the Ukraine war in civilizational terms. China's 'civilization-state' rhetoric and Xi's Global Civilization Initiative likewise repackage great-power rivalry as cultural-civilizational difference.",
+   "related_slugs": [
+    "constitutive_localization",
+    "strategic_competition",
+    "ontological_security",
+    "english_school_society"
+   ],
+   "match_terms": [
+    "clash of civilizations",
+    "fault-line conflict",
+    "civilization-state",
+    "cultural identity",
+    "civilizational difference"
+   ]
+  },
+  {
+   "slug": "constitutive_localization",
+   "name": "Constitutive Localization",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Civilizational",
+   "era": "Contemporary",
+   "classic_thinker": "Acharya; norms reshaped locally",
+   "definition": "Acharya's constructivist concept that foreign norms and ideas are not passively adopted but actively reframed and grafted onto local beliefs by regional actors. Diffusion is a two-way reconstruction, contesting any single universal order.",
+   "canonical_example": "Acharya showed how ASEAN reconstructed Western sovereignty and security norms into the distinctive 'ASEAN Way' of consensus and non-interference. Local agents act as norm-takers who refit imported ideas to indigenous cognitive priors.",
+   "modern_echo": "The push for a 'multiplex world' and BRICS' insistence on multipolarity reflect non-Western states localizing rather than accepting the liberal order wholesale. China's 'community of common destiny' and African Union mediation norms show foreign concepts grafted onto regional frames rather than adopted intact.",
+   "related_slugs": [
+    "clash_of_civilizations",
+    "liberal_international_order",
+    "finnemore_norms",
+    "postcolonial_ir"
+   ],
+   "match_terms": [
+    "constitutive localization",
+    "norm localization",
+    "asean way",
+    "multiplex world",
+    "local agency"
+   ]
+  },
+  {
+   "slug": "gray_zone",
+   "name": "Gray Zone Competition",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Contemporary",
+   "classic_thinker": "Coercion below the threshold of war",
+   "definition": "Coercive statecraft operating deliberately below the threshold of conventional armed conflict—ambiguous, incremental actions designed to achieve strategic gains while avoiding a clear casus belli. It exploits the seam between peace and war.",
+   "canonical_example": "Russia's 2014 seizure of Crimea using unmarked 'little green men' is the paradigmatic gray-zone operation—deniable forces creating facts on the ground below the war threshold. Ambiguity paralyzed a decisive Western response.",
+   "modern_echo": "China's maritime militia, coast-guard ramming, and island-building in the South China Sea steadily change facts without triggering war. Russia's Baltic cable-cutting and GPS jamming, plus Iran's proxy and tanker-seizure tactics, all exploit the gray zone.",
+   "related_slugs": [
+    "hybrid_warfare",
+    "strategic_competition",
+    "cyber_deterrence",
+    "security_dilemma"
+   ],
+   "match_terms": [
+    "gray zone",
+    "below the threshold",
+    "little green men",
+    "salami slicing",
+    "ambiguous coercion"
+   ]
+  },
+  {
+   "slug": "hybrid_warfare",
+   "name": "Hybrid Warfare / Gerasimov Doctrine",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Contemporary",
+   "classic_thinker": "Gerasimov; nonlinear blended means",
+   "definition": "The blended use of conventional force, irregular tactics, cyber operations, disinformation, and economic pressure in an integrated campaign. The so-called Gerasimov 'doctrine' emphasizes that nonmilitary means can outweigh weapons in modern conflict.",
+   "canonical_example": "Russia's 2014 Ukraine campaign fused special forces, local proxies, cyberattacks, energy coercion, and a saturating disinformation effort. The blend blurred the line between war and peace and complicated attribution and response.",
+   "modern_echo": "Russia's 2022-2025 war pairs kinetic operations with election interference, energy blackmail, and information operations across Europe. China's 'three warfares' (psychological, media, legal) and Iran's proxy-plus-cyber model show hybrid blending becoming the competitive norm.",
+   "related_slugs": [
+    "gray_zone",
+    "cyber_deterrence",
+    "strategic_competition",
+    "networked_realism"
+   ],
+   "match_terms": [
+    "hybrid warfare",
+    "gerasimov doctrine",
+    "disinformation",
+    "nonlinear war",
+    "information operations"
+   ]
+  },
+  {
+   "slug": "strategic_competition",
+   "name": "Strategic Competition / Hundred-Year Marathon",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Contemporary",
+   "classic_thinker": "Pillsbury; patient revisionist strategy",
+   "definition": "A long-horizon framing of US-China rivalry as sustained, whole-of-society competition across military, economic, technological, and ideological domains. Pillsbury argues Beijing pursues a patient, deceptive marathon to displace US primacy.",
+   "canonical_example": "Pillsbury's 'Hundred-Year Marathon' reinterprets decades of Chinese engagement as a long-game strategy of accumulating relative power while reassuring rivals. It reframed China not as a status-quo stakeholder but as a patient revisionist.",
+   "modern_echo": "US National Security Strategies since 2017 formally designate China the 'pacing challenge' in a generational strategic competition over chips, AI, and standards. Beijing's Belt and Road, military modernization, and tech self-sufficiency drives embody the marathon framing.",
+   "related_slugs": [
+    "thucydides_trap",
+    "power_transition",
+    "long_cycle_theory",
+    "geoeconomics"
+   ],
+   "match_terms": [
+    "strategic competition",
+    "hundred-year marathon",
+    "pacing challenge",
+    "patient revisionist",
+    "whole-of-society"
+   ]
+  },
+  {
+   "slug": "networked_realism",
+   "name": "Networked Realism",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Contemporary",
+   "classic_thinker": "Power through network position",
+   "definition": "A realist update holding that in a connected age, state power derives from controlling and exploiting positions within global networks—finance, data, supply chains, alliances—rather than from territory or raw military mass alone. Connectivity itself becomes contested terrain.",
+   "canonical_example": "The concept extends classical balancing into network space: hub states convert centrality in trade, technology, and financial systems into leverage. It blends realist power logic with the network analysis of weaponized interdependence.",
+   "modern_echo": "US efforts to build 'small yard, high fence' tech-alliance networks (Chip 4, AUKUS, the Quad) while denying China network access exemplify networked realism. China's parallel CIPS, BeiDou, and BRI networks aim to build rival hubs insulated from US chokepoints.",
+   "related_slugs": [
+    "weaponized_interdependence",
+    "cyber_deterrence",
+    "geoeconomics",
+    "balance_of_power"
+   ],
+   "match_terms": [
+    "networked realism",
+    "network power",
+    "alliance networks",
+    "small yard high fence",
+    "network position"
+   ]
+  },
+  {
+   "slug": "cyber_deterrence",
+   "name": "Cyber Deterrence",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Contemporary",
+   "classic_thinker": "Nye; deterrence in the fifth domain",
+   "definition": "The adaptation of deterrence theory to cyberspace, grappling with attribution problems, blurred offense-defense lines, and the weakness of retaliation threats. Concepts include deterrence by denial, entanglement, and 'persistent engagement' or defending forward.",
+   "canonical_example": "Cold-War nuclear deterrence rested on clear attribution and credible retaliation—both eroded in cyberspace, where attacks are deniable and reversible. Nye argued cyber deterrence must lean on denial, norms, and entanglement rather than punishment alone.",
+   "modern_echo": "US Cyber Command's 'defend forward' and 'persistent engagement' against Russian and Chinese intrusions reflect deterrence-by-denial in practice. The SolarWinds hack, Colonial Pipeline ransomware, and Volt Typhoon pre-positioning in US infrastructure expose how thin cross-domain deterrence remains.",
+   "related_slugs": [
+    "deterrence_theory",
+    "hybrid_warfare",
+    "gray_zone",
+    "networked_realism"
+   ],
+   "match_terms": [
+    "cyber deterrence",
+    "attribution problem",
+    "defend forward",
+    "persistent engagement",
+    "deterrence by denial"
+   ]
+  },
+  {
+   "slug": "long_cycle_theory",
+   "name": "Long Cycle Theory",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Modern",
+   "classic_thinker": "Modelski; century-long leadership cycles",
+   "definition": "Modelski's theory that global politics moves through roughly century-long cycles in which a sea/world power rises, provides order, declines, and is challenged and succeeded after a bout of global war. Leadership, not anarchy alone, structures the system over time.",
+   "canonical_example": "Modelski traced cycles through Portugal, the Dutch Republic, Britain (twice), and the United States, each tied to leadership in the era's dominant economic sectors. Each cycle ends in a contest over succession and a new order-providing power.",
+   "modern_echo": "Long-cycle analysts read US-China rivalry as a late-cycle succession struggle, with China contesting leadership in AI, green tech, and naval reach. BRICS de-dollarization and competing development-finance institutions are read as challenger moves against the incumbent's ordering role.",
+   "related_slugs": [
+    "hegemonic_stability",
+    "power_transition",
+    "strategic_competition",
+    "polarity"
+   ],
+   "match_terms": [
+    "long cycle",
+    "leadership cycle",
+    "world power",
+    "sea power",
+    "succession struggle"
+   ]
+  },
+  {
+   "slug": "polarity",
+   "name": "Polarity (Uni/Bi/Multipolarity)",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Modern",
+   "classic_thinker": "Waltz & Wohlforth; counting great powers",
+   "definition": "The distribution of capabilities across the system's great powers—unipolar, bipolar, or multipolar—and its consequences for stability, alliance behavior, and war. Structure, defined by polarity, shapes outcomes independent of unit intentions.",
+   "canonical_example": "Waltz argued Cold-War bipolarity was unusually stable because two superpowers could manage rivalry without alliance miscalculation. Wohlforth later contended post-1991 unipolarity was durable and peaceful given the US's commanding capability lead.",
+   "modern_echo": "Debate now rages over whether the system is sliding into US-China bipolarity, a 'multipolar moment' championed by BRICS and Russia, or 'multiplexity.' China's rise, Russia's revisionism, and middle-power hedging by India and the Gulf states drive contested polarity claims.",
+   "related_slugs": [
+    "balance_of_power",
+    "power_transition",
+    "long_cycle_theory",
+    "waltz_neorealism"
+   ],
+   "match_terms": [
+    "polarity",
+    "unipolarity",
+    "bipolarity",
+    "multipolarity",
+    "distribution of capabilities"
+   ]
+  },
+  {
+   "slug": "liberal_international_order",
+   "name": "Liberal International Order Debates",
+   "school": "Modern / Geoeconomic",
+   "sub_school": "Strategic Competition",
+   "era": "Contemporary",
+   "classic_thinker": "Ikenberry; rules-based order contested",
+   "definition": "Debates over the origins, durability, and crisis of the US-led post-1945 order of multilateral institutions, open markets, and liberal norms. At issue is whether it is unraveling under revisionist pressure, internal backlash, and hegemonic retrenchment.",
+   "canonical_example": "Ikenberry characterized the order as 'liberal hegemony'—rule-based, institutionally binding, and relatively open—anchored by US power and the Bretton Woods institutions. Its defenders credited it with decades of great-power peace and prosperity.",
+   "modern_echo": "Russia's 2022 invasion, China's alternative institutions (AIIB, BRICS+), and US 'America First' retrenchment and tariff wars all strain the order simultaneously. Debates rage over whether it is dying, fragmenting into blocs, or being reformed into a contested, multipolar settlement.",
+   "related_slugs": [
+    "keohane_after_hegemony",
+    "hegemonic_stability",
+    "constitutive_localization",
+    "strategic_competition"
+   ],
+   "match_terms": [
+    "liberal international order",
+    "rules-based order",
+    "liberal hegemony",
+    "multilateral institutions",
+    "order in crisis"
+   ]
+  }
+ ]
+}

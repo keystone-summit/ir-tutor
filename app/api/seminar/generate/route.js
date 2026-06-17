@@ -17,14 +17,29 @@ import { claudeJSON } from "../../../../lib/anthropic";
 import { getSeminarWeek } from "../../../../lib/seminarWeek";
 import { REGION_LABEL } from "../../../../lib/seminarFeeds";
 
+// Phase 3.5 — the 5-region weekly quota. The selector must spread the five
+// events across these buckets where the week's news supports it, and report any
+// bucket it could NOT fill as "underweighted" rather than skewing toward one region.
+const REGION_BUCKETS = ["middle_east", "asia", "americas", "europe_russia", "brics_trade"];
+const BUCKET_DESC =
+  "middle_east (Middle East: Iran, Israel, Gulf, Levant), " +
+  "asia (Asia: China, India, Korea, Japan, SE Asia), " +
+  "americas (Americas: US domestic-foreign, Latin America, Mexico/cartels, Venezuela), " +
+  "europe_russia (Europe & Russia: EU, NATO, Ukraine, Russia), " +
+  "brics_trade (BRICS / global-trade & geoeconomics: de-dollarization, sanctions, SWIFT, supply chains, BRICS bloc)";
+
 const SELECT_SYSTEM =
   "You are a senior foreign-policy analyst building a weekly US foreign-policy " +
-  "seminar. From a list of news items drawn from many national presses, identify " +
-  "the FIVE most consequential foreign-policy events of the week for US strategic " +
-  "interests. Prefer hard geopolitics (war, diplomacy, deterrence, sanctions, " +
-  "energy, alliances, nuclear) over domestic politics or soft news. Cluster " +
-  "duplicate coverage of the same event into one. Rank 1 = most consequential. " +
-  "Return STRICT JSON only, no prose.";
+  "seminar with GLOBAL coverage. From a list of news items drawn from many national " +
+  "presses, identify the FIVE most consequential foreign-policy events of the week " +
+  "for US strategic interests. Prefer hard geopolitics (war, diplomacy, deterrence, " +
+  "sanctions, energy, alliances, nuclear, narco-state security) over domestic politics " +
+  "or soft news. CRITICAL: deliberately spread the five events across world regions — " +
+  "aim to cover Middle East, Asia, the Americas, Europe/Russia, and a BRICS/global-trade " +
+  "story — rather than letting one region dominate. Only repeat a region if a second " +
+  "story there is genuinely more consequential than the best available story in an " +
+  "uncovered region. Cluster duplicate coverage of the same event into one. " +
+  "Rank 1 = most consequential. Return STRICT JSON only, no prose.";
 
 const DEEP_SYSTEM =
   "You are a senior foreign-policy analyst and IR theorist writing the marquee " +
@@ -81,10 +96,16 @@ export async function POST(req) {
       user:
         `Week of ${weekStart} to ${weekEnd}. Here are this week's candidate news items, each with an index:\n\n` +
         list +
-        `\n\nReturn JSON of this exact shape:\n` +
+        `\n\nRegion buckets (assign each event to exactly ONE): ${BUCKET_DESC}.\n` +
+        `Spread the five events across as many distinct buckets as the news supports. If a bucket ` +
+        `genuinely has no qualifying story this week, leave it uncovered and name it in ` +
+        `"underweighted_regions" — do NOT invent or stretch a weak story to fill it.\n\n` +
+        `Return JSON of this exact shape:\n` +
         `{"events":[{"rank":1,"source_index":<int from the list>,"title":"<concise event title>",` +
         `"summary":"<2-3 sentence neutral summary of the EVENT (not the headline)>",` +
-        `"reasoning":"<one sentence on why it is consequential for US interests>"}, ... exactly 5 items ...]}`,
+        `"reasoning":"<one sentence on why it is consequential for US interests>",` +
+        `"region_bucket":"<one of: ${REGION_BUCKETS.join(" | ")}>"}, ... exactly 5 items ...],` +
+        `"underweighted_regions":["<bucket key the week's news could not fill>", ...]}`,
     });
   } catch (e) {
     return Response.json({ ok: false, error: "Selection failed.", detail: String(e.message) }, { status: 502 });
@@ -97,11 +118,13 @@ export async function POST(req) {
   // Resolve each event's source row from its index.
   const resolved = events.map((ev, idx) => {
     const ci = Number.isInteger(ev.source_index) ? candidates[ev.source_index] : null;
+    const bucket = REGION_BUCKETS.includes(ev.region_bucket) ? ev.region_bucket : null;
     return {
       rank: Number.isInteger(ev.rank) ? ev.rank : idx + 1,
       title: String(ev.title || (ci && ci.title) || "Untitled event").slice(0, 400),
       summary: ev.summary ? String(ev.summary) : null,
       reasoning: ev.reasoning ? String(ev.reasoning) : null,
+      region_bucket: bucket,
       source_url: ci ? ci.url : null,
       source_name: ci ? ci.source : null,
       source_region: ci ? regionLabel(ci.region_tag) : null,
@@ -112,6 +135,18 @@ export async function POST(req) {
   resolved.sort((a, b) => a.rank - b.rank);
   resolved.forEach((e, i) => (e.rank = i + 1));
   const top = resolved[0];
+
+  // Phase 3.5 — tally region coverage and the buckets the week could not fill.
+  const regionCoverage = {};
+  for (const e of resolved) {
+    if (e.region_bucket) regionCoverage[e.region_bucket] = (regionCoverage[e.region_bucket] || 0) + 1;
+  }
+  const modelUnder = Array.isArray(selection && selection.underweighted_regions)
+    ? selection.underweighted_regions.filter((b) => REGION_BUCKETS.includes(b))
+    : [];
+  const underweighted = Array.from(
+    new Set([...modelUnder, ...REGION_BUCKETS.filter((b) => !regionCoverage[b])])
+  );
 
   // 3) Upsert the edition (draft) for this week.
   let editionId;
@@ -135,9 +170,9 @@ export async function POST(req) {
     for (const e of resolved) {
       await query(
         `insert into public.seminar_events
-           (seminar_id, rank, title, summary, reasoning, source_url, source_name, source_region, raw_html)
-         values ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-        [editionId, e.rank, e.title, e.summary, e.reasoning, e.source_url, e.source_name, e.source_region, e.raw_html]
+           (seminar_id, rank, title, summary, reasoning, source_url, source_name, source_region, raw_html, region_bucket)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+        [editionId, e.rank, e.title, e.summary, e.reasoning, e.source_url, e.source_name, e.source_region, e.raw_html, e.region_bucket]
       );
     }
   } catch (e) {
@@ -226,9 +261,10 @@ export async function POST(req) {
     const title = `Week of ${weekStart} — ${top.title}`.slice(0, 300);
     await query(
       `update public.seminar_editions
-          set title = $2, status = 'published', published_at = now(), updated_at = now()
+          set title = $2, status = 'published', published_at = now(), updated_at = now(),
+              region_coverage = $3::jsonb, underweighted_regions = $4::text[]
         where id = $1`,
-      [editionId, title]
+      [editionId, title, JSON.stringify(regionCoverage), underweighted]
     );
   } catch (e) {
     return Response.json({ ok: false, error: "Publish step failed.", detail: String(e.message), edition_id: editionId }, { status: 500 });
@@ -239,9 +275,11 @@ export async function POST(req) {
     edition_id: editionId,
     week_start: weekStart,
     week_end: weekEnd,
-    events: resolved.map((e) => ({ rank: e.rank, title: e.title, source: e.source_name })),
+    events: resolved.map((e) => ({ rank: e.rank, title: e.title, source: e.source_name, region_bucket: e.region_bucket })),
     deep_dive_event: top.title,
     parties: parties.length,
+    region_coverage: regionCoverage,
+    underweighted_regions: underweighted,
   });
 }
 

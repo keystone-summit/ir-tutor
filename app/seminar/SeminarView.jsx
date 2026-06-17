@@ -17,11 +17,22 @@ import {
   Globe, ArrowLeft, BookmarkPlus, Check, ExternalLink, Eye, Scale,
   Layers as LayersIcon, Search, Building2, Users, MessageSquare, Loader2,
   X, Clock, TrendingUp, ThumbsUp, Pause, Network, Send, ChevronRight, Swords,
-  History, Library,
+  History, Library, BookMarked, AlertTriangle,
 } from "lucide-react";
 import { authFetch } from "../../lib/clientAuth";
 import StudySaves from "../../components/StudySaves";
 import PatternModal, { patternTypeLabel } from "../../components/PatternModal";
+import TheoryDrawer from "../../components/TheoryDrawer";
+
+// Quota buckets surfaced in the Weekly Briefing region-coverage strip.
+const REGION_BUCKETS = [
+  ["middle_east", "Middle East"],
+  ["asia", "Asia"],
+  ["americas", "Americas"],
+  ["europe_russia", "Europe / Russia"],
+  ["brics_trade", "BRICS-trade"],
+];
+const REGION_BUCKET_LABEL = Object.fromEntries(REGION_BUCKETS);
 
 const LAYER_DEFS = [
   ["world_order", "Layer 1 · World Order", "How this reshapes the global system & great-power balance."],
@@ -85,38 +96,109 @@ export async function postModuleSave({ wk, summary, transcript, title }) {
   return r.json().catch(() => ({ ok: false }));
 }
 
-// Render prose, wrapping any named party in a click-in button (opens drawer).
-function PartyText({ text, parties, onParty }) {
+// Render prose, wrapping (a) any named party in a click-in dossier button and
+// (b) any known IR-theory term in a theory-tag button (opens the theory drawer).
+// Both sets are matched in one pass; longer strings win, and theory terms are
+// tagged only on their first occurrence per block to avoid clutter. Theory
+// matching is word-bounded + case-insensitive; party names keep priority.
+function AnnotatedText({ text, parties, theoryTerms, onParty, onTheory }) {
   const nodes = useMemo(() => {
     const s = String(text || "");
     if (!s) return [s];
-    const names = (parties || [])
-      .map((p) => (p && p.name ? String(p.name) : ""))
-      .filter(Boolean)
-      .sort((a, b) => b.length - a.length);
-    if (!names.length) return [s];
-    const esc = names.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-    const re = new RegExp(`(${esc.join("|")})`, "g");
+    const tokens = [];
+    (parties || []).forEach((p) => {
+      if (p && p.name) tokens.push({ str: String(p.name), kind: "party", payload: String(p.name) });
+    });
+    (theoryTerms || []).forEach((t) => {
+      if (t && t.term) tokens.push({ str: String(t.term), kind: "theory", payload: t.slug });
+    });
+    if (!tokens.length) return [s];
+    // Longer strings first so e.g. "balance of threat" beats "balance".
+    tokens.sort((a, b) => b.str.length - a.str.length);
+    const esc = tokens.map((t) => t.str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    // Word-bounded so "swift" doesn't match inside "swiftly".
+    const re = new RegExp(`\\b(${esc.join("|")})\\b`, "gi");
+    const lut = new Map(); // lowercased str -> token (first/longest wins)
+    tokens.forEach((t) => { const k = t.str.toLowerCase(); if (!lut.has(k)) lut.set(k, t); });
+    const usedTheory = new Set();
     const parts = s.split(re);
     return parts.map((part, i) => {
-      const match = names.find((n) => n === part);
-      if (match) {
+      const tok = lut.get(String(part).toLowerCase());
+      if (tok && tok.kind === "party") {
         return (
-          <button
-            key={i}
-            type="button"
-            className="party-link"
-            title={`${part} — open dossier`}
-            onClick={() => onParty(match)}
-          >
+          <button key={i} type="button" className="party-link"
+            title={`${part} — open dossier`} onClick={() => onParty(tok.payload)}>
+            {part}
+          </button>
+        );
+      }
+      if (tok && tok.kind === "theory" && onTheory) {
+        if (usedTheory.has(tok.payload)) return <React.Fragment key={i}>{part}</React.Fragment>;
+        usedTheory.add(tok.payload);
+        return (
+          <button key={i} type="button" className="theory-tag" data-theory-id={tok.payload}
+            title={`${part} — open theory`} onClick={() => onTheory(tok.payload)}>
             {part}
           </button>
         );
       }
       return <React.Fragment key={i}>{part}</React.Fragment>;
     });
-  }, [text, parties, onParty]);
+  }, [text, parties, theoryTerms, onParty, onTheory]);
   return <>{nodes}</>;
+}
+
+// Phase 3.5 — the 5-region quota coverage strip under the Weekly Briefing.
+// Reads the edition's stored region_coverage / underweighted_regions if present,
+// otherwise derives coverage live from the events' region_bucket tags. Shows one
+// pill per bucket (filled vs. underweighted) so the reader can see the week's
+// global balance at a glance.
+function RegionCoverage({ edition, events }) {
+  const coverage = useMemo(() => {
+    const stored = edition && edition.region_coverage;
+    if (stored && typeof stored === "object") return stored;
+    const c = {};
+    (events || []).forEach((e) => {
+      if (e && e.region_bucket) c[e.region_bucket] = (c[e.region_bucket] || 0) + 1;
+    });
+    return c;
+  }, [edition, events]);
+
+  const under = (edition && Array.isArray(edition.underweighted_regions))
+    ? new Set(edition.underweighted_regions)
+    : new Set(REGION_BUCKETS.filter(([k]) => !coverage[k]).map(([k]) => k));
+
+  // Nothing to show until events carry buckets (pre-Phase-3.5 editions).
+  const anyTagged = REGION_BUCKETS.some(([k]) => coverage[k]);
+  if (!anyTagged) return null;
+
+  const filled = REGION_BUCKETS.filter(([k]) => coverage[k]).length;
+
+  return (
+    <div className="sem-regcov">
+      <div className="sem-regcov-head">
+        <Globe size={13} /> Regional balance
+        <span className="sem-regcov-score">{filled}/5 regions</span>
+      </div>
+      <div className="sem-regcov-pills">
+        {REGION_BUCKETS.map(([k, label]) => {
+          const n = coverage[k] || 0;
+          const isUnder = under.has(k) || n === 0;
+          return (
+            <span key={k} className={`sem-regcov-pill rb-${k} ${isUnder ? "under" : "filled"}`}>
+              <span className="sem-regcov-dot" />
+              {label}{n > 0 ? ` · ${n}` : ""}
+            </span>
+          );
+        })}
+      </div>
+      {[...under].length > 0 && (
+        <div className="sem-regcov-warn">
+          <AlertTriangle size={12} /> Underweighted this week: {[...under].map((k) => REGION_BUCKET_LABEL[k] || k).join(", ")} — limited qualifying coverage in the source feeds.
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function SeminarView() {
@@ -127,6 +209,8 @@ export default function SeminarView() {
   const [savedCount, setSavedCount] = useState(0);
   const [activeParty, setActiveParty] = useState("");
   const [activePattern, setActivePattern] = useState(null);  // Phase 3b pattern modal
+  const [theories, setTheories] = useState([]);              // Phase 3.5 theory library
+  const [activeTheory, setActiveTheory] = useState(null);    // slug of theory open in drawer
   const [studyRefresh, setStudyRefresh] = useState(0);  // bump to reload Study Saves
 
   const edition = data && data.edition;
@@ -140,6 +224,29 @@ export default function SeminarView() {
   const echoes = (data && data.pattern_echoes) || [];
   const wk = edition ? weekKeyOf(edition.week_start_date) : 0;
   const seminarId = edition ? edition.id : null;
+
+  // Phase 3.5 — flatten the theory library into an inline-scan lexicon
+  // (term -> slug, plus each theory's own name) and a slug index for the drawer.
+  const theoryBySlug = useMemo(() => {
+    const m = new Map();
+    theories.forEach((t) => m.set(t.slug, t));
+    return m;
+  }, [theories]);
+  const theoryTerms = useMemo(() => {
+    const out = [];
+    const seen = new Set();
+    theories.forEach((t) => {
+      const terms = [t.name, ...((t.match_terms) || [])];
+      terms.forEach((term) => {
+        const k = String(term || "").trim().toLowerCase();
+        if (k.length < 4 || seen.has(k)) return;   // skip tiny/ambiguous terms
+        seen.add(k);
+        out.push({ term: String(term), slug: t.slug });
+      });
+    });
+    return out;
+  }, [theories]);
+  const activeTheoryObj = activeTheory ? theoryBySlug.get(activeTheory) : null;
 
   const onModuleSaved = useCallback(() => {
     setStudyRefresh((x) => x + 1);
@@ -157,6 +264,20 @@ export default function SeminarView() {
         else setData(j);
       } catch { if (on) setErr("Network error."); }
       finally { if (on) setLoading(false); }
+    })();
+    return () => { on = false; };
+  }, []);
+
+  // Phase 3.5 — load the IR theory library once so prose can be tagged inline
+  // and the drawer can render from already-loaded entries (no per-click fetch).
+  useEffect(() => {
+    let on = true;
+    (async () => {
+      try {
+        const r = await authFetch("/api/seminar/theories");
+        const j = await r.json();
+        if (on && j.ok && Array.isArray(j.theories)) setTheories(j.theories);
+      } catch { /* inline tags simply won't render — non-fatal */ }
     })();
     return () => { on = false; };
   }, []);
@@ -288,6 +409,15 @@ export default function SeminarView() {
         />
       )}
 
+      {activeTheoryObj && (
+        <TheoryDrawer
+          theory={activeTheoryObj}
+          onClose={() => setActiveTheory(null)}
+          onNavigate={(slug) => { if (theoryBySlug.has(slug)) setActiveTheory(slug); }}
+          onSaved={onModuleSaved}
+        />
+      )}
+
       <header className="sem-head">
         <div className="sem-kicker"><Globe size={15} /> Foreign Policy · Implications Seminar</div>
         <h1>{edition.title}</h1>
@@ -300,10 +430,20 @@ export default function SeminarView() {
           <Users size={13} /> Underlined names open a 5-panel dossier — history, decoded position, upside/downside, and a faction sub-map.
         </div>
       )}
+      {theoryTerms.length > 0 && (
+        <div className="sem-partyhint sem-theoryhint">
+          <BookMarked size={13} /> Highlighted <span className="theory-tag theory-tag-demo">theory terms</span> open the{" "}
+          <a href="/seminar/theories" className="sem-cf-link">IR Theory Library</a> — definition, canonical case, and modern echo.
+        </div>
+      )}
 
       {/* 1 — Weekly Briefing */}
       <section id="briefing" className="sem-sec">
         <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top 5 Events</h2>
+
+        {/* Phase 3.5 — 5-region quota coverage strip */}
+        <RegionCoverage edition={edition} events={events} />
+
         <ol className="sem-events">
           {events.map((e) => (
             <li key={e.id || e.rank} className={`sem-event ${e.rank === 1 ? "is-lead" : ""}`}>
@@ -313,6 +453,9 @@ export default function SeminarView() {
                 {e.summary && <p className="sem-summary">{e.summary}</p>}
                 {e.reasoning && <p className="sem-why"><strong>Why it matters:</strong> {e.reasoning}</p>}
                 <div className="sem-srcline">
+                  {e.region_bucket && REGION_BUCKET_LABEL[e.region_bucket] && (
+                    <span className={`sem-regchip rb-${e.region_bucket}`}>{REGION_BUCKET_LABEL[e.region_bucket]}</span>
+                  )}
                   {e.source_region && <span className="sem-chip">{e.source_region}</span>}
                   {e.source_name && <span className="sem-src">{e.source_name}</span>}
                   {e.source_url && (
@@ -338,7 +481,7 @@ export default function SeminarView() {
               <div key={k} className="sem-layer">
                 <div className="sem-layer-lbl">{lbl}</div>
                 <div className="sem-layer-hint">{hint}</div>
-                <p><PartyText text={layers[k]} parties={parties} onParty={setActiveParty} /></p>
+                <p><AnnotatedText text={layers[k]} parties={parties} theoryTerms={theoryTerms} onParty={setActiveParty} onTheory={setActiveTheory} /></p>
               </div>
             ))}
           </div>
@@ -353,7 +496,7 @@ export default function SeminarView() {
                     <SaveBtn k={`lens_${k}`} label="Save lens"
                       content={`Lens — ${lbl}\n\n${lenses[k]}\n\n(From: ${edition.title})`} />
                   </div>
-                  <p><PartyText text={lenses[k]} parties={parties} onParty={setActiveParty} /></p>
+                  <p><AnnotatedText text={lenses[k]} parties={parties} theoryTerms={theoryTerms} onParty={setActiveParty} onTheory={setActiveTheory} /></p>
                 </div>
               ) : null
             ))}
@@ -374,7 +517,7 @@ export default function SeminarView() {
                     <SaveBtn k={`gap_${k}`} label="Save gap"
                       content={`Gap — ${lbl}\n\n${gaps[k]}\n\n(From: ${edition.title})`} />
                   </div>
-                  <p><PartyText text={gaps[k]} parties={parties} onParty={setActiveParty} /></p>
+                  <p><AnnotatedText text={gaps[k]} parties={parties} theoryTerms={theoryTerms} onParty={setActiveParty} onTheory={setActiveTheory} /></p>
                 </div>
               ) : null
             ))}
@@ -391,7 +534,7 @@ export default function SeminarView() {
               implications[k] ? (
                 <div key={k} className="sem-imp-col">
                   <div className="sem-imp-lbl">{lbl}</div>
-                  <p><PartyText text={implications[k]} parties={parties} onParty={setActiveParty} /></p>
+                  <p><AnnotatedText text={implications[k]} parties={parties} theoryTerms={theoryTerms} onParty={setActiveParty} onTheory={setActiveTheory} /></p>
                 </div>
               ) : null
             ))}
@@ -993,6 +1136,7 @@ function TopBar({ savedCount }) {
       <a href="/" className="sem-back"><ArrowLeft size={15} /> Portal</a>
       <a href="/seminar/graph" className="sem-archlink"><Network size={13} /> Actor Graph</a>
       <a href="/seminar/patterns" className="sem-archlink"><Library size={13} /> Patterns</a>
+      <a href="/seminar/theories" className="sem-archlink"><BookMarked size={13} /> Theories</a>
       <a href="/seminar/archive" className="sem-archlink">Archive</a>
       <span className="sem-savecount">{savedCount > 0 ? `${savedCount} saved this week` : ""}</span>
     </div>

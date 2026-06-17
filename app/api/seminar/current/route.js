@@ -15,37 +15,52 @@ export async function GET(req) {
   const idParam = parseInt(searchParams.get("id"), 10);
 
   try {
-    let edition;
-    if (Number.isInteger(idParam)) {
+    // region_coverage / underweighted_regions are Phase 3.5 columns; select
+    // them defensively so a pre-migration DB still returns the edition.
+    const EDITION_COLS =
+      "id, week_start_date, week_end_date, title, status, published_at, region_coverage, underweighted_regions";
+    const EDITION_COLS_FALLBACK =
+      "id, week_start_date, week_end_date, title, status, published_at";
+
+    async function loadEdition(cols) {
+      if (Number.isInteger(idParam)) {
+        const r = await query(`select ${cols} from public.seminar_editions where id = $1`, [idParam]);
+        return r.rows[0];
+      }
       const r = await query(
-        `select id, week_start_date, week_end_date, title, status, published_at
-           from public.seminar_editions where id = $1`,
-        [idParam]
-      );
-      edition = r.rows[0];
-    } else {
-      const r = await query(
-        `select id, week_start_date, week_end_date, title, status, published_at
-           from public.seminar_editions
-          where status = 'published'
-          order by week_start_date desc
-          limit 1`,
+        `select ${cols} from public.seminar_editions
+          where status = 'published' order by week_start_date desc limit 1`,
         []
       );
-      edition = r.rows[0];
+      return r.rows[0];
+    }
+
+    let edition;
+    try {
+      edition = await loadEdition(EDITION_COLS);
+    } catch {
+      edition = await loadEdition(EDITION_COLS_FALLBACK);
     }
 
     if (!edition) {
       return Response.json({ ok: true, edition: null, events: [], deep_dive: null });
     }
 
-    const ev = await query(
-      `select id, rank, title, summary, reasoning, source_url, source_name, source_region
-         from public.seminar_events
-        where seminar_id = $1
-        order by rank asc`,
-      [edition.id]
-    );
+    // region_bucket is a Phase 3.5 column; fall back if the migration isn't applied.
+    let ev;
+    try {
+      ev = await query(
+        `select id, rank, title, summary, reasoning, source_url, source_name, source_region, region_bucket
+           from public.seminar_events where seminar_id = $1 order by rank asc`,
+        [edition.id]
+      );
+    } catch {
+      ev = await query(
+        `select id, rank, title, summary, reasoning, source_url, source_name, source_region
+           from public.seminar_events where seminar_id = $1 order by rank asc`,
+        [edition.id]
+      );
+    }
     const dd = await query(
       `select event_id, layers, lenses, gaps, implications, what_to_watch
          from public.seminar_deep_dive

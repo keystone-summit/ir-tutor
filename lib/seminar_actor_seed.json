@@ -1,0 +1,71 @@
+{
+  "actors": [
+    { "name": "Xi Jinping", "type": "individual", "region": "China" },
+    { "name": "Li Qiang", "type": "individual", "region": "China" },
+    { "name": "Wang Yi", "type": "individual", "region": "China" },
+    { "name": "People's Liberation Army (PLA)", "type": "institution", "region": "China" },
+    { "name": "Ministry of State Security (MSS)", "type": "institution", "region": "China" },
+
+    { "name": "Narendra Modi", "type": "individual", "region": "India" },
+    { "name": "Luiz Inácio Lula da Silva", "type": "individual", "region": "Brazil" },
+    { "name": "Cyril Ramaphosa", "type": "individual", "region": "South Africa" },
+    { "name": "Mohammed bin Salman (MBS)", "type": "individual", "region": "Saudi Arabia" },
+    { "name": "Mohammed bin Zayed (MBZ)", "type": "individual", "region": "United Arab Emirates" },
+
+    { "name": "S. Jaishankar", "type": "individual", "region": "India" },
+    { "name": "Reserve Bank of India (RBI)", "type": "institution", "region": "India" },
+
+    { "name": "Vladimir Putin", "type": "individual", "region": "Russia" },
+    { "name": "Sergei Lavrov", "type": "individual", "region": "Russia" },
+    { "name": "Wagner Group", "type": "armed_group", "region": "Russia" },
+
+    { "name": "Sinaloa Cartel", "type": "armed_group", "region": "Mexico" },
+    { "name": "Los Chapitos", "type": "armed_group", "region": "Mexico" },
+    { "name": "El Mayo Faction", "type": "armed_group", "region": "Mexico" },
+    { "name": "Jalisco New Generation Cartel (CJNG)", "type": "armed_group", "region": "Mexico" },
+    { "name": "El Mencho", "type": "individual", "region": "Mexico" },
+
+    { "name": "Nicolás Maduro", "type": "individual", "region": "Venezuela" },
+    { "name": "Tren de Aragua", "type": "armed_group", "region": "Venezuela" },
+    { "name": "Venezuelan Armed Forces (FANB)", "type": "institution", "region": "Venezuela" },
+
+    { "name": "JIATF-Central (JIATF-CC)", "type": "institution", "region": "Americas" }
+  ],
+  "relations": [
+    { "from": "Xi Jinping", "to": "Vladimir Putin", "relation_type": "allies", "evidence": "Beijing-Moscow 'no limits' strategic partnership anchoring the anti-Western axis." },
+    { "from": "Xi Jinping", "to": "Li Qiang", "relation_type": "employs", "evidence": "Li Qiang serves as Premier under Xi, running the State Council economy." },
+    { "from": "Xi Jinping", "to": "Wang Yi", "relation_type": "employs", "evidence": "Wang Yi directs PRC foreign policy as Xi's top diplomat." },
+    { "from": "Xi Jinping", "to": "People's Liberation Army (PLA)", "relation_type": "professional", "evidence": "Xi chairs the Central Military Commission, commanding the PLA." },
+    { "from": "Xi Jinping", "to": "Ministry of State Security (MSS)", "relation_type": "professional", "evidence": "The MSS is the party-state's lead civilian intelligence service under Xi." },
+
+    { "from": "Xi Jinping", "to": "Narendra Modi", "relation_type": "aligned_with", "evidence": "Fellow BRICS principals despite a tense China-India border rivalry." },
+    { "from": "Xi Jinping", "to": "Luiz Inácio Lula da Silva", "relation_type": "aligned_with", "evidence": "BRICS partners pushing a multipolar, de-dollarization agenda." },
+    { "from": "Xi Jinping", "to": "Cyril Ramaphosa", "relation_type": "aligned_with", "evidence": "BRICS partners; China is South Africa's largest trade partner." },
+    { "from": "Xi Jinping", "to": "Mohammed bin Salman (MBS)", "relation_type": "aligned_with", "evidence": "Saudi-China energy and BRICS+ ties deepening as Riyadh hedges from Washington." },
+
+    { "from": "Mohammed bin Salman (MBS)", "to": "Mohammed bin Zayed (MBZ)", "relation_type": "aligned_with", "evidence": "Gulf heavyweights coordinating OPEC+ output and Abraham-Accords-era posture." },
+    { "from": "Mohammed bin Salman (MBS)", "to": "Vladimir Putin", "relation_type": "aligned_with", "evidence": "OPEC+ oil-output coordination between Riyadh and Moscow." },
+    { "from": "Narendra Modi", "to": "Vladimir Putin", "relation_type": "aligned_with", "evidence": "India's discounted-oil purchases and SWIFT-alternative hedging keep Delhi-Moscow ties warm." },
+    { "from": "Narendra Modi", "to": "S. Jaishankar", "relation_type": "employs", "evidence": "Jaishankar is Modi's External Affairs Minister and strategic-autonomy architect." },
+    { "from": "S. Jaishankar", "to": "Reserve Bank of India (RBI)", "relation_type": "aligned_with", "evidence": "Rupee-settlement and SWIFT-alternative posture coordinated with RBI." },
+
+    { "from": "Vladimir Putin", "to": "Sergei Lavrov", "relation_type": "employs", "evidence": "Lavrov is Putin's long-serving foreign minister." },
+    { "from": "Vladimir Putin", "to": "Wagner Group", "relation_type": "finances", "evidence": "The Kremlin financed and directed Wagner's deployments across Africa and Ukraine." },
+    { "from": "Wagner Group", "to": "Vladimir Putin", "relation_type": "funded_by", "evidence": "Wagner's contracts, arms and protection flowed from the Russian state." },
+
+    { "from": "Vladimir Putin", "to": "Nicolás Maduro", "relation_type": "aligned_with", "evidence": "Moscow backstops Caracas with arms, oil deals and diplomatic cover." },
+    { "from": "Nicolás Maduro", "to": "Xi Jinping", "relation_type": "aligned_with", "evidence": "Chinese loans-for-oil financing props up the Maduro government." },
+    { "from": "Nicolás Maduro", "to": "Venezuelan Armed Forces (FANB)", "relation_type": "professional", "evidence": "Maduro's survival rests on the loyalty of the FANB high command." },
+    { "from": "Tren de Aragua", "to": "Nicolás Maduro", "relation_type": "related_to", "evidence": "The mega-gang metastasized from Venezuela's prisons amid state collapse." },
+
+    { "from": "Los Chapitos", "to": "Sinaloa Cartel", "relation_type": "related_to", "evidence": "The Chapitos are the El Chapo-sons faction within the Sinaloa Cartel." },
+    { "from": "El Mayo Faction", "to": "Sinaloa Cartel", "relation_type": "related_to", "evidence": "The Zambada-led wing of the Sinaloa Cartel." },
+    { "from": "Los Chapitos", "to": "El Mayo Faction", "relation_type": "opposes", "evidence": "The 2024 capture of El Mayo split Sinaloa into warring Chapitos and Mayo wings." },
+    { "from": "Jalisco New Generation Cartel (CJNG)", "to": "Sinaloa Cartel", "relation_type": "opposes", "evidence": "CJNG and Sinaloa are Mexico's two dominant, rival trafficking organizations." },
+    { "from": "El Mencho", "to": "Jalisco New Generation Cartel (CJNG)", "relation_type": "professional", "evidence": "Nemesio 'El Mencho' Oseguera is the fugitive leader of CJNG." },
+
+    { "from": "JIATF-Central (JIATF-CC)", "to": "Sinaloa Cartel", "relation_type": "opposes", "evidence": "US interagency task force targeting cartel trafficking networks in the Americas." },
+    { "from": "JIATF-Central (JIATF-CC)", "to": "Jalisco New Generation Cartel (CJNG)", "relation_type": "opposes", "evidence": "US interagency interdiction targeting CJNG fentanyl and cocaine flows." },
+    { "from": "JIATF-Central (JIATF-CC)", "to": "Tren de Aragua", "relation_type": "opposes", "evidence": "US designation and interdiction of the transnational Tren de Aragua network." }
+  ]
+}
