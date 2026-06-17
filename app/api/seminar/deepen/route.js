@@ -27,8 +27,9 @@ import { claudeJSON } from "../../../../lib/anthropic";
 const DEEP_SYSTEM =
   "You are a senior foreign-policy analyst and IR theorist writing the marquee " +
   "Deep Dive of a weekly US foreign-policy seminar. Write with analytical rigor, " +
-  "name specific actors, and stay grounded in the provided reporting. Each prose " +
-  "field should be 2-4 tight sentences. Return STRICT JSON only, no prose outside JSON.";
+  "name specific actors, and stay grounded in the provided reporting. There are ~18 " +
+  "prose fields, so keep EACH to 1-2 crisp, information-dense sentences (no padding). " +
+  "Return STRICT JSON only, no prose outside JSON.";
 
 async function pickEdition(seminarId) {
   if (Number.isInteger(seminarId)) {
@@ -72,15 +73,15 @@ export async function POST(req) {
   try {
     dd = await claudeJSON({
       system: DEEP_SYSTEM,
-      maxTokens: 3200,
+      maxTokens: 1900,
       user:
         `Write the Deep Dive for this week's #1 event.\n\n` +
         `EVENT: ${top.title}\n` +
         `SUMMARY: ${top.summary || ""}\n` +
-        `CONTEXT SNIPPET: ${(top.raw_html || "").slice(0, 600)}\n\n` +
+        `CONTEXT SNIPPET: ${(top.raw_html || "").slice(0, 500)}\n\n` +
         `Other notable events this week (for cross-reference):\n` +
         events.slice(1).map((e) => `- ${e.title}`).join("\n") +
-        `\n\nReturn JSON of this exact shape (all string fields are 2-4 tight sentences of analysis):\n` +
+        `\n\nReturn JSON of this exact shape (every string field = 1-2 crisp sentences, no padding):\n` +
         `{\n` +
         `  "layers": {"world_order":"","regional":"","bilateral":"","domestic":"","actor":""},\n` +
         `  "lenses": {"realism":"","liberalism":"","constructivism":"","marxist":"","game_theory":""},\n` +
