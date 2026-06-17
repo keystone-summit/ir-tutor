@@ -28,8 +28,9 @@ const DEEP_SYSTEM =
   "You are a senior foreign-policy analyst and IR theorist writing the marquee " +
   "Deep Dive of a weekly US foreign-policy seminar. Write with analytical rigor, " +
   "name specific actors, and stay grounded in the provided reporting. There are ~18 " +
-  "prose fields, so keep EACH to 1-2 crisp, information-dense sentences (no padding). " +
-  "Return STRICT JSON only, no prose outside JSON.";
+  "prose fields — keep EACH to ONE punchy, information-dense sentence (max ~30 words, " +
+  "no padding) so the whole JSON stays compact. Return STRICT JSON only, no prose " +
+  "outside JSON, and ALWAYS close every brace and bracket.";
 
 async function pickEdition(seminarId) {
   if (Number.isInteger(seminarId)) {
@@ -73,7 +74,7 @@ export async function POST(req) {
   try {
     dd = await claudeJSON({
       system: DEEP_SYSTEM,
-      maxTokens: 1900,
+      maxTokens: 2800,
       user:
         `Write the Deep Dive for this week's #1 event.\n\n` +
         `EVENT: ${top.title}\n` +
@@ -81,7 +82,7 @@ export async function POST(req) {
         `CONTEXT SNIPPET: ${(top.raw_html || "").slice(0, 500)}\n\n` +
         `Other notable events this week (for cross-reference):\n` +
         events.slice(1).map((e) => `- ${e.title}`).join("\n") +
-        `\n\nReturn JSON of this exact shape (every string field = 1-2 crisp sentences, no padding):\n` +
+        `\n\nReturn JSON of this exact shape (every string field = ONE compact sentence, ~30 words max):\n` +
         `{\n` +
         `  "layers": {"world_order":"","regional":"","bilateral":"","domestic":"","actor":""},\n` +
         `  "lenses": {"realism":"","liberalism":"","constructivism":"","marxist":"","game_theory":""},\n` +
@@ -92,7 +93,7 @@ export async function POST(req) {
         `}\n` +
         `Use IR-theory vocabulary naturally in the lens analysis (e.g. security dilemma, balance of power, ` +
         `deterrence, soft power, weaponized interdependence) so the reader's theory-tags light up. ` +
-        `Include EVERY named actor you reference in "parties".`,
+        `In "parties" list the 8-12 most important named actors you reference (states, leaders, orgs, armed groups).`,
     });
   } catch (e) {
     return Response.json({ ok: false, error: "Deep dive failed.", detail: String(e.message), edition_id: edition.id }, { status: 502 });
