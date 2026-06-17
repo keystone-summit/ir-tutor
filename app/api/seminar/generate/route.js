@@ -41,12 +41,6 @@ const SELECT_SYSTEM =
   "uncovered region. Cluster duplicate coverage of the same event into one. " +
   "Rank 1 = most consequential. Return STRICT JSON only, no prose.";
 
-const DEEP_SYSTEM =
-  "You are a senior foreign-policy analyst and IR theorist writing the marquee " +
-  "Deep Dive of a weekly US foreign-policy seminar. Write with analytical rigor, " +
-  "name specific actors, and stay grounded in the provided reporting. Each prose " +
-  "field should be 3-6 sentences. Return STRICT JSON only, no prose outside JSON.";
-
 function regionLabel(code) {
   return REGION_LABEL[code] || code || "—";
 }
@@ -65,7 +59,7 @@ export async function POST(req) {
          from public.seminar_news_raw
         where coalesce(published_at, fetched_at) >= now() - interval '8 days'
         order by coalesce(published_at, fetched_at) desc
-        limit 150`,
+        limit 90`,
       []
     );
     candidates = r.rows;
@@ -92,7 +86,7 @@ export async function POST(req) {
   try {
     selection = await claudeJSON({
       system: SELECT_SYSTEM,
-      maxTokens: 1800,
+      maxTokens: 1400,
       user:
         `Week of ${weekStart} to ${weekEnd}. Here are this week's candidate news items, each with an index:\n\n` +
         list +
@@ -179,77 +173,12 @@ export async function POST(req) {
     return Response.json({ ok: false, error: "Event write failed.", detail: String(e.message) }, { status: 500 });
   }
 
-  // 4) Deep-dive call on the #1 event.
-  let dd;
-  try {
-    dd = await claudeJSON({
-      system: DEEP_SYSTEM,
-      maxTokens: 5000,
-      user:
-        `Write the Deep Dive for this week's #1 event.\n\n` +
-        `EVENT: ${top.title}\n` +
-        `SUMMARY: ${top.summary || ""}\n` +
-        `SOURCE: ${top.source_name || ""} (${top.source_region || ""})\n` +
-        `CONTEXT SNIPPET: ${(top.raw_html || "").slice(0, 600)}\n\n` +
-        `Other notable events this week (for cross-reference):\n` +
-        resolved.slice(1).map((e) => `- ${e.title}`).join("\n") +
-        `\n\nReturn JSON of this exact shape (all string fields are 3-6 sentences of analysis):\n` +
-        `{\n` +
-        `  "layers": {"world_order":"","regional":"","bilateral":"","domestic":"","actor":""},\n` +
-        `  "lenses": {"realism":"","liberalism":"","constructivism":"","marxist":"","game_theory":""},\n` +
-        `  "gaps": {"info":"","source_bias":"","counterfactual":"","osint":"","counter_intel":""},\n` +
-        `  "implications": {"us_strategy":"","us_business":"","us_households":""},\n` +
-        `  "what_to_watch": ["bullet","bullet","bullet"],\n` +
-        `  "parties": [{"name":"<exact name as it appears in your prose>","type":"state|individual|org|ngo|mnc|armed_group|institution"}]\n` +
-        `}\n` +
-        `Include EVERY named actor (states, leaders, organisations, armed groups, firms) you reference in "parties".`,
-    });
-  } catch (e) {
-    // Selection + events are saved; surface the partial state rather than 500.
-    return Response.json({ ok: false, error: "Deep dive failed.", detail: String(e.message), edition_id: editionId }, { status: 502 });
-  }
-
-  const layers = (dd && dd.layers) || {};
-  const parties = Array.isArray(dd && dd.parties) ? dd.parties : [];
-  // Stash the linkable party list inside layers under a reserved key the UI
-  // ignores when rendering the five named layers.
-  layers._parties = parties;
-  const lenses = (dd && dd.lenses) || {};
-  const gaps = (dd && dd.gaps) || {};
-  const implications = (dd && dd.implications) || {};
-  const watch = Array.isArray(dd && dd.what_to_watch)
-    ? dd.what_to_watch.map((b) => "- " + String(b)).join("\n")
-    : (dd && dd.what_to_watch ? String(dd.what_to_watch) : null);
-
-  // 5) Upsert the deep dive.
-  try {
-    await query(`delete from public.seminar_deep_dive where seminar_id = $1`, [editionId]);
-    await query(
-      `insert into public.seminar_deep_dive
-         (seminar_id, event_id, layers, lenses, gaps, implications, what_to_watch)
-       values ($1, (select id from public.seminar_events where seminar_id=$1 and rank=1 limit 1),
-               $2::jsonb, $3::jsonb, $4::jsonb, $5::jsonb, $6)`,
-      [editionId, JSON.stringify(layers), JSON.stringify(lenses), JSON.stringify(gaps), JSON.stringify(implications), watch]
-    );
-  } catch (e) {
-    return Response.json({ ok: false, error: "Deep dive write failed.", detail: String(e.message), edition_id: editionId }, { status: 500 });
-  }
-
-  // 6) Catalogue actors (idempotent) for the Phase 2 click-in cards.
-  for (const p of parties) {
-    if (!p || !p.name) continue;
-    const type = ["state","individual","org","ngo","mnc","armed_group","institution"].includes(p.type) ? p.type : "org";
-    try {
-      await query(
-        `insert into public.seminar_actors (name, type)
-         values ($1, $2::public.seminar_actor_type)
-         on conflict (lower(name)) do nothing`,
-        [String(p.name).slice(0, 200), type]
-      );
-    } catch { /* non-fatal */ }
-  }
-
-  // 7) Mark the raw rows used, and publish the edition.
+  // 4) Mark the raw rows used, and PUBLISH the edition immediately.
+  //    The marquee Deep Dive is generated by a separate /api/seminar/deepen
+  //    call (chained by the Monday cron at 11:30) so each request makes at most
+  //    ONE Claude call and stays well under the 60s Hobby function cap — two
+  //    sequential Claude calls in one request was timing out. The reader page
+  //    degrades gracefully (Briefing + region coverage) until deepen runs.
   try {
     const usedIds = resolved.map((e) => e.raw_id).filter((x) => x != null);
     if (usedIds.length) {
@@ -270,14 +199,26 @@ export async function POST(req) {
     return Response.json({ ok: false, error: "Publish step failed.", detail: String(e.message), edition_id: editionId }, { status: 500 });
   }
 
+  // 5) Best-effort: kick off the Deep Dive in a separate request so a manual
+  //    generate (outside the cron chain) still ends up with a full edition.
+  //    Fire-and-forget — we don't await it (that would re-introduce the timeout).
+  try {
+    const origin = new URL(req.url).origin;
+    const secret = process.env.SEMINAR_CRON_SECRET || process.env.CRON_SECRET;
+    if (secret) {
+      fetch(`${origin}/api/seminar/deepen?seminar_id=${editionId}`, {
+        headers: { authorization: `Bearer ${secret}` },
+      }).catch(() => {});
+    }
+  } catch { /* non-fatal */ }
+
   return Response.json({
     ok: true,
     edition_id: editionId,
     week_start: weekStart,
     week_end: weekEnd,
     events: resolved.map((e) => ({ rank: e.rank, title: e.title, source: e.source_name, region_bucket: e.region_bucket })),
-    deep_dive_event: top.title,
-    parties: parties.length,
+    deep_dive: "queued (call /api/seminar/deepen)",
     region_coverage: regionCoverage,
     underweighted_regions: underweighted,
   });
