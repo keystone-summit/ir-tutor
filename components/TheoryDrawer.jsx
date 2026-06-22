@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { authFetch } from "../lib/clientAuth";
 import { schoolClass, schoolColor } from "../lib/seminarTheorySchools";
+import { theoryAudioUrl } from "../lib/seminarAudio";
+import SeminarAudio from "./SeminarAudio";
 
 export default function TheoryDrawer({ theory, onClose, onNavigate, onSaved }) {
   const [saveState, setSaveState] = useState("");
@@ -79,6 +81,7 @@ export default function TheoryDrawer({ theory, onClose, onNavigate, onSaved }) {
             </div>
             <h3 className="thd-title">{theory.name}</h3>
             {theory.era && <span className="thd-era">{theory.era}</span>}
+            <SeminarAudio src={theoryAudioUrl(theory)} label="Listen" />
           </div>
           <button className="thd-x" onClick={onClose} aria-label="Close"><X size={20} /></button>
         </div>

@@ -16,6 +16,8 @@ import {
   Tag, Link2, ExternalLink, Globe,
 } from "lucide-react";
 import { authFetch } from "../lib/clientAuth";
+import { patternAudioUrl } from "../lib/seminarAudio";
+import SeminarAudio from "./SeminarAudio";
 
 function fmtDate(d) {
   try {
@@ -105,6 +107,7 @@ export default function PatternModal({ pattern, wk = 0, onClose, onSaved }) {
               {pattern.date_range && <span>· {pattern.date_range}</span>}
               {pattern.region && <span>· {pattern.region}</span>}
             </div>
+            <SeminarAudio src={patternAudioUrl(pattern)} label="Listen" />
           </div>
           <button className="pm-x" onClick={onClose} aria-label="Close"><X size={20} /></button>
         </div>
