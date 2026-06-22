@@ -614,6 +614,13 @@ body{font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased;
   background:#faf8f3;border:1px solid var(--line);border-radius:9px;padding:8px 12px;margin:4px 0 0;}
 .sem-partyhint svg{color:var(--brass);flex-shrink:0;}
 
+/* ---- Skip-week / stale-edition alert banner ---- */
+.sem-staleban{display:flex;align-items:flex-start;gap:9px;margin:10px 0 0;padding:11px 14px;
+  font-size:13px;line-height:1.5;color:#7a3a06;background:#fdf3e3;
+  border:1px solid #e6c489;border-left:4px solid #c9821a;border-radius:9px;}
+.sem-staleban svg{flex-shrink:0;margin-top:2px;color:#c9821a;}
+.sem-staleban strong{color:#5e2d04;}
+
 /* ---- Actor drawer ---- */
 .sem-drawer-overlay{position:fixed;inset:0;z-index:60;background:#16243d80;backdrop-filter:blur(2px);
   display:flex;justify-content:flex-end;animation:sem-fade .15s ease;}

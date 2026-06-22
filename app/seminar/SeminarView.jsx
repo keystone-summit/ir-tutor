@@ -222,6 +222,7 @@ export default function SeminarView() {
   const implications = (dd && dd.implications) || {};
   const parties = (layers && layers._parties) || [];
   const echoes = (data && data.pattern_echoes) || [];
+  const health = (data && data.health) || null;
   const wk = edition ? weekKeyOf(edition.week_start_date) : 0;
   const seminarId = edition ? edition.id : null;
 
@@ -387,6 +388,18 @@ export default function SeminarView() {
   return (
     <div className="sem-wrap">
       <TopBar savedCount={savedCount} />
+
+      {health && health.skip && (
+        <div className="sem-staleban" role="alert">
+          <AlertTriangle size={16} />
+          <span>
+            <strong>This briefing may be a week behind.</strong> The newest edition published{" "}
+            {health.days_since_published != null ? `${health.days_since_published} days ago` : "more than a week ago"}
+            {" "}— the weekly run looks like it was skipped. A daily auto-recovery check is in place; if this is
+            still showing tomorrow, re-run the seminar pipeline.
+          </span>
+        </div>
+      )}
 
       <SectionNav items={navItems} />
 

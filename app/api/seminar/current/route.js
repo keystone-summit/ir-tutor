@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 
 import { requireAuth } from "../../../../lib/auth";
 import { query } from "../../../../lib/db";
+import { seminarHealth } from "../../../../lib/seminarWeek";
 
 export async function GET(req) {
   const auth = requireAuth(req);
@@ -90,12 +91,30 @@ export async function GET(req) {
       echoes = pe.rows;
     } catch { /* table may not exist yet pre-migration — degrade gracefully */ }
 
+    // Freshness / skip-week health. Always computed from the LATEST published
+    // edition (not the one being viewed via ?id=) so the reader's stale banner
+    // reflects whether this week's Monday run actually fired.
+    let health = null;
+    try {
+      const h = await query(
+        `select week_start_date, published_at from public.seminar_editions
+          where status = 'published' order by week_start_date desc limit 1`,
+        []
+      );
+      const r = h.rows[0];
+      health = seminarHealth({
+        latestWeekStart: r ? r.week_start_date : null,
+        latestPublishedAt: r ? r.published_at : null,
+      });
+    } catch { /* non-fatal — banner just won't render */ }
+
     return Response.json({
       ok: true,
       edition,
       events: ev.rows,
       deep_dive: dd.rows[0] || null,
       pattern_echoes: echoes,
+      health,
     });
   } catch (e) {
     return Response.json({ ok: false, error: "DB error.", detail: String(e.message) }, { status: 500 });

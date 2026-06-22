@@ -5,7 +5,8 @@
     { "path": "/api/seminar/generate", "schedule": "0 11 * * 1" },
     { "path": "/api/seminar/deepen", "schedule": "30 11 * * 1" },
     { "path": "/api/seminar/extract-relationships", "schedule": "0 12 * * 1" },
-    { "path": "/api/seminar/match-patterns", "schedule": "0 13 * * 1" }
+    { "path": "/api/seminar/match-patterns", "schedule": "0 13 * * 1" },
+    { "path": "/api/seminar/heartbeat", "schedule": "0 15 * * *" }
   ],
   "headers": [
     {
