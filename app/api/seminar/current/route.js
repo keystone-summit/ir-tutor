@@ -108,6 +108,19 @@ export async function GET(req) {
       });
     } catch { /* non-fatal — banner just won't render */ }
 
+    // Does this edition have a generated Weekly Briefing narration? Drives the
+    // "Listen to this briefing" player on the reader page. Defensive: the audio
+    // table is created lazily by /api/seminar/voice-briefing, so a pre-voice DB
+    // simply reports false.
+    let hasBriefingAudio = false;
+    try {
+      const a = await query(
+        `select 1 from public.seminar_briefing_audio where seminar_id = $1 limit 1`,
+        [edition.id]
+      );
+      hasBriefingAudio = a.rows.length > 0;
+    } catch { /* table not created yet — no audio */ }
+
     return Response.json({
       ok: true,
       edition,
@@ -115,6 +128,7 @@ export async function GET(req) {
       deep_dive: dd.rows[0] || null,
       pattern_echoes: echoes,
       health,
+      has_briefing_audio: hasBriefingAudio,
     });
   } catch (e) {
     return Response.json({ ok: false, error: "DB error.", detail: String(e.message) }, { status: 500 });

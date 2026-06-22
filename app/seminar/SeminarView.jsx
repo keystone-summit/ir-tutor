@@ -23,6 +23,8 @@ import { authFetch } from "../../lib/clientAuth";
 import StudySaves from "../../components/StudySaves";
 import PatternModal, { patternTypeLabel } from "../../components/PatternModal";
 import TheoryDrawer from "../../components/TheoryDrawer";
+import SeminarAudio from "../../components/SeminarAudio";
+import { briefingAudioUrl } from "../../lib/seminarAudio";
 
 // Quota buckets surfaced in the Weekly Briefing region-coverage strip.
 const REGION_BUCKETS = [
@@ -64,19 +66,43 @@ const IMP_DEFS = [
   ["us_households", "US Households"],
 ];
 
+// The seminar's DATE columns come back from Postgres as JS Date objects, which
+// JSON-serialise to a full ISO timestamp like "2026-06-15T04:00:00.000Z" (the
+// pg driver anchors the date at the server's local midnight). Slice that back to
+// a clean YYYY-MM-DD day key before parsing — otherwise `new Date(v + "T00:00:00Z")`
+// builds garbage ("2026-06-15T04:00:00.000ZT00:00:00Z") and renders "Invalid Date".
+function ymd(v) {
+  if (!v) return "";
+  const m = String(v).match(/\d{4}-\d{2}-\d{2}/);
+  return m ? m[0] : "";
+}
+
 function weekKeyOf(weekStart) {
-  if (!weekStart) return 0;
-  const t = Date.parse(String(weekStart).slice(0, 10) + "T00:00:00Z");
+  const d = ymd(weekStart);
+  if (!d) return 0;
+  const t = Date.parse(d + "T00:00:00Z");
   return Number.isFinite(t) ? Math.floor(t / (7 * 86400000)) : 0;
 }
 
+// Plain-language week label, e.g. "Week of June 15, 2026". Parsed in UTC so the
+// day never drifts across a timezone boundary.
+function fmtWeekOf(weekStart) {
+  const d = ymd(weekStart);
+  if (!d) return "";
+  const dt = new Date(d + "T00:00:00Z");
+  if (Number.isNaN(dt.getTime())) return `Week of ${weekStart}`;
+  return "Week of " + dt.toLocaleDateString("en-US", {
+    month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+  });
+}
+
 function fmtRange(a, b) {
-  try {
-    const opt = { month: "short", day: "numeric", timeZone: "UTC" };
-    const s = new Date(a + "T00:00:00Z").toLocaleDateString("en-US", opt);
-    const e = new Date(b + "T00:00:00Z").toLocaleDateString("en-US", { ...opt, year: "numeric" });
-    return `${s} – ${e}`;
-  } catch { return `${a} – ${b}`; }
+  const da = ymd(a), db = ymd(b);
+  if (!da || !db) return [da, db].filter(Boolean).join(" – ");
+  const opt = { month: "short", day: "numeric", timeZone: "UTC" };
+  const s = new Date(da + "T00:00:00Z").toLocaleDateString("en-US", opt);
+  const e = new Date(db + "T00:00:00Z").toLocaleDateString("en-US", { ...opt, year: "numeric" });
+  return `${s} – ${e}`;
 }
 
 // POST a save into chat_saves under the fp_seminar course (Option 3 flow).
@@ -434,7 +460,12 @@ export default function SeminarView() {
       <header className="sem-head">
         <div className="sem-kicker"><Globe size={15} /> Foreign Policy · Implications Seminar</div>
         <h1>{edition.title}</h1>
-        <div className="sem-daterange">{fmtRange(edition.week_start_date, edition.week_end_date)}</div>
+        <div className="sem-daterange">{fmtWeekOf(edition.week_start_date)}</div>
+        {data && data.has_briefing_audio && (
+          <div className="sem-briefaudio">
+            <SeminarAudio src={briefingAudioUrl(edition.id)} label="Listen to this briefing" />
+          </div>
+        )}
         <SaveBtn k="__edition" content={fullText} label="Save this seminar to my notes" className="sem-savehero" />
       </header>
 

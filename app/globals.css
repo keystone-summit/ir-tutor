@@ -507,6 +507,7 @@ body{font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased;
   letter-spacing:.14em;text-transform:uppercase;color:var(--brass);}
 .sem-head h1{font-family:'Fraunces',serif;font-weight:700;font-size:27px;line-height:1.18;color:var(--ink);margin:8px 0 6px;}
 .sem-daterange{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:#6f6757;margin-bottom:14px;}
+.sem-briefaudio{margin:0 0 14px;}
 
 .sem-savehero{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--parch);border:none;
   border-radius:10px;padding:10px 16px;font-family:inherit;font-size:14px;cursor:pointer;transition:.15s;}
