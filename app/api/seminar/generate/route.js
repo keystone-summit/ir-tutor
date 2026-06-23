@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 import { requireCronOrAuth } from "../../../../lib/seminarAuth";
 import { query } from "../../../../lib/db";
 import { claudeJSON } from "../../../../lib/anthropic";
-import { getSeminarWeek } from "../../../../lib/seminarWeek";
+import { getSeminarWeek, weekRangeLabel } from "../../../../lib/seminarWeek";
 import { REGION_LABEL } from "../../../../lib/seminarFeeds";
 
 // Phase 3.5 — the 5-region weekly quota. The selector must spread the five
@@ -187,7 +187,7 @@ export async function POST(req) {
         [editionId, usedIds]
       );
     }
-    const title = `Week of ${weekStart} — ${top.title}`.slice(0, 300);
+    const title = `Week of ${weekRangeLabel(weekStart, weekEnd)} — ${top.title}`.slice(0, 300);
     await query(
       `update public.seminar_editions
           set title = $2, status = 'published', published_at = now(), updated_at = now(),

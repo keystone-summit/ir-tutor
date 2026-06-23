@@ -50,17 +50,21 @@ export async function POST(req) {
     return Response.json({ ok: false, error: "DB read failed.", detail: String(e.message) }, { status: 500 });
   }
 
-  // Healthy — this week's edition is already published. Nothing to do.
-  if (health.up_to_date) {
+  // Healthy — this week's edition is already published AND the Thursday mid-week
+  // refresh (if due) has landed. Nothing to do.
+  if (health.up_to_date && !health.mid_week_stale) {
     return Response.json({ ok: true, healthy: true, action: "none", health });
   }
 
-  // 2) A miss: the freshest possible edition (week_start = expected_week_start)
-  //    is NOT present. By 15:00 UTC the Monday chain should have produced it, so
-  //    this is a genuine skip. Self-heal: ingest fresh news, then trigger
-  //    generate (which fire-and-forgets the Deep Dive). extract/match are
-  //    restored by the next normal Monday chain; the reader degrades gracefully
-  //    (Briefing + Deep Dive) until then.
+  // 2) A miss. Either:
+  //    (a) skip — this week's edition (week_start = expected_week_start) is
+  //        absent; by 15:00 UTC the Monday chain should have produced it, or
+  //    (b) mid_week_stale — the edition exists but the Thursday mid-week refresh
+  //        didn't land (latest publish predates this week's Thursday).
+  //    Self-heal both the same way: ingest fresh news, then trigger generate
+  //    (which upserts the current-week edition and fire-and-forgets the Deep
+  //    Dive). extract/match (and a forced re-voice) are restored by the next
+  //    scheduled chain; the reader degrades gracefully until then.
   const origin = new URL(req.url).origin;
   const secret = process.env.SEMINAR_CRON_SECRET || process.env.CRON_SECRET;
   const steps = {};
@@ -96,7 +100,9 @@ export async function POST(req) {
     ok: true,
     healthy: false,
     action: "self_heal_triggered",
+    reason: health.skip ? "skip" : health.mid_week_stale ? "mid_week_stale" : "stale",
     skip: health.skip,
+    mid_week_stale: health.mid_week_stale,
     health,
     steps,
   });

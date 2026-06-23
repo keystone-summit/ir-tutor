@@ -84,18 +84,6 @@ function weekKeyOf(weekStart) {
   return Number.isFinite(t) ? Math.floor(t / (7 * 86400000)) : 0;
 }
 
-// Plain-language week label, e.g. "Week of June 15, 2026". Parsed in UTC so the
-// day never drifts across a timezone boundary.
-function fmtWeekOf(weekStart) {
-  const d = ymd(weekStart);
-  if (!d) return "";
-  const dt = new Date(d + "T00:00:00Z");
-  if (Number.isNaN(dt.getTime())) return `Week of ${weekStart}`;
-  return "Week of " + dt.toLocaleDateString("en-US", {
-    month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
-  });
-}
-
 function fmtRange(a, b) {
   const da = ymd(a), db = ymd(b);
   if (!da || !db) return [da, db].filter(Boolean).join(" – ");
@@ -460,7 +448,7 @@ export default function SeminarView() {
       <header className="sem-head">
         <div className="sem-kicker"><Globe size={15} /> Foreign Policy · Implications Seminar</div>
         <h1>{edition.title}</h1>
-        <div className="sem-daterange">{fmtWeekOf(edition.week_start_date)}</div>
+        <div className="sem-daterange">{fmtRange(edition.week_start_date, edition.week_end_date)}</div>
         {data && data.has_briefing_audio && (
           <div className="sem-briefaudio">
             <SeminarAudio src={briefingAudioUrl(edition.id)} label="Listen to this briefing" />

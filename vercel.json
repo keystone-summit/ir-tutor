@@ -7,6 +7,12 @@
     { "path": "/api/seminar/extract-relationships", "schedule": "0 12 * * 1" },
     { "path": "/api/seminar/match-patterns", "schedule": "0 13 * * 1" },
     { "path": "/api/seminar/voice-briefing", "schedule": "30 13 * * 1" },
+    { "path": "/api/seminar/ingest", "schedule": "0 10 * * 4" },
+    { "path": "/api/seminar/generate", "schedule": "0 11 * * 4" },
+    { "path": "/api/seminar/deepen", "schedule": "30 11 * * 4" },
+    { "path": "/api/seminar/extract-relationships", "schedule": "0 12 * * 4" },
+    { "path": "/api/seminar/match-patterns", "schedule": "0 13 * * 4" },
+    { "path": "/api/seminar/voice-briefing?force=1", "schedule": "30 13 * * 4" },
     { "path": "/api/seminar/heartbeat", "schedule": "0 15 * * *" }
   ],
   "headers": [
