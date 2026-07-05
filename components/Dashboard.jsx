@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { authFetch, clearToken } from "../lib/clientAuth";
 import { COURSE, WEEKS, HOME, SUGGESTIONS } from "./course";
+import SeminarAudio from "./SeminarAudio";
+import { lectureAudioUrl } from "../lib/seminarAudio";
 import PayoffMatrix from "./PayoffMatrix";
 import NotesPanel from "./NotesPanel";
 import ChatSaveButton from "./ChatSaveButton";
@@ -215,6 +217,12 @@ STYLE: warm and encouraging; plain language first, then the precise term; univer
           {tab === "module" ? (
             <div className="ir-content">
               <p className="ir-blurb">{current.blurb}</p>
+
+              {activeN > 0 && (
+                <div className="ir-lectureaudio">
+                  <SeminarAudio src={lectureAudioUrl(current.n)} label="Listen to the full lecture" />
+                </div>
+              )}
 
               <section className="ir-card">
                 <h3><Target size={15} /> Learning Objectives</h3>
