@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "node --import ./scripts/loader-register.mjs scripts/test_section_audio.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.400.0",

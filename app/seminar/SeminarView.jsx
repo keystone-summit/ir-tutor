@@ -23,8 +23,11 @@ import { authFetch } from "../../lib/clientAuth";
 import StudySaves from "../../components/StudySaves";
 import PatternModal, { patternTypeLabel } from "../../components/PatternModal";
 import TheoryDrawer from "../../components/TheoryDrawer";
-import SeminarAudio from "../../components/SeminarAudio";
-import { briefingAudioUrl } from "../../lib/seminarAudio";
+import {
+  SectionAudioProvider, WholePageAudioBar, SectionListenButton,
+} from "../../components/SeminarPageAudio";
+import { sectionAudioUrl } from "../../lib/seminarAudio";
+import { presentSections } from "../../lib/seminarSections";
 
 // Quota buckets surfaced in the Weekly Briefing region-coverage strip.
 const REGION_BUCKETS = [
@@ -240,6 +243,21 @@ export default function SeminarView() {
   const wk = edition ? weekKeyOf(edition.week_start_date) : 0;
   const seminarId = edition ? edition.id : null;
 
+  // Whole-page narration playlist: one entry per readable section actually on
+  // the page this week, in scroll order. Each streams from /api/seminar/section-audio
+  // (generated on first play, cached by content hash). Drives both the top
+  // "Listen to whole page" bar and the per-section "Listen to this section"
+  // buttons via SectionAudioProvider.
+  const audioPlaylist = useMemo(() => {
+    if (!edition) return [];
+    return presentSections(data).map((s) => ({
+      key: s.key,
+      label: s.label,
+      domId: s.domId,
+      url: sectionAudioUrl(edition.id, s.key),
+    }));
+  }, [data, edition]);
+
   // Phase 3.5 — flatten the theory library into an inline-scan lexicon
   // (term -> slug, plus each theory's own name) and a slug index for the drawer.
   const theoryBySlug = useMemo(() => {
@@ -400,6 +418,7 @@ export default function SeminarView() {
   }
 
   return (
+    <SectionAudioProvider playlist={audioPlaylist}>
     <div className="sem-wrap">
       <TopBar savedCount={savedCount} />
 
@@ -449,9 +468,9 @@ export default function SeminarView() {
         <div className="sem-kicker"><Globe size={15} /> Foreign Policy · Implications Seminar</div>
         <h1>{edition.title}</h1>
         <div className="sem-daterange">{fmtRange(edition.week_start_date, edition.week_end_date)}</div>
-        {data && data.has_briefing_audio && (
+        {audioPlaylist.length > 0 && (
           <div className="sem-briefaudio">
-            <SeminarAudio src={briefingAudioUrl(edition.id)} label="Listen to this briefing" />
+            <WholePageAudioBar />
           </div>
         )}
         <SaveBtn k="__edition" content={fullText} label="Save this seminar to my notes" className="sem-savehero" />
@@ -471,7 +490,7 @@ export default function SeminarView() {
 
       {/* 1 — Weekly Briefing */}
       <section id="briefing" className="sem-sec">
-        <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top 5 Events</h2>
+        <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top 5 Events<SectionListenButton sectionKey="briefing" /></h2>
 
         {/* Phase 3.5 — 5-region quota coverage strip */}
         <RegionCoverage edition={edition} events={events} />
@@ -505,7 +524,7 @@ export default function SeminarView() {
       {/* 2 — Deep Dive: layers + lenses */}
       {dd && (
         <section id="deep-dive" className="sem-sec">
-          <h2 className="sem-h2"><LayersIcon size={18} /> Deep Dive — {events[0] ? events[0].title : ""}</h2>
+          <h2 className="sem-h2"><LayersIcon size={18} /> Deep Dive — {events[0] ? events[0].title : ""}<SectionListenButton sectionKey="deep_dive" /></h2>
 
           <h3 className="sem-h3">Five-Layer Drill-Down</h3>
           <div className="sem-layers">
@@ -539,7 +558,7 @@ export default function SeminarView() {
       {/* 3 — Gaps to Fill */}
       {dd && (
         <section id="gaps" className="sem-sec">
-          <h2 className="sem-h2"><Search size={18} /> Gaps to Fill</h2>
+          <h2 className="sem-h2"><Search size={18} /> Gaps to Fill<SectionListenButton sectionKey="gaps" /></h2>
           <div className="sem-cards">
             {GAP_DEFS.map(([k, lbl, hint]) => (
               gaps[k] ? (
@@ -560,7 +579,7 @@ export default function SeminarView() {
       {/* 4 — Implications */}
       {dd && (
         <section id="implications" className="sem-sec">
-          <h2 className="sem-h2"><Building2 size={18} /> Implications</h2>
+          <h2 className="sem-h2"><Building2 size={18} /> Implications<SectionListenButton sectionKey="implications" /></h2>
           <div className="sem-imp">
             {IMP_DEFS.map(([k, lbl]) => (
               implications[k] ? (
@@ -582,7 +601,7 @@ export default function SeminarView() {
       {/* 6 — What I'd Watch Next Week */}
       {dd && dd.what_to_watch && (
         <section id="what-to-watch" className="sem-sec">
-          <h2 className="sem-h2"><Eye size={18} /> What I'd Watch Next Week</h2>
+          <h2 className="sem-h2"><Eye size={18} /> What I'd Watch Next Week<SectionListenButton sectionKey="what_to_watch" /></h2>
           <ul className="sem-watch">
             {String(dd.what_to_watch).split("\n").map((b, i) => {
               const t = b.replace(/^[-•]\s*/, "").trim();
@@ -595,7 +614,7 @@ export default function SeminarView() {
       {/* 6b — Pattern Echoes (Phase 3b) — between What to Watch and Carry-Forward */}
       {echoes.length > 0 && (
         <section id="pattern-echoes" className="sem-sec">
-          <h2 className="sem-h2"><History size={18} /> Pattern Echoes</h2>
+          <h2 className="sem-h2"><History size={18} /> Pattern Echoes<SectionListenButton sectionKey="pattern_echoes" /></h2>
           <div className="pe-intro">
             How this week rhymes with the past. Each event is matched against the{" "}
             <a href="/seminar/patterns" className="sem-cf-link"><Library size={13} /> Library of Patterns</a>.
@@ -651,6 +670,7 @@ export default function SeminarView() {
         </div>
       </section>
     </div>
+    </SectionAudioProvider>
   );
 }
 

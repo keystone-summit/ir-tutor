@@ -570,6 +570,35 @@ body{font-family:'IBM Plex Sans',sans-serif;-webkit-font-smoothing:antialiased;
 .sem-audio-bar{display:inline-block;width:70px;height:3px;border-radius:2px;background:#e2e2da;overflow:hidden;}
 .sem-audio-fill{display:block;height:100%;background:var(--brass);transition:width .2s linear;}
 
+/* ---- whole-page + per-section narration (SeminarPageAudio) ---- */
+.sem-pageaudio{display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
+.sem-pageaudio-play{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--parch);border:none;
+  border-radius:10px;padding:9px 15px;font-family:inherit;font-size:13.5px;cursor:pointer;transition:.15s;}
+.sem-pageaudio-play:hover{background:var(--ink2);}
+.sem-pageaudio-play .sem-audio-ic{opacity:.7;}
+.sem-pageaudio-nav{display:inline-flex;align-items:center;gap:8px;}
+.sem-pageaudio-skip{display:inline-grid;place-items:center;width:28px;height:28px;background:none;border:1px solid var(--line);
+  border-radius:7px;color:#5a6472;cursor:pointer;transition:.13s;}
+.sem-pageaudio-skip:hover{border-color:var(--brass);color:var(--ox);}
+.sem-pageaudio-now{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6f6757;letter-spacing:.03em;}
+.sem-pageaudio-pos{color:var(--brass);margin-left:4px;}
+.sem-pageaudio-bar{flex-basis:100%;height:3px;border-radius:2px;background:#e2e2da;overflow:hidden;}
+.sem-pageaudio-fill{display:block;height:100%;background:var(--brass);transition:width .2s linear;}
+
+/* Per-section "Listen to this section" button, right-aligned in the h2 row. */
+.sem-h2 .sem-seclisten{margin-left:auto;}
+.sem-seclisten{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;background:none;border:1px solid var(--line);
+  border-radius:7px;padding:5px 10px;font-family:inherit;font-size:11.5px;font-weight:400;color:#5a6472;cursor:pointer;
+  transition:.13s;white-space:nowrap;}
+.sem-seclisten:hover{border-color:var(--brass);color:var(--ox);}
+.sem-seclisten.active{border-color:var(--brass);color:var(--ox);background:#fffdf7;}
+
+/* The section currently narrating. */
+.sem-sec.is-narrating{position:relative;}
+.sem-sec.is-narrating > .sem-h2{border-bottom-color:var(--brass);}
+.sem-sec.is-narrating::before{content:"";position:absolute;left:-14px;top:6px;bottom:6px;width:3px;border-radius:3px;
+  background:var(--brass);}
+
 /* Implications */
 .sem-imp{display:grid;grid-template-columns:1fr;gap:12px;}
 .sem-imp-col{background:#16243d;color:#e9e2cf;border-radius:11px;padding:14px 16px;}
