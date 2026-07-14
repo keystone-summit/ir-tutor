@@ -80,6 +80,10 @@ export function SectionAudioProvider({ playlist, children }) {
     const a = audioRef.current;
     const item = items[index];
     if (!a || !item) return;
+    // Retrying a section that errored before — give it a clean chance.
+    if (unavailRef.current.has(item.key)) {
+      setUnavailable((s) => { const n = new Set(s); n.delete(item.key); unavailRef.current = n; return n; });
+    }
     setIdx(index); idxRef.current = index;
     setMode(nextMode); modeRef.current = nextMode;
     setProgress(0);
@@ -240,12 +244,15 @@ export function WholePageAudioBar() {
   );
 }
 
-// Per-section header control: "Listen to this section".
+// Per-section header control: "Listen to this section". Shown for any section
+// that is on the page (in the playlist). We deliberately do NOT hide it when a
+// prior play errored (e.g. a transient synth timeout) — the section still has
+// content, so the button stays visible and clicking it retries.
 export function SectionListenButton({ sectionKey }) {
   const ctx = useSectionAudio();
   if (!ctx) return null;
   const inList = ctx.items.some((i) => i.key === sectionKey);
-  if (!inList || ctx.isUnavailable(sectionKey)) return null;
+  if (!inList) return null;
 
   const isActive = ctx.activeKey === sectionKey;
   const isPlaying = isActive && ctx.playing;

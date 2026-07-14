@@ -11,7 +11,7 @@
 import assert from "node:assert";
 import { presentSections, SECTION_KEYS } from "../lib/seminarSections.js";
 import {
-  sectionNarration, isValidSectionKey, contentHash, chunkForSynthesis,
+  sectionNarration, isValidSectionKey, contentHash, chunkForSynthesis, synthesizeSection,
 } from "../lib/seminarSectionVoice.js";
 
 let passed = 0;
@@ -92,6 +92,59 @@ test("pattern echoes narration references the matched pattern", () => {
   assert.ok(/rhymes with the past/i.test(t));
 });
 
+test("pattern echoes narration covers EVERY echo grouped by event, in rank order", () => {
+  // Two events, two matches each, given out of rank order — narration must
+  // include all four patterns and lead with the rank-1 event.
+  const bundle = {
+    ...fullBundle,
+    pattern_echoes: [
+      { event_id: 2, event_rank: 2, event_title: "OPEC+ holds output", name: "1973 embargo", explanation: "Producers wield supply." },
+      { event_id: 1, event_rank: 1, event_title: "Taiwan Strait transit", name: "Cuban Missile brinkmanship", explanation: "Signalling under nuclear shadow." },
+      { event_id: 1, event_rank: 1, event_title: "Taiwan Strait transit", name: "Berlin Airlift", explanation: "Contesting access to a chokepoint." },
+      { event_id: 2, event_rank: 2, event_title: "OPEC+ holds output", name: "Suez 1956", explanation: "Canal leverage." },
+    ],
+  };
+  const t = sectionNarration("pattern_echoes", bundle);
+  ["Cuban Missile brinkmanship", "Berlin Airlift", "1973 embargo", "Suez 1956"].forEach((n) =>
+    assert.ok(t.includes(n), `missing echo ${n}`));
+  assert.ok(t.indexOf("Taiwan Strait transit") < t.indexOf("OPEC+ holds output"), "rank-1 event should come first");
+});
+
+test("pattern echoes narration is large enough to require multi-chunk synthesis", () => {
+  // A realistic 15-match edition (like live edition 15) splits into >1 chunk —
+  // the case that timed out when chunks ran sequentially.
+  const many = Array.from({ length: 15 }, (_, i) => ({
+    event_id: (i % 5) + 1, event_rank: (i % 5) + 1, event_title: `Event ${(i % 5) + 1}`,
+    name: `Historical pattern ${i + 1}`,
+    explanation: "This week rhymes with the past in several concrete and specific ways. ".repeat(6),
+  }));
+  const t = sectionNarration("pattern_echoes", { ...fullBundle, pattern_echoes: many });
+  const chunks = chunkForSynthesis(t);
+  assert.ok(chunks.length >= 2, `expected multi-chunk, got ${chunks.length}`);
+});
+
+// Async checks — parallel synthesis correctness with an injected fake synth.
+const asyncChecks = [];
+async function atest(name, fn) { asyncChecks.push({ name, fn }); }
+
+atest("synthesizeSection concatenates chunk audio IN ORDER despite concurrency", async () => {
+  const text = ["AAA", "BBB", "CCC", "DDD", "EEE"].map((s) => s.repeat(1000)).join("\n\n"); // 5 x ~3000 chars = 5 chunks
+  // Fake synth: resolves after a jittered delay (earlier chunks slower) so a
+  // naive implementation that appended on completion would scramble order.
+  const _synth = (chunk) => new Promise((resolve) => {
+    const tag = chunk.trim()[0]; // 'A'..'E'
+    const delay = { A: 40, B: 10, C: 30, D: 5, E: 20 }[tag] || 0;
+    setTimeout(() => resolve(Buffer.from(tag)), delay);
+  });
+  const buf = await synthesizeSection(text, { _synth });
+  assert.strictEqual(buf.toString(), "ABCDE"); // order preserved
+});
+
+atest("synthesizeSection single chunk passes straight through", async () => {
+  const buf = await synthesizeSection("short", { _synth: (c) => Promise.resolve(Buffer.from("X")) });
+  assert.strictEqual(buf.toString(), "X");
+});
+
 test("contentHash is deterministic and text-sensitive", () => {
   const a = contentHash("hello world", "v1", "m1");
   const b = contentHash("hello world", "v1", "m1");
@@ -123,6 +176,11 @@ test("isValidSectionKey accepts known keys, rejects junk", () => {
   assert.ok(!isValidSectionKey("debate"));
   assert.ok(!isValidSectionKey(""));
 });
+
+for (const { name, fn } of asyncChecks) {
+  try { await fn(); passed++; console.log(`  ok   ${name}`); }
+  catch (e) { console.error(`  FAIL ${name}\n       ${e.message}`); process.exitCode = 1; }
+}
 
 console.log(`\n${passed} checks passed.`);
 if (process.exitCode) { console.error("SECTION AUDIO GUARD TEST FAILED"); }
