@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Search, Radiation, ListFilter } from "lucide-react";
-import { REGIONS } from "../../lib/leaders";
+import { REGIONS } from "../../lib/leadersMeta";
 
 const NUCLEAR_FILTERS = [
   { key: "all", label: "All" },
