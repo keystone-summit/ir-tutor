@@ -85,6 +85,22 @@ function Picker() {
         <span className="cp-go">Open seminar <ChevronRight size={16} /></span>
       </a>
 
+      <a href="/leaders" className="cp-seminar cp-leaders-card">
+        <div className="cp-seminar-icon"><Globe size={24} /></div>
+        <div className="cp-seminar-body">
+          <div className="cp-seminar-kicker">Reference · 57 leaders</div>
+          <h2>Keystone Atlas — World Leaders</h2>
+          <p>Every top leader, top diplomat, defense minister, intel service, and nuclear status
+            for the 57 countries in the Atlas. Filterable grid + 5-round self-test.</p>
+          <div className="cp-leaders-sub">
+            <a href="/leaders" className="cp-leaders-sublink">Overview</a>
+            <span className="cp-leaders-dot">·</span>
+            <a href="/leaders/study" className="cp-leaders-sublink">Study Mode</a>
+          </div>
+        </div>
+        <span className="cp-go">Open atlas <ChevronRight size={16} /></span>
+      </a>
+
       <footer className="cp-foot">Keystone Summit · self-paced learning</footer>
     </div>
   );

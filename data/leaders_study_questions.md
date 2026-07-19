@@ -1,0 +1,623 @@
+# Study Questions — 57 Leaders
+
+_Cover the answers. Mix of leader, diplomat, defense, intel, nuclear, and 'why it matters'. Answers follow each block._
+
+---
+
+## Round 1 — Who leads each country?
+
+- Who is the current leader of **United States** (rank 1)?
+- Who is the current leader of **China** (rank 2)?
+- Who is the current leader of **Russia** (rank 3)?
+- Who is the current leader of **India** (rank 4)?
+- Who is the current leader of **Germany** (rank 5)?
+- Who is the current leader of **Japan** (rank 6)?
+- Who is the current leader of **France** (rank 7)?
+- Who is the current leader of **Israel** (rank 8)?
+- Who is the current leader of **United Kingdom** (rank 9)?
+- Who is the current leader of **Brazil** (rank 10)?
+- Who is the current leader of **Turkey** (rank 11)?
+- Who is the current leader of **South Korea** (rank 12)?
+- Who is the current leader of **Saudi Arabia** (rank 13)?
+- Who is the current leader of **Canada** (rank 14)?
+- Who is the current leader of **Indonesia** (rank 15)?
+- Who is the current leader of **United Arab Emirates** (rank 16)?
+- Who is the current leader of **Italy** (rank 17)?
+- Who is the current leader of **Spain** (rank 18)?
+- Who is the current leader of **Australia** (rank 19)?
+- Who is the current leader of **Poland** (rank 20)?
+- Who is the current leader of **Netherlands** (rank 21)?
+- Who is the current leader of **Mexico** (rank 22)?
+- Who is the current leader of **Pakistan** (rank 23)?
+- Who is the current leader of **Switzerland** (rank 24)?
+- Who is the current leader of **Egypt** (rank 25)?
+- Who is the current leader of **Qatar** (rank 26)?
+- Who is the current leader of **Iran** (rank 27)?
+- Who is the current leader of **Sweden** (rank 28)?
+- Who is the current leader of **Argentina** (rank 29)?
+- Who is the current leader of **Norway** (rank 30)?
+- Who is the current leader of **Ukraine** (rank 31)?
+- Who is the current leader of **Finland** (rank 32)?
+- Who is the current leader of **Greece** (rank 33)?
+- Who is the current leader of **Morocco** (rank 34)?
+- Who is the current leader of **Colombia** (rank 35)?
+- Who is the current leader of **Kazakhstan** (rank 36)?
+- Who is the current leader of **Algeria** (rank 37)?
+- Who is the current leader of **Iraq** (rank 38)?
+- Who is the current leader of **Chile** (rank 39)?
+- Who is the current leader of **Kuwait** (rank 40)?
+- Who is the current leader of **North Korea** (rank 41)?
+- Who is the current leader of **Azerbaijan** (rank 42)?
+- Who is the current leader of **Uzbekistan** (rank 43)?
+- Who is the current leader of **Jordan** (rank 44)?
+- Who is the current leader of **Peru** (rank 45)?
+- Who is the current leader of **Belarus** (rank 46)?
+- Who is the current leader of **El Salvador** (rank 47)?
+- Who is the current leader of **Ecuador** (rank 48)?
+- Who is the current leader of **Syria** (rank 49)?
+- Who is the current leader of **Bolivia** (rank 50)?
+- Who is the current leader of **Venezuela** (rank 51)?
+- Who is the current leader of **Tunisia** (rank 52)?
+- Who is the current leader of **Cuba** (rank 53)?
+- Who is the current leader of **Lebanon** (rank 54)?
+- Who is the current leader of **Libya** (rank 55)?
+- Who is the current leader of **Afghanistan** (rank 56)?
+- Who is the current leader of **Yemen** (rank 57)?
+
+<details><summary>Answers</summary>
+
+- United States: President Donald Trump
+- China: President & CCP General Secretary Xi Jinping
+- Russia: President Vladimir Putin
+- India: Prime Minister Narendra Modi
+- Germany: Chancellor Friedrich Merz
+- Japan: Prime Minister Sanae Takaichi
+- France: President Emmanuel Macron
+- Israel: Prime Minister Benjamin Netanyahu
+- United Kingdom: PM Keir Starmer (outgoing, in office to ~20 Jul 2026); successor Andy Burnham (Labour) taking over imminently
+- Brazil: President Luiz Inacio Lula da Silva
+- Turkey: President Recep Tayyip Erdogan
+- South Korea: President Lee Jae-myung
+- Saudi Arabia: Crown Prince & PM Mohammed bin Salman (King Salman head of state)
+- Canada: Prime Minister Mark Carney
+- Indonesia: President Prabowo Subianto
+- United Arab Emirates: President Mohamed bin Zayed (MBZ)
+- Italy: Prime Minister Giorgia Meloni
+- Spain: Prime Minister Pedro Sanchez
+- Australia: Prime Minister Anthony Albanese
+- Poland: President Karol Nawrocki / PM Donald Tusk
+- Netherlands: Prime Minister Dick Schoof
+- Mexico: President Claudia Sheinbaum
+- Pakistan: PM Shehbaz Sharif / President Asif Ali Zardari
+- Switzerland: Federal Council (rotating presidency)
+- Egypt: President Abdel Fattah el-Sisi
+- Qatar: Emir Tamim bin Hamad Al Thani
+- Iran: Supreme Leader Mojtaba Khamenei (since 8 Mar 2026, after father Ali Khamenei killed 28 Feb 2026)
+- Sweden: Prime Minister Ulf Kristersson
+- Argentina: President Javier Milei
+- Norway: Prime Minister Jonas Gahr Store
+- Ukraine: President Volodymyr Zelensky
+- Finland: President Alexander Stubb
+- Greece: Prime Minister Kyriakos Mitsotakis
+- Morocco: King Mohammed VI (head of state) / PM Aziz Akhannouch
+- Colombia: President Gustavo Petro
+- Kazakhstan: President Kassym-Jomart Tokayev
+- Algeria: President Abdelmadjid Tebboune
+- Iraq: Prime Minister Mohammed Shia al-Sudani
+- Chile: President Jose Antonio Kast (won Dec 2025 runoff, inaugurated 11 Mar 2026)
+- Kuwait: Emir Mishal Al-Ahmad Al-Sabah
+- North Korea: Supreme Leader Kim Jong Un
+- Azerbaijan: President Ilham Aliyev
+- Uzbekistan: President Shavkat Mirziyoyev
+- Jordan: King Abdullah II (head of state)
+- Peru: Interim Pres. Jose Maria Balcazar (since 18 Feb 2026); Keiko Fujimori (Popular Force) won runoff, inaugurated 28 Jul 2026
+- Belarus: President Alexander Lukashenko
+- El Salvador: President Nayib Bukele
+- Ecuador: President Daniel Noboa
+- Syria: President Ahmed al-Sharaa (post-Assad transition)
+- Bolivia: President Rodrigo Paz
+- Venezuela: Acting President Delcy Rodriguez (Maduro captured/extradited Jan 2026)
+- Tunisia: President Kais Saied
+- Cuba: President Miguel Diaz-Canel
+- Lebanon: President Joseph Aoun / PM Nawaf Salam
+- Libya: Divided: GNU PM Dbeibah (west) vs Haftar/LNA (east)
+- Afghanistan: Supreme Leader Hibatullah Akhundzada (Taliban)
+- Yemen: Disputed: Houthis (Sanaa, Mahdi al-Mashat) vs PLC (Rashad al-Alimi)
+
+</details>
+
+---
+
+## Round 2 — What does each call its top diplomat, and who holds it?
+
+- **United States**: top-diplomat title & name?
+- **China**: top-diplomat title & name?
+- **Russia**: top-diplomat title & name?
+- **India**: top-diplomat title & name?
+- **Germany**: top-diplomat title & name?
+- **Japan**: top-diplomat title & name?
+- **France**: top-diplomat title & name?
+- **Israel**: top-diplomat title & name?
+- **United Kingdom**: top-diplomat title & name?
+- **Brazil**: top-diplomat title & name?
+- **Turkey**: top-diplomat title & name?
+- **South Korea**: top-diplomat title & name?
+- **Saudi Arabia**: top-diplomat title & name?
+- **Canada**: top-diplomat title & name?
+- **Indonesia**: top-diplomat title & name?
+- **United Arab Emirates**: top-diplomat title & name?
+- **Italy**: top-diplomat title & name?
+- **Spain**: top-diplomat title & name?
+- **Australia**: top-diplomat title & name?
+- **Poland**: top-diplomat title & name?
+- **Netherlands**: top-diplomat title & name?
+- **Mexico**: top-diplomat title & name?
+- **Pakistan**: top-diplomat title & name?
+- **Switzerland**: top-diplomat title & name?
+- **Egypt**: top-diplomat title & name?
+- **Qatar**: top-diplomat title & name?
+- **Iran**: top-diplomat title & name?
+- **Sweden**: top-diplomat title & name?
+- **Argentina**: top-diplomat title & name?
+- **Norway**: top-diplomat title & name?
+- **Ukraine**: top-diplomat title & name?
+- **Finland**: top-diplomat title & name?
+- **Greece**: top-diplomat title & name?
+- **Morocco**: top-diplomat title & name?
+- **Colombia**: top-diplomat title & name?
+- **Kazakhstan**: top-diplomat title & name?
+- **Algeria**: top-diplomat title & name?
+- **Iraq**: top-diplomat title & name?
+- **Chile**: top-diplomat title & name?
+- **Kuwait**: top-diplomat title & name?
+- **North Korea**: top-diplomat title & name?
+- **Azerbaijan**: top-diplomat title & name?
+- **Uzbekistan**: top-diplomat title & name?
+- **Jordan**: top-diplomat title & name?
+- **Peru**: top-diplomat title & name?
+- **Belarus**: top-diplomat title & name?
+- **El Salvador**: top-diplomat title & name?
+- **Ecuador**: top-diplomat title & name?
+- **Syria**: top-diplomat title & name?
+- **Bolivia**: top-diplomat title & name?
+- **Venezuela**: top-diplomat title & name?
+- **Tunisia**: top-diplomat title & name?
+- **Cuba**: top-diplomat title & name?
+- **Lebanon**: top-diplomat title & name?
+- **Libya**: top-diplomat title & name?
+- **Afghanistan**: top-diplomat title & name?
+- **Yemen**: top-diplomat title & name?
+
+<details><summary>Answers</summary>
+
+- United States: Secretary of State Marco Rubio
+- China: Foreign Minister Wang Yi
+- Russia: Foreign Minister Sergey Lavrov
+- India: Minister of External Affairs S. Jaishankar
+- Germany: Foreign Minister Johann Wadephul
+- Japan: Foreign Minister Toshimitsu Motegi
+- France: Minister for Europe & Foreign Affairs Jean-Noel Barrot
+- Israel: Foreign Minister Gideon Sa'ar
+- United Kingdom: Foreign Secretary (Labour cabinet reshuffle expected under Burnham - verify)
+- Brazil: Foreign Minister Mauro Vieira
+- Turkey: Foreign Minister Hakan Fidan
+- South Korea: Foreign Minister Cho Hyun
+- Saudi Arabia: Foreign Minister Prince Faisal bin Farhan
+- Canada: Minister of Foreign Affairs Anita Anand
+- Indonesia: Foreign Minister Sugiono
+- United Arab Emirates: Foreign Minister Sheikh Abdullah bin Zayed
+- Italy: Foreign Minister Antonio Tajani
+- Spain: Foreign Minister Jose Manuel Albares
+- Australia: Foreign Minister Penny Wong
+- Poland: Foreign Minister Radoslaw Sikorski (also Deputy PM)
+- Netherlands: Foreign Minister (verify current)
+- Mexico: Secretary of Foreign Affairs Juan Ramon de la Fuente
+- Pakistan: Foreign Minister Ishaq Dar (also Dep. PM)
+- Switzerland: Head of Federal Dept. of Foreign Affairs (Ignazio Cassis)
+- Egypt: Foreign Minister Badr Abdelatty
+- Qatar: PM & Foreign Minister Sheikh Mohammed bin Abdulrahman Al Thani
+- Iran: Foreign Minister Abbas Araghchi
+- Sweden: Foreign Minister Maria Malmer Stenergard
+- Argentina: Foreign Minister Pablo Quirno (since Oct 2025)
+- Norway: Foreign Minister Espen Barth Eide
+- Ukraine: Foreign Minister Andrii Sybiha
+- Finland: Foreign Minister Elina Valtonen
+- Greece: Foreign Minister Giorgos Gerapetritis
+- Morocco: Foreign Minister Nasser Bourita
+- Colombia: Foreign Minister Rosa Yolanda Villavicencio (since Jul 2025)
+- Kazakhstan: Foreign Minister Murat Nurtleu
+- Algeria: Foreign Minister Ahmed Attaf
+- Iraq: Foreign Minister Fuad Hussein
+- Chile: Foreign Minister (Kast cabinet - verify)
+- Kuwait: Foreign Minister Jarrah Al-Jaber Al-Ahmad [new Feb 2026]
+- North Korea: Foreign Minister Choe Son Hui
+- Azerbaijan: Foreign Minister Jeyhun Bayramov
+- Uzbekistan: Foreign Minister Bakhtiyor Saidov
+- Jordan: Foreign Minister Ayman Safadi
+- Peru: Foreign Minister (new Fujimori cabinet forming - verify)
+- Belarus: Foreign Minister Maxim Ryzhenkov
+- El Salvador: Foreign Minister (verify current)
+- Ecuador: Foreign Minister (verify current)
+- Syria: Foreign Minister Asaad al-Shaibani
+- Bolivia: Foreign Minister Fernando Aramayo (since Nov 2025)
+- Venezuela: Foreign Minister Yvan Gil
+- Tunisia: Foreign Minister Mohamed Ali Nafti
+- Cuba: Foreign Minister Bruno Rodriguez
+- Lebanon: Foreign Minister Youssef Rajji
+- Libya: Contested foreign representation
+- Afghanistan: Acting Foreign Minister Amir Khan Muttaqi
+- Yemen: Rival foreign representation
+
+</details>
+
+---
+
+## Round 3 — Name the security/intelligence services.
+
+- **United States**: intel/security orgs?
+- **China**: intel/security orgs?
+- **Russia**: intel/security orgs?
+- **India**: intel/security orgs?
+- **Germany**: intel/security orgs?
+- **Japan**: intel/security orgs?
+- **France**: intel/security orgs?
+- **Israel**: intel/security orgs?
+- **United Kingdom**: intel/security orgs?
+- **Brazil**: intel/security orgs?
+- **Turkey**: intel/security orgs?
+- **South Korea**: intel/security orgs?
+- **Saudi Arabia**: intel/security orgs?
+- **Canada**: intel/security orgs?
+- **Indonesia**: intel/security orgs?
+- **United Arab Emirates**: intel/security orgs?
+- **Italy**: intel/security orgs?
+- **Spain**: intel/security orgs?
+- **Australia**: intel/security orgs?
+- **Poland**: intel/security orgs?
+- **Netherlands**: intel/security orgs?
+- **Mexico**: intel/security orgs?
+- **Pakistan**: intel/security orgs?
+- **Switzerland**: intel/security orgs?
+- **Egypt**: intel/security orgs?
+- **Qatar**: intel/security orgs?
+- **Iran**: intel/security orgs?
+- **Sweden**: intel/security orgs?
+- **Argentina**: intel/security orgs?
+- **Norway**: intel/security orgs?
+- **Ukraine**: intel/security orgs?
+- **Finland**: intel/security orgs?
+- **Greece**: intel/security orgs?
+- **Morocco**: intel/security orgs?
+- **Colombia**: intel/security orgs?
+- **Kazakhstan**: intel/security orgs?
+- **Algeria**: intel/security orgs?
+- **Iraq**: intel/security orgs?
+- **Chile**: intel/security orgs?
+- **Kuwait**: intel/security orgs?
+- **North Korea**: intel/security orgs?
+- **Azerbaijan**: intel/security orgs?
+- **Uzbekistan**: intel/security orgs?
+- **Jordan**: intel/security orgs?
+- **Peru**: intel/security orgs?
+- **Belarus**: intel/security orgs?
+- **El Salvador**: intel/security orgs?
+- **Ecuador**: intel/security orgs?
+- **Syria**: intel/security orgs?
+- **Bolivia**: intel/security orgs?
+- **Venezuela**: intel/security orgs?
+- **Tunisia**: intel/security orgs?
+- **Cuba**: intel/security orgs?
+- **Lebanon**: intel/security orgs?
+- **Libya**: intel/security orgs?
+- **Afghanistan**: intel/security orgs?
+- **Yemen**: intel/security orgs?
+
+<details><summary>Answers</summary>
+
+- United States: ODNI oversees 18 agencies incl. CIA, NSA, DIA, FBI
+- China: Ministry of State Security (MSS); PLA military intel
+- Russia: FSB (domestic), SVR (foreign), GRU (military)
+- India: RAW (foreign), IB (domestic)
+- Germany: BND (foreign), BfV (domestic)
+- Japan: CIRO / PSIA; defense intel headquarters
+- France: DGSE (foreign), DGSI (domestic)
+- Israel: Mossad (foreign), Shin Bet (internal), Aman (military)
+- United Kingdom: MI6/SIS (foreign), MI5 (domestic), GCHQ (signals)
+- Brazil: ABIN (intelligence agency)
+- Turkey: MIT (National Intelligence Organization)
+- South Korea: NIS (National Intelligence Service)
+- Saudi Arabia: GIP (General Intelligence Presidency)
+- Canada: CSIS (security), CSE (signals)
+- Indonesia: BIN (State Intelligence Agency)
+- United Arab Emirates: SIA (Signals Intelligence Agency)
+- Italy: AISE (foreign), AISI (domestic)
+- Spain: CNI (National Intelligence Centre)
+- Australia: ASIS (foreign), ASIO (domestic), ASD (signals)
+- Poland: AW (foreign), ABW (domestic)
+- Netherlands: AIVD (general), MIVD (military)
+- Mexico: CNI (National Intelligence Center)
+- Pakistan: ISI (military intel), IB (civilian)
+- Switzerland: NDB (Federal Intelligence Service)
+- Egypt: GIS (General Intelligence Service / Mukhabarat)
+- Qatar: Qatar State Security (QSS)
+- Iran: MOIS (intel ministry) + IRGC intelligence
+- Sweden: MUST (military), Sapo (security)
+- Argentina: SIDE (State Intelligence Secretariat)
+- Norway: NIS (Intelligence Service), PST (security)
+- Ukraine: SBU (security), HUR (military), SZRU (foreign)
+- Finland: SUPO (security), military intel division
+- Greece: EYP (National Intelligence Service)
+- Morocco: DGST (domestic), DGED (foreign)
+- Colombia: DNI (National Intelligence Directorate)
+- Kazakhstan: KNB (National Security Committee)
+- Algeria: DGSI / DDSE
+- Iraq: INIS (National Intelligence Service)
+- Chile: ANI (National Intelligence Agency)
+- Kuwait: Kuwait State Security (KSS)
+- North Korea: RGB (Reconnaissance General Bureau)
+- Azerbaijan: SSS (State Security Service), FIS (foreign)
+- Uzbekistan: SGB (State Security Service)
+- Jordan: GID (General Intelligence Directorate)
+- Peru: DINI (National Intelligence Directorate)
+- Belarus: KGB (retains Soviet-era name)
+- El Salvador: OIE (State Intelligence Agency)
+- Ecuador: CIES (Strategic Intelligence Center)
+- Syria: Reorganizing post-Assad security services
+- Bolivia: State intelligence directorate
+- Venezuela: SEBIN (Bolivarian Intelligence Service)
+- Tunisia: Tunisian intelligence agency (TSD)
+- Cuba: DI (Directorate of Intelligence)
+- Lebanon: General Directorate of General Security; military intel
+- Libya: Rival intelligence services
+- Afghanistan: GDI (General Directorate of Intelligence)
+- Yemen: Rival intelligence services
+
+</details>
+
+---
+
+## Round 4 — Nuclear status (nuclear / non-nuclear / hosts weapons)?
+
+- **United States**?
+- **China**?
+- **Russia**?
+- **India**?
+- **Germany**?
+- **Japan**?
+- **France**?
+- **Israel**?
+- **United Kingdom**?
+- **Brazil**?
+- **Turkey**?
+- **South Korea**?
+- **Saudi Arabia**?
+- **Canada**?
+- **Indonesia**?
+- **United Arab Emirates**?
+- **Italy**?
+- **Spain**?
+- **Australia**?
+- **Poland**?
+- **Netherlands**?
+- **Mexico**?
+- **Pakistan**?
+- **Switzerland**?
+- **Egypt**?
+- **Qatar**?
+- **Iran**?
+- **Sweden**?
+- **Argentina**?
+- **Norway**?
+- **Ukraine**?
+- **Finland**?
+- **Greece**?
+- **Morocco**?
+- **Colombia**?
+- **Kazakhstan**?
+- **Algeria**?
+- **Iraq**?
+- **Chile**?
+- **Kuwait**?
+- **North Korea**?
+- **Azerbaijan**?
+- **Uzbekistan**?
+- **Jordan**?
+- **Peru**?
+- **Belarus**?
+- **El Salvador**?
+- **Ecuador**?
+- **Syria**?
+- **Bolivia**?
+- **Venezuela**?
+- **Tunisia**?
+- **Cuba**?
+- **Lebanon**?
+- **Libya**?
+- **Afghanistan**?
+- **Yemen**?
+
+<details><summary>Answers</summary>
+
+- United States: Nuclear (declared)
+- China: Nuclear (declared)
+- Russia: Nuclear (declared, largest arsenal)
+- India: Nuclear (declared, non-NPT)
+- Germany: Non-nuclear (hosts US weapons; NATO sharing)
+- Japan: Non-nuclear (US umbrella)
+- France: Nuclear (declared, independent deterrent)
+- Israel: Nuclear (undeclared/opaque)
+- United Kingdom: Nuclear (declared, Trident)
+- Brazil: Non-nuclear (NPT; advanced civil program)
+- Turkey: Non-nuclear (hosts US weapons)
+- South Korea: Non-nuclear (US umbrella; debate on own deterrent)
+- Saudi Arabia: Non-nuclear (nuclear ambitions; Pakistan pact)
+- Canada: Non-nuclear (NATO)
+- Indonesia: Non-nuclear (NPT)
+- United Arab Emirates: Non-nuclear (civil nuclear power; NPT)
+- Italy: Non-nuclear (hosts US weapons)
+- Spain: Non-nuclear (NATO)
+- Australia: Non-nuclear (AUKUS submarines; US umbrella)
+- Poland: Non-nuclear (hosts US troops; NATO)
+- Netherlands: Non-nuclear (hosts US weapons)
+- Mexico: Non-nuclear (NPT)
+- Pakistan: Nuclear (declared, non-NPT)
+- Switzerland: Non-nuclear (neutral)
+- Egypt: Non-nuclear (NPT; civil program)
+- Qatar: Non-nuclear (NPT)
+- Iran: Non-nuclear (NPT; program struck Feb 2026; latent)
+- Sweden: Non-nuclear (new NATO member 2024)
+- Argentina: Non-nuclear (NPT; advanced civil program)
+- Norway: Non-nuclear (NATO; Arctic border with Russia)
+- Ukraine: Non-nuclear (gave up Soviet arms 1994)
+- Finland: Non-nuclear (NATO member 2023)
+- Greece: Non-nuclear (NATO)
+- Morocco: Non-nuclear (NPT)
+- Colombia: Non-nuclear (NPT)
+- Kazakhstan: Non-nuclear (gave up Soviet arms; NPT)
+- Algeria: Non-nuclear (NPT)
+- Iraq: Non-nuclear (NPT)
+- Chile: Non-nuclear (NPT)
+- Kuwait: Non-nuclear (NPT)
+- North Korea: Nuclear (declared, non-NPT)
+- Azerbaijan: Non-nuclear (NPT)
+- Uzbekistan: Non-nuclear (NPT; Central Asia NWFZ)
+- Jordan: Non-nuclear (NPT)
+- Peru: Non-nuclear (NPT)
+- Belarus: Non-nuclear (hosts Russian tactical weapons since 2023)
+- El Salvador: Non-nuclear (NPT)
+- Ecuador: Non-nuclear (NPT)
+- Syria: Non-nuclear (NPT; past program dismantled)
+- Bolivia: Non-nuclear (NPT)
+- Venezuela: Non-nuclear (NPT)
+- Tunisia: Non-nuclear (NPT)
+- Cuba: Non-nuclear (NPT)
+- Lebanon: Non-nuclear (NPT)
+- Libya: Non-nuclear (Gaddafi program dismantled 2003)
+- Afghanistan: Non-nuclear
+- Yemen: Non-nuclear
+
+</details>
+
+---
+
+## Round 5 — Why does each matter to the US?
+
+- **United States**?
+- **China**?
+- **Russia**?
+- **India**?
+- **Germany**?
+- **Japan**?
+- **France**?
+- **Israel**?
+- **United Kingdom**?
+- **Brazil**?
+- **Turkey**?
+- **South Korea**?
+- **Saudi Arabia**?
+- **Canada**?
+- **Indonesia**?
+- **United Arab Emirates**?
+- **Italy**?
+- **Spain**?
+- **Australia**?
+- **Poland**?
+- **Netherlands**?
+- **Mexico**?
+- **Pakistan**?
+- **Switzerland**?
+- **Egypt**?
+- **Qatar**?
+- **Iran**?
+- **Sweden**?
+- **Argentina**?
+- **Norway**?
+- **Ukraine**?
+- **Finland**?
+- **Greece**?
+- **Morocco**?
+- **Colombia**?
+- **Kazakhstan**?
+- **Algeria**?
+- **Iraq**?
+- **Chile**?
+- **Kuwait**?
+- **North Korea**?
+- **Azerbaijan**?
+- **Uzbekistan**?
+- **Jordan**?
+- **Peru**?
+- **Belarus**?
+- **El Salvador**?
+- **Ecuador**?
+- **Syria**?
+- **Bolivia**?
+- **Venezuela**?
+- **Tunisia**?
+- **Cuba**?
+- **Lebanon**?
+- **Libya**?
+- **Afghanistan**?
+- **Yemen**?
+
+<details><summary>Answers</summary>
+
+- United States: The reference point: sets the strategy all others react to; 2026 pivot to the Western Hemisphere.
+- China: The primary long-term rival: military, tech, and de-dollarization competition.
+- Russia: Ukraine war; benefits from the Iran war via oil revenue and diverted US resources.
+- India: Swing power: buys Russian oil, courted by US as China counterweight; ceremonial president is Droupadi Murmu.
+- Germany: Leads European response as US steps back from Ukraine; ceremonial president Steinmeier.
+- Japan: Key Indo-Pacific anchor vs China; ceremonial Emperor Naruhito is head of state.
+- France: Europe's only EU nuclear power; central to any Europe-led deterrence.
+- Israel: Co-led the Feb 2026 strikes on Iran; ceremonial president Isaac Herzog.
+- United Kingdom: Core US ally; PM changing hands now (Starmer resigned; Andy Burnham becoming PM) - King Charles III is head of state.
+- Brazil: BRICS leader pushing de-dollarization and local-currency trade.
+- Turkey: NATO member straddling Russia and the West; mediator role; regional power in Syria.
+- South Korea: Front line vs North Korea; growing pressure to consider nuclear latency.
+- Saudi Arabia: Oil weight, Iran rival; nuclear-latency risk via Pakistan security pact.
+- Canada: Closest US neighbor/ally; friction over tariffs and sovereignty rhetoric.
+- Indonesia: Largest Muslim-majority state; BRICS member; key Indo-Pacific swing state.
+- United Arab Emirates: Financial/tech hub; US security partner; hedges with China.
+- Italy: G7 member; Mediterranean/migration role; ceremonial president Mattarella.
+- Spain: NATO member; friction over defense-spending targets; King Felipe VI head of state.
+- Australia: AUKUS partner; central to Indo-Pacific deterrence vs China.
+- Poland: NATO's eastern frontier vs Russia; largest European ground buildup.
+- Netherlands: Hosts key chip supply chain (ASML); NATO logistics hub.
+- Mexico: Epicenter of the cartels-as-FTOs and fentanyl fight; tariff pressure.
+- Pakistan: Nuclear state; Saudi security pact; mediator in US-Iran; army holds real power.
+- Switzerland: Neutral financial center; sanctions-transmission and diplomacy venue.
+- Egypt: Controls Suez Canal; Gaza mediator; major US military-aid recipient.
+- Qatar: Hosts Al Udeid US airbase; key mediator (Gaza, Iran, Afghanistan).
+- Iran: Center of the 2026 war; President Masoud Pezeshkian is head of government, not head of state.
+- Sweden: Newest NATO member; Baltic security vs Russia; King Carl XVI Gustaf head of state.
+- Argentina: Pro-US libertarian pivot; declined BRICS; dollarization debate.
+- Norway: Arctic/High North front with Russia; major gas supplier to Europe.
+- Ukraine: Defensive war continues; US aid halted, Europe sustaining supply.
+- Finland: 1,300km border with Russia; newest-but-one NATO member; PM Petteri Orpo runs govt.
+- Greece: NATO member; tension with Turkey; migration frontier; ceremonial president.
+- Morocco: US non-NATO ally; Western Sahara; Abraham Accords signatory.
+- Colombia: Top cocaine source; strained US counter-narcotics ties under Petro.
+- Kazakhstan: Energy-rich; balances Russia, China, and the West; uranium supplier.
+- Algeria: Major gas supplier to Europe; largest African military budget; Russia arms buyer.
+- Iraq: US troop drawdown; ISIS remnants; Iran-aligned militia influence; ceremonial president.
+- Chile: Copper/lithium supplier; sharp rightward shift on crime/migration mirrors regional trend.
+- Kuwait: Gulf oil state; US military partner; parliament suspended 2024.
+- North Korea: Expanding arsenal; arms/troops to Russia for Ukraine; proliferation risk.
+- Azerbaijan: Energy corridor to Europe; Israel/Turkey ties; post-Karabakh leverage on Iran's north.
+- Uzbekistan: Most populous Central Asian state; balances Russia/China/West.
+- Jordan: Stable US ally hosting refugees; buffer with Israel, Syria, Iraq.
+- Peru: Chronic instability (Jeri removed Feb 2026, several presidents in months); copper; drug transit.
+- Belarus: Russia's closest ally; hosts Russian nukes; staging ground vs Ukraine/NATO.
+- El Salvador: Gang crackdown model; accepts US deportees/detainees; close Trump-era ties.
+- Ecuador: Cocaine-transit crisis; invited US security help; 'internal armed conflict' vs gangs.
+- Syria: Post-Assad transition; ISIS remnants; US troop presence; sanctions review.
+- Bolivia: Ended ~20yrs MAS rule; lithium reserves; potential US-relations reset.
+- Venezuela: Flagship hemisphere case; presidency disputed (opposition's Edmundo Gonzalez).
+- Tunisia: Democratic backsliding; migration launch point to Europe.
+- Cuba: Backs Venezuela; on US state-sponsor-of-terror list; economic collapse.
+- Lebanon: Home of Hezbollah (Iran proxy); fragile post-war recovery.
+- Libya: Split state; migration route; Russia (Wagner successor) and Turkey footholds.
+- Afghanistan: ISIS-K terror base; unrecognized regime; counterterrorism concern for US.
+- Yemen: Houthis (Iran-backed) attack Red Sea shipping; direct US military strikes.
+
+</details>
