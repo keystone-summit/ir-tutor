@@ -1,11 +1,15 @@
 // /leaders/<slug> — Single country brief. Server-rendered from the on-disk
 // dataset; no client fetch, no auth, no JS required to see the content.
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { allLeaders, findBySlug } from "../../../lib/leaders";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
+// Allow unknown/uppercase params through so we can 301-redirect them to their
+// lowercase canonical form (HOTFIX 2) or render the branded not-found page
+// (HOTFIX 1) instead of Next.js's default black 404.
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return allLeaders().map((c) => ({ slug: c.slug }));
@@ -27,7 +31,19 @@ function nuclearBadge(cat, text) {
 }
 
 export default function CountryBriefPage({ params }) {
-  const c = findBySlug(params.slug);
+  // HOTFIX 2 (page side): case-normalize by permanently redirecting any
+  // mixed-case slug to its lowercased canonical URL. Example:
+  //   /leaders/UNITED-STATES  ->  308  ->  /leaders/united-states
+  // Next 14 `permanentRedirect()` responds 308 (Permanent Redirect); for
+  // GET-only atlas pages this is functionally equivalent to a 301 and both
+  // Google and Bing treat 308 as permanent for canonicalization/caching.
+  const rawSlug = params?.slug || "";
+  const lowerSlug = rawSlug.toLowerCase();
+  if (rawSlug !== lowerSlug) {
+    permanentRedirect(`/leaders/${lowerSlug}`);
+  }
+
+  const c = findBySlug(lowerSlug);
   if (!c) notFound();
   const badge = nuclearBadge(c.nuclear_category, c.nuclear);
 

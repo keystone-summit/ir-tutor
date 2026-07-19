@@ -7,13 +7,18 @@ import { findBySlug } from "../../../../lib/leaders";
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const slug = searchParams.get("slug");
-    if (!slug) {
+    const rawSlug = searchParams.get("slug");
+    if (!rawSlug) {
       return Response.json(
         { ok: false, error: "slug query param required." },
         { status: 400 }
       );
     }
+    // HOTFIX 2 (API side): case-normalize the incoming slug so callers can
+    // hit /api/leaders/get?slug=UNITED-STATES and still get a 200. We do
+    // NOT redirect the API — pure JSON responders should stay silent on
+    // canonicalization and simply match.
+    const slug = String(rawSlug).toLowerCase();
     const row = findBySlug(slug);
     if (!row) {
       return Response.json(
