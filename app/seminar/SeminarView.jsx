@@ -490,7 +490,10 @@ export default function SeminarView() {
 
       {/* 1 — Weekly Briefing */}
       <section id="briefing" className="sem-sec">
-        <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top 5 Events<SectionListenButton sectionKey="briefing" /></h2>
+        {/* The auto-pipeline always selects 5, but curated events can be appended
+            to an edition (seminar_events.curated), so the count is read off the
+            events actually rendered rather than hardcoded to "Top 5". */}
+        <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top {events.length} Events<SectionListenButton sectionKey="briefing" /></h2>
 
         {/* Phase 3.5 — 5-region quota coverage strip */}
         <RegionCoverage edition={edition} events={events} />

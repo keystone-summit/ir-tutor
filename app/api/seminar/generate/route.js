@@ -159,8 +159,24 @@ export async function POST(req) {
   }
 
   // Replace events for this edition.
+  //
+  // Scoped to the auto-selected rows: `curated` events were added by hand to
+  // this edition (see supabase_migration_seminar_curated.sql) and must survive
+  // a regeneration — otherwise the Thursday refresh or the daily heartbeat
+  // self-heal silently deletes them. Curated rows are ranked after the auto
+  // five, so the 1..5 re-rank below never collides with them.
   try {
-    await query(`delete from public.seminar_events where seminar_id = $1`, [editionId]);
+    try {
+      await query(
+        `delete from public.seminar_events
+          where seminar_id = $1 and coalesce(curated, false) = false`,
+        [editionId]
+      );
+    } catch {
+      // Pre-migration DB (no `curated` column) — fall back to the old
+      // delete-everything behaviour rather than failing the whole run.
+      await query(`delete from public.seminar_events where seminar_id = $1`, [editionId]);
+    }
     for (const e of resolved) {
       await query(
         `insert into public.seminar_events
