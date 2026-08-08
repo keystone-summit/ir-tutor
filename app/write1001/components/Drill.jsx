@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { gradeExercise } from "../lib/grade";
 
 // Auto-checked fill-in / completion drill. Pure client-side, no API.
 export default function Drill({ ex }) {
@@ -8,16 +9,7 @@ export default function Drill({ ex }) {
   const [result, setResult] = useState(null);
 
   function check() {
-    if (ex.type === "completion" || !ex.answers) {
-      // Completion has no fixed answer — accept any real attempt, nudge to tutor.
-      setResult(vals.map((v) => v.trim().length > 2));
-      return;
-    }
-    setResult(
-      ex.answers.map((accepted, i) =>
-        accepted.some((a) => a.toLowerCase() === vals[i].trim().toLowerCase())
-      )
-    );
+    setResult(gradeExercise(ex, vals));
   }
 
   return (
@@ -29,7 +21,7 @@ export default function Drill({ ex }) {
           <input
             key={i}
             value={vals[i]}
-            placeholder={`Blank ${i + 1}`}
+            placeholder={ex.hints?.[i] || `Blank ${i + 1}`}
             onChange={(e) => {
               const next = [...vals];
               next[i] = e.target.value;

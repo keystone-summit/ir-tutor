@@ -10,7 +10,15 @@
 //   type: "fill" | "completion" | "paragraph" | "rewrite"
 //   prompt: instruction shown to the student
 //   text?:  the sentence/stem (with ___ blanks for "fill")
-//   answers?: per-blank arrays of accepted answers (lowercased on compare)
+//   answers?: per-blank arrays of accepted answers. One entry per blank, so
+//             answers.length defines how many input boxes render. Matching is
+//             case-insensitive and tolerant of spacing, curly apostrophes, and
+//             a stray trailing end mark — see ../lib/grade.js.
+//   hints?:   per-blank placeholder text, when "Blank 1" isn't self-explanatory
+//   caseSensitive?: compare capitals exactly. Required for the Week 1
+//             capitalization drill, where "my" vs "My" IS the answer.
+//   acceptAnyCapitalized?: the student supplies their own proper noun, so
+//             accept anything that starts with a capital letter.
 //   targetTense?: for "rewrite"
 //   minWords?: for "paragraph"
 
@@ -50,9 +58,21 @@ export const WEEKS = [
     exercises: [
       {
         type: "fill",
-        prompt: "Add the missing capital letters and end punctuation.",
-        text: "my friend ___ and i went to ___",
-        answers: [["maria", "sara", "a name"], ["paris", "school", "a place"]],
+        prompt:
+          "Add the missing capital letters and end punctuation. Type the corrected first word, the corrected pronoun, and the end mark.",
+        text: "___ friend Maria and ___ went to Paris ___",
+        hints: ["first word", "pronoun", "end mark"],
+        caseSensitive: true, // the whole point of this drill is the capital letter
+        answers: [["My"], ["I"], [".", "!"]],
+      },
+      {
+        type: "fill",
+        prompt: "Now fill in the proper nouns. Names of people and places take a capital letter.",
+        text: "My friend ___ and I went to ___.",
+        caseSensitive: true,
+        hints: ["a person's name", "a place"],
+        answers: [[], []], // any capitalized word is accepted — see acceptAnyCapitalized
+        acceptAnyCapitalized: true,
       },
       {
         type: "completion",
@@ -87,7 +107,16 @@ export const WEEKS = [
         type: "fill",
         prompt: "Fill each blank with the part of speech named in brackets.",
         text: "The [adjective] ___ cat [verb] ___ on the [noun] ___.",
-        answers: [["black", "happy", "big", "small"], ["sat", "slept", "jumped", "ran"], ["mat", "chair", "bed", "floor"]],
+        answers: [
+          ["black", "white", "grey", "gray", "orange", "brown", "happy", "sad", "sleepy", "lazy",
+           "big", "small", "little", "tiny", "huge", "fat", "thin", "old", "young", "soft",
+           "fluffy", "furry", "angry", "quiet", "noisy", "curious", "clever", "hungry"],
+          ["sat", "sits", "slept", "sleeps", "jumped", "jumps", "ran", "runs", "lay", "lies",
+           "rested", "rests", "waited", "waits", "stood", "stands", "climbed", "climbs",
+           "napped", "naps", "curled up", "stretched"],
+          ["mat", "chair", "bed", "floor", "rug", "sofa", "couch", "table", "windowsill",
+           "window sill", "step", "stairs", "carpet", "blanket", "roof", "porch", "box"],
+        ],
       },
       {
         type: "completion",
@@ -121,7 +150,11 @@ export const WEEKS = [
         type: "fill",
         prompt: "Choose the right connector.",
         text: "I was tired ___ I kept working. The keys are ___ the table.",
-        answers: [["but", "yet"], ["on", "under", "near"]],
+        answers: [
+          ["but", "yet", "though", "but still"],
+          ["on", "under", "near", "beside", "by", "next to", "beneath", "underneath",
+           "above", "over", "behind", "in", "on top of"],
+        ],
       },
       {
         type: "completion",
@@ -156,7 +189,7 @@ export const WEEKS = [
         type: "fill",
         prompt: "Put the verb in the correct present form.",
         text: "She ___ (work) every day. They ___ (play) right now.",
-        answers: [["works"], ["are playing"]],
+        answers: [["works"], ["are playing", "'re playing", "they're playing"]],
       },
       {
         type: "completion",
@@ -221,7 +254,7 @@ export const WEEKS = [
         type: "fill",
         prompt: "Choose 'will' or 'going to'.",
         text: "I think it ___ rain. I already packed; I ___ visit my aunt.",
-        answers: [["will"], ["am going to", "going to"]],
+        answers: [["will", "will probably", "is going to"], ["am going to", "going to", "'m going to", "i'm going to"]],
       },
       {
         type: "completion",
@@ -253,7 +286,10 @@ export const WEEKS = [
         type: "fill",
         prompt: "Use present perfect or past perfect.",
         text: "I ___ (already / eat) when she arrived. She ___ (live) here since 2019.",
-        answers: [["had already eaten", "had eaten"], ["has lived"]],
+        answers: [
+          ["had already eaten", "had eaten", "already had eaten"],
+          ["has lived", "has been living", "'s lived"],
+        ],
       },
       {
         type: "rewrite",
@@ -348,7 +384,7 @@ export const WEEKS = [
         type: "fill",
         prompt: "Add a transition (however, therefore, for example, afterward).",
         text: "It was expensive. ___, the quality was worth it.",
-        answers: [["however", "still"]],
+        answers: [["however", "still", "nevertheless", "nonetheless", "even so", "that said"]],
       },
       {
         type: "paragraph",

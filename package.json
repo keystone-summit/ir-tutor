@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --import ./scripts/loader-register.mjs scripts/test_section_audio.mjs"
+    "test": "node --import ./scripts/loader-register.mjs scripts/test_section_audio.mjs",
+    "test:write1001": "node --import ./scripts/loader-register.mjs scripts/test_write1001_grading.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.400.0",
