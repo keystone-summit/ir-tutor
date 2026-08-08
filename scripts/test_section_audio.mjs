@@ -67,10 +67,13 @@ test("absent section builds empty narration", () => {
   assert.strictEqual(sectionNarration("gaps", noGaps).trim(), "");
 });
 
-test("briefing narration names the lead events", () => {
+test("briefing narration names the lead events and counts them honestly", () => {
   const t = sectionNarration("briefing", fullBundle);
   assert.ok(t.includes("Taiwan Strait transit"));
-  assert.ok(/top five events/i.test(t));
+  // The intro used to say "top five events" whatever the edition held; it now
+  // reads the real count, and this bundle carries two.
+  assert.ok(/top two events/i.test(t));
+  assert.ok(!/top five events/i.test(t));
 });
 
 test("deep dive narration spells US as United States and skips blank layers", () => {

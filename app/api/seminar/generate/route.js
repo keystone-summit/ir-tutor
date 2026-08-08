@@ -1,9 +1,10 @@
 // POST /api/seminar/generate
-//   Reads the last ~8 days of ingested news, asks Claude to (1) pick the 5
-//   most consequential FP events, then (2) write a full deep-dive on the #1
-//   event (five-layer drill-down, five-lens analysis, gaps, implications,
-//   what-to-watch, named parties). Writes seminar_editions + seminar_events
-//   + seminar_deep_dive and publishes the edition.
+//   Reads the last ~8 days of ingested news, asks Claude to (1) pick the 15
+//   most consequential FP events spread over eight region/theme buckets, then
+//   (2) write a full deep-dive on the #1 event (five-layer drill-down,
+//   five-lens analysis, gaps, implications, what-to-watch, named parties).
+//   Writes seminar_editions + seminar_events + seminar_deep_dive and publishes
+//   the edition.
 //
 //   Gated by SEMINAR_CRON_SECRET (cron / manual) OR a PIN token.
 //   Idempotent per week: re-running upserts the same week's edition.
@@ -16,30 +17,39 @@ import { query } from "../../../../lib/db";
 import { claudeJSON } from "../../../../lib/anthropic";
 import { getSeminarWeek, weekRangeLabel } from "../../../../lib/seminarWeek";
 import { REGION_LABEL } from "../../../../lib/seminarFeeds";
+import { titleTokens, isDuplicateTitle, mergeDeskPicks } from "../../../../lib/seminarSelection";
+import {
+  SEMINAR_EVENT_TARGET,
+  REGION_BUCKET_KEYS,
+  BUCKET_DESC,
+  SELECTION_GROUPS,
+} from "../../../../lib/seminarBuckets";
 
-// Phase 3.5 — the 5-region weekly quota. The selector must spread the five
-// events across these buckets where the week's news supports it, and report any
-// bucket it could NOT fill as "underweighted" rather than skewing toward one region.
-const REGION_BUCKETS = ["middle_east", "asia", "americas", "europe_russia", "brics_trade"];
-const BUCKET_DESC =
-  "middle_east (Middle East: Iran, Israel, Gulf, Levant), " +
-  "asia (Asia: China, India, Korea, Japan, SE Asia), " +
-  "americas (Americas: US domestic-foreign, Latin America, Mexico/cartels, Venezuela), " +
-  "europe_russia (Europe & Russia: EU, NATO, Ukraine, Russia), " +
-  "brics_trade (BRICS / global-trade & geoeconomics: de-dollarization, sanctions, SWIFT, supply chains, BRICS bloc)";
+// Candidate pool handed to the selector. Pulling the most recent N outright
+// let the highest-volume feeds (US wires, think-tanks) eat the list — the last
+// 8 days run ~400 items, of which US+INTL+NGO alone are ~250. PER_REGION_CAP
+// takes the freshest N from each region tag first, so a five-item-a-week
+// Africa or Mexico feed still reaches the selector.
+const CANDIDATE_LIMIT = 240;
+const PER_REGION_CAP = 34;
 
-const SELECT_SYSTEM =
-  "You are a senior foreign-policy analyst building a weekly US foreign-policy " +
-  "seminar with GLOBAL coverage. From a list of news items drawn from many national " +
-  "presses, identify the FIVE most consequential foreign-policy events of the week " +
-  "for US strategic interests. Prefer hard geopolitics (war, diplomacy, deterrence, " +
-  "sanctions, energy, alliances, nuclear, narco-state security) over domestic politics " +
-  "or soft news. CRITICAL: deliberately spread the five events across world regions — " +
-  "aim to cover Middle East, Asia, the Americas, Europe/Russia, and a BRICS/global-trade " +
-  "story — rather than letting one region dominate. Only repeat a region if a second " +
-  "story there is genuinely more consequential than the best available story in an " +
-  "uncovered region. Cluster duplicate coverage of the same event into one. " +
-  "Rank 1 = most consequential. Return STRICT JSON only, no prose.";
+function selectSystem(group) {
+  return (
+    "You are a senior foreign-policy analyst building a weekly US foreign-policy " +
+    "seminar with GLOBAL coverage. You are staffing ONE DESK of that seminar: " +
+    `${group.label}. From a list of news items drawn from many national presses, ` +
+    `identify the ${group.ask} most consequential foreign-policy events of the week ` +
+    "**that fall inside your desk's buckets** for US strategic interests. Prefer hard " +
+    "geopolitics (war, diplomacy, deterrence, sanctions, energy, alliances, nuclear, " +
+    "narco-state security, transnational institutions) over domestic politics or soft " +
+    "news. Ignore items outside your buckets entirely — another desk covers them. " +
+    "Within your desk, spread the picks across your buckets rather than letting one " +
+    "dominate, and cluster duplicate coverage of the same event into one. Score each " +
+    "pick's consequence for US strategic interests on a 0-100 scale; those scores are " +
+    "compared against the other desks', so be honest — a quiet week on your desk should " +
+    "produce low scores, not inflated ones. Return STRICT JSON only, no prose."
+  );
+}
 
 function regionLabel(code) {
   return REGION_LABEL[code] || code || "—";
@@ -51,16 +61,26 @@ export async function POST(req) {
 
   const { weekStart, weekEnd } = getSeminarWeek();
 
-  // 1) Pull candidate news for the window.
+  // 1) Pull candidate news for the window, balanced across region tags.
   let candidates;
   try {
     const r = await query(
-      `select id, source, url, title, body_html, region_tag, worldview_tag, published_at
-         from public.seminar_news_raw
-        where coalesce(published_at, fetched_at) >= now() - interval '8 days'
-        order by coalesce(published_at, fetched_at) desc
-        limit 90`,
-      []
+      `with ranked as (
+         select id, source, url, title, body_html, region_tag,
+                coalesce(published_at, fetched_at) as ts,
+                row_number() over (
+                  partition by region_tag
+                  order by coalesce(published_at, fetched_at) desc
+                ) as rn
+           from public.seminar_news_raw
+          where coalesce(published_at, fetched_at) >= now() - interval '8 days'
+       )
+       select id, source, url, title, body_html, region_tag
+         from ranked
+        where rn <= $1
+        order by ts desc
+        limit $2`,
+      [PER_REGION_CAP, CANDIDATE_LIMIT]
     );
     candidates = r.rows;
   } catch (e) {
@@ -81,65 +101,104 @@ export async function POST(req) {
     })
     .join("\n");
 
-  // 2) Selection call.
-  let selection;
-  try {
-    selection = await claudeJSON({
-      system: SELECT_SYSTEM,
-      maxTokens: 1400,
-      user:
-        `Week of ${weekStart} to ${weekEnd}. Here are this week's candidate news items, each with an index:\n\n` +
-        list +
-        `\n\nRegion buckets (assign each event to exactly ONE): ${BUCKET_DESC}.\n` +
-        `Spread the five events across as many distinct buckets as the news supports. If a bucket ` +
-        `genuinely has no qualifying story this week, leave it uncovered and name it in ` +
-        `"underweighted_regions" — do NOT invent or stretch a weak story to fill it.\n\n` +
-        `Return JSON of this exact shape:\n` +
-        `{"events":[{"rank":1,"source_index":<int from the list>,"title":"<concise event title>",` +
-        `"summary":"<2-3 sentence neutral summary of the EVENT (not the headline)>",` +
-        `"reasoning":"<one sentence on why it is consequential for US interests>",` +
-        `"region_bucket":"<one of: ${REGION_BUCKETS.join(" | ")}>"}, ... exactly 5 items ...],` +
-        `"underweighted_regions":["<bucket key the week's news could not fill>", ...]}`,
-    });
-  } catch (e) {
-    return Response.json({ ok: false, error: "Selection failed.", detail: String(e.message) }, { status: 502 });
+  // 2) Selection — one call per desk, all three in flight at once. A desk that
+  //    fails is recorded and skipped rather than failing the whole week: two
+  //    desks' worth of briefing beats none.
+  const desks = await Promise.all(
+    SELECTION_GROUPS.map(async (group) => {
+      const bucketLines = group.buckets.map((b) => `  - ${b}: ${BUCKET_DESC[b]}`).join("\n");
+      try {
+        const out = await claudeJSON({
+          system: selectSystem(group),
+          maxTokens: 2600,
+          user:
+            `Week of ${weekStart} to ${weekEnd}. Here are this week's candidate news items, each with an index:\n\n` +
+            list +
+            `\n\nYOUR DESK'S BUCKETS (assign each event to exactly ONE of these):\n${bucketLines}\n\n` +
+            `Pick up to ${group.ask} events, best first. If one of your buckets genuinely has no ` +
+            `qualifying story this week, leave it uncovered and name it in "underweighted_regions" ` +
+            `— do NOT invent or stretch a weak story to fill it, and do NOT reach outside your buckets.\n\n` +
+            `Return JSON of this exact shape:\n` +
+            `{"events":[{"source_index":<int from the list>,"title":"<concise event title>",` +
+            `"summary":"<2-3 sentence neutral summary of the EVENT (not the headline)>",` +
+            `"reasoning":"<one sentence on why it is consequential for US interests>",` +
+            `"consequence":<0-100>,` +
+            `"region_bucket":"<one of: ${group.buckets.join(" | ")}>"}, ... up to ${group.ask} items ...],` +
+            `"underweighted_regions":["<bucket key your desk could not fill>", ...]}`,
+        });
+        return { group, out, error: null };
+      } catch (e) {
+        return { group, out: null, error: String(e.message).slice(0, 200) };
+      }
+    })
+  );
+
+  const deskErrors = desks.filter((d) => d.error).map((d) => ({ desk: d.group.key, error: d.error }));
+  if (deskErrors.length === SELECTION_GROUPS.length) {
+    return Response.json(
+      { ok: false, error: "Selection failed on every desk.", detail: deskErrors },
+      { status: 502 }
+    );
   }
 
-  const events = Array.isArray(selection && selection.events) ? selection.events.slice(0, 5) : [];
-  if (events.length < 1) {
+  // Normalise each desk's picks, keeping only in-bucket rows with a resolvable source.
+  const seenIdx = new Set();
+  const seenTokenSets = [];
+  let dropped = 0;
+  const perDesk = desks.map(({ group, out }) => {
+    const raw = Array.isArray(out && out.events) ? out.events : [];
+    const picks = [];
+    for (const ev of raw) {
+      if (picks.length >= group.ask) break;
+      const ci = Number.isInteger(ev.source_index) ? candidates[ev.source_index] : null;
+      const bucket = group.buckets.includes(ev.region_bucket) ? ev.region_bucket : group.buckets[0];
+      const title = String(ev.title || (ci && ci.title) || "Untitled event").slice(0, 400);
+      const tokens = titleTokens(title);
+      // Cross-desk de-dup: a cross-cutting story (say a Saudi-Turkey-Pakistan
+      // defence pact) can legitimately look in-bucket to two desks. Desks are
+      // walked in SELECTION_GROUPS order, so the winner is deterministic.
+      if (ci && seenIdx.has(ev.source_index)) { dropped++; continue; }
+      if (isDuplicateTitle(tokens, seenTokenSets)) { dropped++; continue; }
+      if (ci) seenIdx.add(ev.source_index);
+      if (tokens.size) seenTokenSets.push(tokens);
+      const score = Number(ev.consequence);
+      picks.push({
+        desk: group.key,
+        consequence: Number.isFinite(score) ? Math.max(0, Math.min(100, score)) : 50,
+        title,
+        summary: ev.summary ? String(ev.summary) : null,
+        reasoning: ev.reasoning ? String(ev.reasoning) : null,
+        region_bucket: bucket,
+        source_url: ci ? ci.url : null,
+        source_name: ci ? ci.source : null,
+        source_region: ci ? regionLabel(ci.region_tag) : null,
+        raw_html: ci ? ci.body_html : null,
+        raw_id: ci ? ci.id : null,
+      });
+    }
+    picks.sort((a, b) => b.consequence - a.consequence);
+    return { group, picks };
+  });
+
+  const resolved = mergeDeskPicks(perDesk, SEMINAR_EVENT_TARGET);
+  if (resolved.length < 1) {
     return Response.json({ ok: false, error: "Model returned no events." }, { status: 502 });
   }
-  // Resolve each event's source row from its index.
-  const resolved = events.map((ev, idx) => {
-    const ci = Number.isInteger(ev.source_index) ? candidates[ev.source_index] : null;
-    const bucket = REGION_BUCKETS.includes(ev.region_bucket) ? ev.region_bucket : null;
-    return {
-      rank: Number.isInteger(ev.rank) ? ev.rank : idx + 1,
-      title: String(ev.title || (ci && ci.title) || "Untitled event").slice(0, 400),
-      summary: ev.summary ? String(ev.summary) : null,
-      reasoning: ev.reasoning ? String(ev.reasoning) : null,
-      region_bucket: bucket,
-      source_url: ci ? ci.url : null,
-      source_name: ci ? ci.source : null,
-      source_region: ci ? regionLabel(ci.region_tag) : null,
-      raw_html: ci ? ci.body_html : null,
-      raw_id: ci ? ci.id : null,
-    };
-  });
-  resolved.sort((a, b) => a.rank - b.rank);
   resolved.forEach((e, i) => (e.rank = i + 1));
   const top = resolved[0];
 
-  // Phase 3.5 — tally region coverage and the buckets the week could not fill.
+  // Tally region coverage and the buckets the week could not fill.
   const regionCoverage = {};
   for (const e of resolved) {
     if (e.region_bucket) regionCoverage[e.region_bucket] = (regionCoverage[e.region_bucket] || 0) + 1;
   }
-  const modelUnder = Array.isArray(selection && selection.underweighted_regions)
-    ? selection.underweighted_regions.filter((b) => REGION_BUCKETS.includes(b))
-    : [];
+  const modelUnder = desks.flatMap(({ out }) =>
+    Array.isArray(out && out.underweighted_regions)
+      ? out.underweighted_regions.filter((b) => REGION_BUCKET_KEYS.includes(b))
+      : []
+  );
   const underweighted = Array.from(
-    new Set([...modelUnder, ...REGION_BUCKETS.filter((b) => !regionCoverage[b])])
+    new Set([...modelUnder, ...REGION_BUCKET_KEYS.filter((b) => !regionCoverage[b])])
   );
 
   // 3) Upsert the edition (draft) for this week.
@@ -164,7 +223,7 @@ export async function POST(req) {
   // this edition (see supabase_migration_seminar_curated.sql) and must survive
   // a regeneration — otherwise the Thursday refresh or the daily heartbeat
   // self-heal silently deletes them. Curated rows are ranked after the auto
-  // five, so the 1..5 re-rank below never collides with them.
+  // selection, so the 1..N re-rank below never collides with them.
   try {
     try {
       await query(
@@ -192,9 +251,10 @@ export async function POST(req) {
   // 4) Mark the raw rows used, and PUBLISH the edition immediately.
   //    The marquee Deep Dive is generated by a separate /api/seminar/deepen
   //    call (chained by the Monday cron at 11:30) so each request makes at most
-  //    ONE Claude call and stays well under the 60s Hobby function cap — two
-  //    sequential Claude calls in one request was timing out. The reader page
-  //    degrades gracefully (Briefing + region coverage) until deepen runs.
+  //    ONE round of Claude calls and stays well under the 60s Hobby function
+  //    cap — two sequential Claude stages in one request was timing out. The
+  //    reader page degrades gracefully (Briefing + region coverage) until
+  //    deepen runs.
   try {
     const usedIds = resolved.map((e) => e.raw_id).filter((x) => x != null);
     if (usedIds.length) {
@@ -233,10 +293,17 @@ export async function POST(req) {
     edition_id: editionId,
     week_start: weekStart,
     week_end: weekEnd,
-    events: resolved.map((e) => ({ rank: e.rank, title: e.title, source: e.source_name, region_bucket: e.region_bucket })),
+    target_events: SEMINAR_EVENT_TARGET,
+    candidates: candidates.length,
+    duplicates_dropped: dropped,
+    events: resolved.map((e) => ({
+      rank: e.rank, title: e.title, source: e.source_name,
+      region_bucket: e.region_bucket, consequence: e.consequence, desk: e.desk,
+    })),
     deep_dive: "queued (call /api/seminar/deepen)",
     region_coverage: regionCoverage,
     underweighted_regions: underweighted,
+    desk_errors: deskErrors.length ? deskErrors : undefined,
   });
 }
 

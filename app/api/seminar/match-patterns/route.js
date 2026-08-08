@@ -1,15 +1,15 @@
 // POST/GET /api/seminar/match-patterns
 //   Phase 3b — the Historical Pattern Matcher engine.
 //
-//   For a published edition, reads its top-5 events and asks Claude to compare
+//   For a published edition, reads its briefing events and asks Claude to compare
 //   each against the pre-seeded historical-pattern library, returning the top
 //   2-3 patterns each event "rhymes with" (pattern_id + match_strength 1-10 +
 //   a 2-3 sentence explanation). Matches are written to seminar_pattern_matches,
 //   idempotent via the (event, pattern) unique index. The edition's existing
 //   matches are cleared first so a re-run is a clean replace.
 //
-//   ONE Claude call per edition (all five events in a single prompt) keeps the
-//   ?all=1 backfill inside the 60s Hobby cap.
+//   Events are matched in concurrent chunks of five (see matchForEdition) to
+//   keep each Claude call — and the ?all=1 backfill — inside the 60s Hobby cap.
 //
 //   Triggered three ways (mirrors extract-relationships):
 //     1. Vercel Cron (Monday 13:00 UTC) — chains off /api/seminar/generate
@@ -90,34 +90,57 @@ async function matchForEdition(edition, patterns, validIds, counters) {
     return { edition_id: edition.id, matched: 0, skipped: "no events" };
   }
 
-  const eventList = events
-    .map((e) => `[${e.id}] (rank ${e.rank}) ${e.title}${e.summary ? " — " + e.summary : ""}`)
-    .join("\n");
+  // The briefing now runs to fifteen events, and 15 x 3 matches x a 2-3
+  // sentence explanation is ~3,200 output tokens — measured at ~60s+ for a
+  // single call, i.e. straight over the Hobby function cap that already forced
+  // the Deep Dive out of /generate. Chunk the events and run the chunks
+  // concurrently: same prompt, same library, ~1,100 output tokens each.
+  // Four, not five: a 5-event chunk measured 44s wall for a 15-event edition,
+  // which is uncomfortably close to the 60s cap for a step that also has to
+  // survive a ?all=1 backfill. Four keeps each call's output around 900 tokens.
+  const CHUNK = 4;
+  const chunks = [];
+  for (let i = 0; i < events.length; i += CHUNK) chunks.push(events.slice(i, i + CHUNK));
 
-  let parsed;
-  try {
-    parsed = await claudeJSON({
-      system: MATCH_SYSTEM,
-      maxTokens: 4000,
-      user:
-        `THIS WEEK'S EVENTS (each tagged with its event_id):\n${eventList}\n\n` +
-        `HISTORICAL PATTERN LIBRARY (each tagged with its pattern_id):\n${libraryText(patterns)}\n\n` +
-        `For EACH event above, pick the 2-3 library patterns it most strongly rhymes with. ` +
-        `Return STRICT JSON of this exact shape:\n` +
-        `{"events":[{"event_id":<int from the list>,"matches":[` +
-        `{"pattern_id":<int from the library>,"match_strength":<1-10, 10=near-identical strategic logic>,` +
-        `"explanation":"<2-3 sentences: HOW this event rhymes with that pattern — the shared mechanism, and how it differs>"}` +
-        `]}]}\n` +
-        `Rules:\n` +
-        `- Use ONLY event_ids and pattern_ids that appear above.\n` +
-        `- 2-3 matches per event; omit an event only if NOTHING rhymes (rare).\n` +
-        `- match_strength reflects how cleanly the strategic logic matches, not topical overlap.\n` +
-        `- Output ONLY the JSON object, no commentary.`,
-    });
-  } catch (e) {
+  const library = libraryText(patterns);
+  const settled = await Promise.all(
+    chunks.map(async (chunk) => {
+      const eventList = chunk
+        .map((e) => `[${e.id}] (rank ${e.rank}) ${e.title}${e.summary ? " — " + e.summary : ""}`)
+        .join("\n");
+      try {
+        const out = await claudeJSON({
+          system: MATCH_SYSTEM,
+          maxTokens: 4000,
+          user:
+            `THIS WEEK'S EVENTS (each tagged with its event_id):\n${eventList}\n\n` +
+            `HISTORICAL PATTERN LIBRARY (each tagged with its pattern_id):\n${library}\n\n` +
+            `For EACH event above, pick the 2-3 library patterns it most strongly rhymes with. ` +
+            `Return STRICT JSON of this exact shape:\n` +
+            `{"events":[{"event_id":<int from the list>,"matches":[` +
+            `{"pattern_id":<int from the library>,"match_strength":<1-10, 10=near-identical strategic logic>,` +
+            `"explanation":"<2-3 sentences: HOW this event rhymes with that pattern — the shared mechanism, and how it differs>"}` +
+            `]}]}\n` +
+            `Rules:\n` +
+            `- Use ONLY event_ids and pattern_ids that appear above.\n` +
+            `- 2-3 matches per event; omit an event only if NOTHING rhymes (rare).\n` +
+            `- match_strength reflects how cleanly the strategic logic matches, not topical overlap.\n` +
+            `- Output ONLY the JSON object, no commentary.`,
+        });
+        return { ok: true, events: Array.isArray(out && out.events) ? out.events : [] };
+      } catch (e) {
+        return { ok: false, error: String(e.message), events: [] };
+      }
+    })
+  );
+
+  // A chunk that fails costs its five events their pattern echoes, not the
+  // whole edition's — only an all-chunks failure is treated as a failure.
+  if (settled.every((s) => !s.ok)) {
     counters.failed_editions += 1;
-    return { edition_id: edition.id, matched: 0, error: String(e.message) };
+    return { edition_id: edition.id, matched: 0, error: settled[0].error };
   }
+  const parsed = { events: settled.flatMap((s) => s.events) };
 
   // pg returns bigint columns as strings; normalise the id set to Numbers so
   // it compares cleanly against the parseInt'd ids Claude echoes back.

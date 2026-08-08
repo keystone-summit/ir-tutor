@@ -47,23 +47,58 @@ if (!DB_URL) { console.error("SUPABASE_DB_URL not set."); process.exit(1); }
 if (!API_KEY) { console.error("ELEVENLABS_API_KEY not set."); process.exit(1); }
 
 // --- narration builder (keep in sync with lib/seminarBriefingVoice.js) ---
+const FULL_DETAIL_THROUGH_RANK = 5;
+const ORDINALS = [
+  "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+  "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
+  "eighteen", "nineteen", "twenty",
+];
+
 function briefingNarration(edition, events) {
   const rawTitle = String((edition && edition.title) || "").trim();
   const title = rawTitle.replace(/^Week of\s+\d{4}-\d{2}-\d{2}\s*[—–-]\s*/i, "").trim();
-  const ordinals = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
   const ev = (events || []).slice().sort((a, b) => (a.rank || 99) - (b.rank || 99));
+  const count = ORDINALS[ev.length - 1] || String(ev.length);
   const parts = [];
   parts.push("This week's Foreign Policy Implications Briefing.");
   if (title) parts.push(title + ".");
-  parts.push("Here are the week's top five events.");
+  parts.push(
+    ev.length === 1
+      ? "Here is the week's top event."
+      : `Here are the week's top ${count} events.`
+  );
   ev.forEach((e, i) => {
-    const seg = [`Number ${ordinals[i] || String(i + 1)}: ${String(e.title || "").trim()}.`];
-    if (e.summary) seg.push(String(e.summary).trim());
+    const full = i < FULL_DETAIL_THROUGH_RANK;
+    if (!full && i === FULL_DETAIL_THROUGH_RANK) {
+      parts.push("Also on the board this week, in brief.");
+    }
+    const seg = [`Number ${ORDINALS[i] || String(i + 1)}: ${String(e.title || "").trim()}.`];
+    if (full && e.summary) seg.push(String(e.summary).trim());
     if (e.reasoning) seg.push("Why it matters: " + String(e.reasoning).trim());
     parts.push(seg.join(" "));
   });
   parts.push("That's your briefing for the week. Open the seminar to go deeper.");
   return parts.join("\n\n");
+}
+
+// A 15-event briefing runs ~7,200 characters, past what one ElevenLabs request
+// will take (five events was ~2,300 and always fit). Pack whole paragraphs up
+// to the limit and concatenate the MP3s, same as lib/seminarSectionVoice.js.
+const MAX_CHARS_PER_REQUEST = 3500;
+
+function chunkNarration(text, limit = MAX_CHARS_PER_REQUEST) {
+  const clean = String(text || "").trim();
+  if (!clean) return [];
+  if (clean.length <= limit) return [clean];
+  const chunks = [];
+  let buf = "";
+  for (const para of clean.split(/\n\n+/)) {
+    if (!buf) { buf = para; continue; }
+    if ((buf + "\n\n" + para).length <= limit) buf += "\n\n" + para;
+    else { chunks.push(buf); buf = para; }
+  }
+  if (buf) chunks.push(buf);
+  return chunks;
 }
 
 async function synthesize(text) {
@@ -109,7 +144,11 @@ async function main() {
   console.log(`Edition ${edition.id}: "${edition.title}"`);
   console.log(`Narration: ${text.length} chars across ${ev.rows.length} events.`);
 
-  const buf = await synthesize(text);
+  const chunks = chunkNarration(text);
+  console.log(`Synthesising ${chunks.length} chunk(s).`);
+  const bufs = [];
+  for (const c of chunks) bufs.push(await synthesize(c));
+  const buf = Buffer.concat(bufs);
   console.log(`MP3: ${buf.length} bytes.`);
 
   fs.mkdirSync(OUT_DIR, { recursive: true });

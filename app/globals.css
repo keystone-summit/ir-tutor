@@ -1073,11 +1073,17 @@ section[id]{scroll-margin-top:66px;}
 .rb-americas{--rb:#1d4ed8;}
 .rb-europe_russia{--rb:#475569;}
 .rb-brics_trade{--rb:#0d9488;}
+.rb-south_asia{--rb:#a16207;}
+.rb-africa{--rb:#15803d;}
+.rb-global_institutions{--rb:#6d28d9;}
 .sem-regchip.rb-middle_east{background:#b45309;}
 .sem-regchip.rb-asia{background:#b91c1c;}
 .sem-regchip.rb-americas{background:#1d4ed8;}
 .sem-regchip.rb-europe_russia{background:#475569;}
 .sem-regchip.rb-brics_trade{background:#0d9488;}
+.sem-regchip.rb-south_asia{background:#a16207;}
+.sem-regchip.rb-africa{background:#15803d;}
+.sem-regchip.rb-global_institutions{background:#6d28d9;}
 
 /* ---- Theory Library page: school chips + cards ---- */
 .tl-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}

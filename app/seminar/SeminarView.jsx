@@ -29,15 +29,10 @@ import {
 import { sectionAudioUrl } from "../../lib/seminarAudio";
 import { presentSections } from "../../lib/seminarSections";
 
-// Quota buckets surfaced in the Weekly Briefing region-coverage strip.
-const REGION_BUCKETS = [
-  ["middle_east", "Middle East"],
-  ["asia", "Asia"],
-  ["americas", "Americas"],
-  ["europe_russia", "Europe / Russia"],
-  ["brics_trade", "BRICS-trade"],
-];
-const REGION_BUCKET_LABEL = Object.fromEntries(REGION_BUCKETS);
+// Quota buckets surfaced in the Weekly Briefing region-coverage strip. Shared
+// with the generator (lib/seminarBuckets) so the reader can't label a bucket
+// the pipeline no longer produces, or silently drop one it does.
+import { REGION_BUCKETS, REGION_BUCKET_LABEL } from "../../lib/seminarBuckets";
 
 const LAYER_DEFS = [
   ["world_order", "Layer 1 · World Order", "How this reshapes the global system & great-power balance."],
@@ -165,7 +160,7 @@ function AnnotatedText({ text, parties, theoryTerms, onParty, onTheory }) {
   return <>{nodes}</>;
 }
 
-// Phase 3.5 — the 5-region quota coverage strip under the Weekly Briefing.
+// The region-quota coverage strip under the Weekly Briefing.
 // Reads the edition's stored region_coverage / underweighted_regions if present,
 // otherwise derives coverage live from the events' region_bucket tags. Shows one
 // pill per bucket (filled vs. underweighted) so the reader can see the week's
@@ -195,7 +190,7 @@ function RegionCoverage({ edition, events }) {
     <div className="sem-regcov">
       <div className="sem-regcov-head">
         <Globe size={13} /> Regional balance
-        <span className="sem-regcov-score">{filled}/5 regions</span>
+        <span className="sem-regcov-score">{filled}/{REGION_BUCKETS.length} regions</span>
       </div>
       <div className="sem-regcov-pills">
         {REGION_BUCKETS.map(([k, label]) => {
@@ -490,12 +485,13 @@ export default function SeminarView() {
 
       {/* 1 — Weekly Briefing */}
       <section id="briefing" className="sem-sec">
-        {/* The auto-pipeline always selects 5, but curated events can be appended
-            to an edition (seminar_events.curated), so the count is read off the
-            events actually rendered rather than hardcoded to "Top 5". */}
+        {/* The auto-pipeline targets SEMINAR_EVENT_TARGET (15), but a thin week
+            can come in under it and curated events can be appended to an edition
+            (seminar_events.curated), so the count is read off the events
+            actually rendered rather than hardcoded. */}
         <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top {events.length} Events<SectionListenButton sectionKey="briefing" /></h2>
 
-        {/* Phase 3.5 — 5-region quota coverage strip */}
+        {/* region-quota coverage strip */}
         <RegionCoverage edition={edition} events={events} />
 
         <ol className="sem-events">

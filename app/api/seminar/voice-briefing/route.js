@@ -19,11 +19,11 @@ import { requireCronOrAuth } from "../../../../lib/seminarAuth";
 import { query } from "../../../../lib/db";
 import {
   briefingNarration,
-  synthesizeBriefing,
   ensureBriefingAudioTable,
   ADAM_VOICE_ID,
   BRIEFING_MODEL_ID,
 } from "../../../../lib/seminarBriefingVoice";
+import { synthesizeSection } from "../../../../lib/seminarSectionVoice";
 
 async function pickEdition(seminarId) {
   if (Number.isInteger(seminarId)) {
@@ -75,9 +75,14 @@ export async function POST(req) {
 
   const text = briefingNarration(edition, ev.rows);
 
+  // synthesizeSection, not synthesizeBriefing: at five events the briefing
+  // narration was ~2,300 characters and went out as one ElevenLabs request; at
+  // fifteen it is ~7,200, past what a single request will take. synthesizeSection
+  // splits on paragraph boundaries, synthesises the pieces concurrently and
+  // concatenates the MP3s in order — the same path the per-section audio uses.
   let buf;
   try {
-    buf = await synthesizeBriefing(text);
+    buf = await synthesizeSection(text);
   } catch (e) {
     return Response.json({ ok: false, error: "Voice synth failed.", detail: String(e.message), edition_id: edition.id }, { status: 502 });
   }
