@@ -79,8 +79,9 @@ function Picker() {
         <div className="cp-seminar-body">
           <div className="cp-seminar-kicker">New · weekly</div>
           <h2>Foreign Policy — Implications Seminar</h2>
-          <p>A current-events deep-dive that publishes Monday mornings: the week's top 5 events,
-            a five-layer / five-lens deep dive, gaps to fill, and what to watch next.</p>
+          <p>A current-events deep-dive that publishes Monday mornings: the week's 15 events,
+            split across emerging foreign policy, terrorism, cartels &amp; narcotics and the Americas
+            (Iran war capped at 5), a five-layer / five-lens deep dive, gaps to fill, and what to watch next.</p>
         </div>
         <span className="cp-go">Open seminar <ChevronRight size={16} /></span>
       </a>
