@@ -33,6 +33,22 @@ import { presentSections } from "../../lib/seminarSections";
 // with the generator (lib/seminarBuckets) so the reader can't label a bucket
 // the pipeline no longer produces, or silently drop one it does.
 import { REGION_BUCKETS, REGION_BUCKET_LABEL } from "../../lib/seminarBuckets";
+// The topic quota (John's locked rule) — printed as the edition's split.
+import {
+  BUCKETS as TOPIC_BUCKETS,
+  BUCKET_LABEL as TOPIC_BUCKET_LABEL,
+  IRAN_BUCKET,
+  IRAN_MAX,
+  TOTAL_ITEMS,
+} from "../../lib/seminarQuota";
+
+// Quota detail the generator stores in region_coverage._meta (null on
+// editions generated before the quota shipped).
+function quotaMeta(edition) {
+  const stored = edition && edition.region_coverage;
+  const meta = stored && typeof stored === "object" ? stored._meta : null;
+  return meta && meta.category_counts ? meta : null;
+}
 
 const LAYER_DEFS = [
   ["world_order", "Layer 1 · World Order", "How this reshapes the global system & great-power balance."],
@@ -160,7 +176,54 @@ function AnnotatedText({ text, parties, theoryTerms, onParty, onTheory }) {
   return <>{nodes}</>;
 }
 
-// The region-quota coverage strip under the Weekly Briefing.
+// The per-category split, printed FIRST in the Weekly Briefing.
+//
+// John's drift test: a debrief that cannot show its split has drifted. So the
+// item count, one pill per topic category, the Iran ceiling, and any honest
+// shortfall ("terrorism: 0 — no qualifying stories this week") are printed
+// before a single event. Renders nothing for pre-quota editions.
+function QuotaSplit({ edition }) {
+  const meta = quotaMeta(edition);
+  if (!meta) return null;
+  const counts = meta.category_counts || {};
+  const minimums = meta.minimums || {};
+  const iranMax = meta.iran_max || IRAN_MAX;
+  const iranCount = counts[IRAN_BUCKET] || 0;
+  const shortNotes = Array.isArray(meta.shortfalls) ? meta.shortfalls.map((s) => s.note).filter(Boolean) : [];
+
+  return (
+    <div className="sem-regcov sem-quota">
+      <div className="sem-regcov-head">
+        <Globe size={13} /> This week&apos;s split
+        <span className="sem-regcov-score">{meta.total} of {meta.target_total || TOTAL_ITEMS} items</span>
+      </div>
+      <div className="sem-regcov-pills">
+        {TOPIC_BUCKETS.map((b) => {
+          const n = counts[b.key] || 0;
+          const min = minimums[b.key];
+          const isShort = min != null && n < min;
+          return (
+            <span key={b.key} className={`sem-regcov-pill rb-${b.key} ${isShort ? "under" : "filled"}`}>
+              <span className="sem-regcov-dot" />
+              {b.label} · {n}
+              {b.key === IRAN_BUCKET ? ` / ${iranMax} max` : min ? ` (min ${min})` : ""}
+            </span>
+          );
+        })}
+      </div>
+      <div className="sem-regcov-rule">
+        Iran war {iranCount} of {iranMax} allowed{iranCount <= iranMax ? " ✓" : " — OVER CEILING"}
+      </div>
+      {shortNotes.length > 0 && (
+        <div className="sem-regcov-warn">
+          <AlertTriangle size={12} /> Thin week: {shortNotes.join("; ")}. Not padded with unrelated stories.
+        </div>
+      )}
+    </div>
+  );
+}
+
+// The region coverage strip under the split — the presentation axis.
 // Reads the edition's stored region_coverage / underweighted_regions if present,
 // otherwise derives coverage live from the events' region_bucket tags. Shows one
 // pill per bucket (filled vs. underweighted) so the reader can see the week's
@@ -491,7 +554,10 @@ export default function SeminarView() {
             actually rendered rather than hardcoded. */}
         <h2 className="sem-h2"><Eye size={18} /> Weekly Briefing — Top {events.length} Events<SectionListenButton sectionKey="briefing" /></h2>
 
-        {/* region-quota coverage strip */}
+        {/* the per-category split, printed first — John's drift test */}
+        <QuotaSplit edition={edition} />
+
+        {/* region coverage strip */}
         <RegionCoverage edition={edition} events={events} />
 
         <ol className="sem-events">
@@ -503,6 +569,18 @@ export default function SeminarView() {
                 {e.summary && <p className="sem-summary">{e.summary}</p>}
                 {e.reasoning && <p className="sem-why"><strong>Why it matters:</strong> {e.reasoning}</p>}
                 <div className="sem-srcline">
+                  {(() => {
+                    const meta = quotaMeta(edition);
+                    // Match rank AND title so a hand-curated row never borrows
+                    // an auto-selected event's category.
+                    const hit = meta && Array.isArray(meta.event_categories)
+                      ? meta.event_categories.find((x) => x.rank === e.rank && x.title === e.title)
+                      : null;
+                    const cat = hit ? hit.category : null;
+                    return cat && TOPIC_BUCKET_LABEL[cat] ? (
+                      <span className={`sem-regchip rb-${cat}`}>{TOPIC_BUCKET_LABEL[cat]}</span>
+                    ) : null;
+                  })()}
                   {e.region_bucket && REGION_BUCKET_LABEL[e.region_bucket] && (
                     <span className={`sem-regchip rb-${e.region_bucket}`}>{REGION_BUCKET_LABEL[e.region_bucket]}</span>
                   )}

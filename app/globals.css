@@ -1084,6 +1084,22 @@ section[id]{scroll-margin-top:66px;}
 .sem-regchip.rb-south_asia{background:#a16207;}
 .sem-regchip.rb-africa{background:#15803d;}
 .sem-regchip.rb-global_institutions{background:#6d28d9;}
+/* topic quota categories (the split strip + per-event category chip).
+   `americas` shares its region colour above on purpose. */
+.rb-iran_war{--rb:#9a3412;}
+.rb-emerging_fp{--rb:#0f766e;}
+.rb-terrorism{--rb:#7f1d1d;}
+.rb-cartels_narcotics{--rb:#7e22ce;}
+.rb-us_foreign_policy{--rb:#334155;}
+.sem-regchip.rb-iran_war{background:#9a3412;}
+.sem-regchip.rb-emerging_fp{background:#0f766e;}
+.sem-regchip.rb-terrorism{background:#7f1d1d;}
+.sem-regchip.rb-cartels_narcotics{background:#7e22ce;}
+.sem-regchip.rb-us_foreign_policy{background:#334155;}
+.sem-quota{margin-bottom:10px;}
+/* the Iran-ceiling line printed with the split */
+.sem-regcov-rule{margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.03em;color:var(--brass);font-weight:600;}
 
 /* ---- Theory Library page: school chips + cards ---- */
 .tl-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}

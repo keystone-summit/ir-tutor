@@ -14,6 +14,9 @@ import {
   BUCKET_DESC, SELECTION_GROUPS, OPEN_SLOTS,
 } from "../lib/seminarBuckets.js";
 import { titleTokens, isDuplicateTitle, mergeDeskPicks } from "../lib/seminarSelection.js";
+import {
+  BUCKET_KEYS as QUOTA_BUCKET_KEYS, REQUIRED_BUCKETS, IRAN_BUCKET,
+} from "../lib/seminarQuota.js";
 import { briefingNarration } from "../lib/seminarBriefingVoice.js";
 
 let passed = 0;
@@ -56,10 +59,28 @@ test("desks together can supply the whole target", () => {
   assert.ok(capacity >= SEMINAR_EVENT_TARGET, `capacity ${capacity} < target ${SEMINAR_EVENT_TARGET}`);
 });
 
-test("desk buckets are disjoint and cover every declared bucket exactly once", () => {
+// The desks are split on the TOPIC-quota axis (lib/seminarQuota), not the
+// region axis — so the partition they must cover is the quota's bucket list.
+test("desk buckets are disjoint and cover every quota category exactly once", () => {
   const all = SELECTION_GROUPS.flatMap((g) => g.buckets);
   assert.strictEqual(new Set(all).size, all.length, "a bucket is claimed by two desks");
-  assert.deepStrictEqual([...all].sort(), [...REGION_BUCKET_KEYS].sort());
+  assert.deepStrictEqual([...all].sort(), [...QUOTA_BUCKET_KEYS].sort());
+});
+
+test("only one desk may file iran_war, and it owns terrorism's minimum too", () => {
+  const iranDesks = SELECTION_GROUPS.filter((g) => g.buckets.includes(IRAN_BUCKET));
+  assert.strictEqual(iranDesks.length, 1);
+  const deskOf = (k) => SELECTION_GROUPS.find((g) => g.buckets.includes(k));
+  for (const b of REQUIRED_BUCKETS) {
+    assert.ok(deskOf(b.key), `required category ${b.key} has no desk`);
+  }
+});
+
+test("each desk's floor can hold the minimums of the categories it owns", () => {
+  for (const g of SELECTION_GROUPS) {
+    const mins = REQUIRED_BUCKETS.filter((b) => g.buckets.includes(b.key)).reduce((n, b) => n + b.min, 0);
+    assert.ok(g.floor >= mins, `desk ${g.key} floor ${g.floor} < its minimums ${mins}`);
+  }
 });
 
 test("every bucket has a reader label and a selector description", () => {
