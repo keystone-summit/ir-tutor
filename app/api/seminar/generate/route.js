@@ -128,8 +128,10 @@ export async function POST(req) {
       // lib/seminarFeeds.js lands in $4 automatically on the next deploy.
       //
       // Each tier gets its own lookback window and its own per-source cap. The
-      // ORDER stays plain recency — the tier WEIGHTING is applied in
-      // buildCandidatePool, where it is a pure function and can be tested.
+      // real tier WEIGHTING is applied in buildCandidatePool, where it is a pure
+      // function and can be tested; the ORDER BY below applies the same bonus
+      // only so the RAW_LIMIT cut-off cannot drop the analysis tier first.
+      // (No backticks anywhere in this SQL — it is a JS template literal.)
       `with recent as (
          select id, source, url, title, body_html, region_tag,
                 coalesce(published_at, fetched_at) as ts,
@@ -154,7 +156,7 @@ export async function POST(req) {
           -- capped per source above, and again per category in enforceQuotas.
           and (tier = 'analysis' or rn_region <= $2)
         -- Weighted so the RAW_LIMIT cut-off cannot silently delete the analysis
-        -- tier: analysis is older by nature, and a plain `ts desc` limit would
+        -- tier: analysis is older by nature, and a plain "ts desc" limit would
         -- fill all 600 rows with this week's wire copy. Mirrors
         -- ANALYSIS_RECENCY_BONUS_DAYS in lib/seminarQuota.js.
         order by (case when tier = 'analysis' then ts + interval '10 days' else ts end) desc
