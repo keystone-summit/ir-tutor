@@ -1,5 +1,6 @@
 // POST /api/seminar/generate
-//   Reads the last ~8 days of ingested news, asks Claude to pick the 15 most
+//   Reads the last 9 days of ingested news and the last 28 days of think-tank
+//   analysis (see lib/seminarFeeds TIER_LOOKBACK_DAYS), asks Claude to pick the 15 most
 //   consequential FP events under John's locked topic quota (lib/seminarQuota),
 //   tags each with a display region (lib/seminarBuckets), and publishes the
 //   edition. The #1 event's Deep Dive runs in a separate /deepen request.
@@ -22,7 +23,13 @@ import { requireCronOrAuth } from "../../../../lib/seminarAuth";
 import { query } from "../../../../lib/db";
 import { claudeJSON } from "../../../../lib/anthropic";
 import { getSeminarWeek, weekRangeLabel } from "../../../../lib/seminarWeek";
-import { REGION_LABEL } from "../../../../lib/seminarFeeds";
+import {
+  REGION_LABEL,
+  ANALYSIS_SOURCE_NAMES,
+  TIER_LOOKBACK_DAYS,
+  ANALYSIS_TIER,
+  NEWS_TIER,
+} from "../../../../lib/seminarFeeds";
 import { titleTokens, isDuplicateTitle, mergeDeskPicks } from "../../../../lib/seminarSelection";
 import {
   SEMINAR_EVENT_TARGET,
@@ -40,8 +47,12 @@ import {
   reconcileCategory,
   buildCandidatePool,
   poolBucketCounts,
+  poolTierCounts,
   enforceQuotas,
   formatSplitLine,
+  formatSourceMixLine,
+  editionTierCounts,
+  tierOf,
   validateEdition,
 } from "../../../../lib/seminarQuota";
 
@@ -52,8 +63,20 @@ import {
 // then buildCandidatePool reserves slots per required category and caps Iran.
 const PER_SOURCE_CAP = 8;
 const PER_REGION_CAP = 40;
-const RAW_LIMIT = 400;
+const RAW_LIMIT = 600;
 const POOL_LIMIT = 200;
+
+// Analysis sources publish a handful of pieces a month, so the per-source cap
+// that keeps a wire from flooding the pool would silently throw away half a
+// think tank's month. They get a higher cap; the per-category source cap in
+// enforceQuotas is what stops any one of them dominating the finished edition.
+const PER_SOURCE_CAP_ANALYSIS = 14;
+
+// Lookback windows, per tier (lib/seminarFeeds.TIER_LOOKBACK_DAYS):
+//   news      9 days — the brief is weekly, so 7 days plus slack for feed lag.
+//   analysis 28 days — think tanks publish weekly to monthly.
+const NEWS_DAYS = TIER_LOOKBACK_DAYS[NEWS_TIER];
+const ANALYSIS_DAYS = TIER_LOOKBACK_DAYS[ANALYSIS_TIER];
 
 function regionLabel(code) {
   return REGION_LABEL[code] || code || "—";
@@ -100,11 +123,21 @@ export async function POST(req) {
   let rows;
   try {
     const r = await query(
+      // The tier is resolved here, from the feed list, so seminar_news_raw needs
+      // no new column and no migration: a feed tagged `tier: "analysis"` in
+      // lib/seminarFeeds.js lands in $4 automatically on the next deploy.
+      //
+      // Each tier gets its own lookback window and its own per-source cap. The
+      // ORDER stays plain recency — the tier WEIGHTING is applied in
+      // buildCandidatePool, where it is a pure function and can be tested.
       `with recent as (
          select id, source, url, title, body_html, region_tag,
-                coalesce(published_at, fetched_at) as ts
+                coalesce(published_at, fetched_at) as ts,
+                case when source = any($4::text[]) then 'analysis' else 'news' end as tier
            from public.seminar_news_raw
-          where coalesce(published_at, fetched_at) >= now() - interval '8 days'
+          where coalesce(published_at, fetched_at) >= now() - make_interval(
+                  days => case when source = any($4::text[]) then $5::int else $6::int end
+                )
        ),
        ranked as (
          select *,
@@ -112,12 +145,29 @@ export async function POST(req) {
                 row_number() over (partition by region_tag order by ts desc) as rn_region
            from recent
        )
-       select id, source, url, title, body_html, region_tag
+       select id, source, url, title, body_html, region_tag, ts, tier
          from ranked
-        where rn_source <= $1 and rn_region <= $2
-        order by ts desc
+        where rn_source <= case when tier = 'analysis' then $7 else $1 end
+          -- Analysis sources are exempt from the per-region cap: nearly all of
+          -- them carry region_tag 'NGO', so one shared cap of 40 would throw
+          -- away most of the tier before the pool ever saw it. They are already
+          -- capped per source above, and again per category in enforceQuotas.
+          and (tier = 'analysis' or rn_region <= $2)
+        -- Weighted so the RAW_LIMIT cut-off cannot silently delete the analysis
+        -- tier: analysis is older by nature, and a plain `ts desc` limit would
+        -- fill all 600 rows with this week's wire copy. Mirrors
+        -- ANALYSIS_RECENCY_BONUS_DAYS in lib/seminarQuota.js.
+        order by (case when tier = 'analysis' then ts + interval '10 days' else ts end) desc
         limit $3`,
-      [PER_SOURCE_CAP, PER_REGION_CAP, RAW_LIMIT]
+      [
+        PER_SOURCE_CAP,
+        PER_REGION_CAP,
+        RAW_LIMIT,
+        ANALYSIS_SOURCE_NAMES,
+        ANALYSIS_DAYS,
+        NEWS_DAYS,
+        PER_SOURCE_CAP_ANALYSIS,
+      ]
     );
     rows = r.rows;
   } catch (e) {
@@ -133,6 +183,7 @@ export async function POST(req) {
   // Shape the pool: every required category reaches the prompt, Iran is capped.
   const pool = buildCandidatePool(rows, { limit: POOL_LIMIT });
   const poolCounts = poolBucketCounts(pool);
+  const poolTiers = poolTierCounts(pool);
 
   // Compact numbered list. The classifier's guess is a hint only — the desks
   // may override it, and reconcileCategory / enforceQuotas re-check the result.
@@ -140,7 +191,10 @@ export async function POST(req) {
     .map((c, i) => {
       const r = c.row;
       const snip = (r.body_html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").slice(0, 140);
-      return `[${i}] (${regionLabel(r.region_tag)} · ${r.source}${c.bucket ? " · likely:" + c.bucket : ""}) ${r.title}${snip ? " — " + snip : ""}`;
+      // ANALYSIS is flagged in the prompt so the desks know a think-tank piece
+      // is the considered view of an institution, not another wire re-run.
+      const tierMark = tierOf(r) === ANALYSIS_TIER ? " · ANALYSIS" : "";
+      return `[${i}] (${regionLabel(r.region_tag)} · ${r.source}${tierMark}${c.bucket ? " · likely:" + c.bucket : ""}) ${r.title}${snip ? " — " + snip : ""}`;
     })
     .join("\n");
 
@@ -299,6 +353,7 @@ export async function POST(req) {
       source_url: row ? row.url : null,
       source_name: row ? row.source : null,
       source_region: row ? regionLabel(row.region_tag) : null,
+      source_tier: row ? tierOf(row) : null,
       raw_html: row ? row.body_html : null,
       raw_id: row ? row.id : null,
     };
@@ -310,7 +365,9 @@ export async function POST(req) {
   const counts = enforced.counts;
   const shortfalls = enforced.shortfalls;
   const splitLine = formatSplitLine(counts, shortfalls, resolved.length);
-  const validation = validateEdition(counts, shortfalls, resolved.length);
+  const tierCounts = editionTierCounts(enforced.items);
+  const sourceMixLine = formatSourceMixLine(enforced.items);
+  const validation = validateEdition(counts, shortfalls, resolved.length, enforced.items);
   if (!validation.ok) {
     // Should be unreachable — enforceQuotas guarantees the rule. If it ever
     // is reached, keep last week's edition live rather than publish a breach.
@@ -346,6 +403,10 @@ export async function POST(req) {
     reclassified_to_iran: reclassifiedToIran,
     desk_short_categories: modelShort,
     pool_counts: poolCounts,
+    pool_tier_counts: poolTiers,
+    source_tier_counts: tierCounts,
+    source_mix_line: sourceMixLine,
+    lookback_days: { news: NEWS_DAYS, analysis: ANALYSIS_DAYS },
     generated_at: new Date().toISOString(),
   };
 
@@ -456,6 +517,10 @@ export async function POST(req) {
       candidates_raw: rows.length,
       pool_size: pool.length,
       pool_counts: poolCounts,
+      pool_tier_counts: poolTiers,
+      source_tier_counts: tierCounts,
+      source_mix_line: sourceMixLine,
+      lookback_days: { news: NEWS_DAYS, analysis: ANALYSIS_DAYS },
       desk_duplicates_dropped: dropped,
       reclassified_to_iran: reclassifiedToIran,
       dropped_by_enforcer: enforced.dropped.map((d) => ({ title: d.title, bucket: d.bucket, why: d.dropped_because })),

@@ -29,7 +29,23 @@ import {
   enforceQuotas,
   formatSplitLine,
   validateEdition,
+  ANALYSIS_TIER,
+  NEWS_TIER,
+  ANALYSIS_RECENCY_BONUS_DAYS,
+  ANALYSIS_POOL_FLOOR,
+  MAX_PER_SOURCE_PER_BUCKET,
+  poolScoreMs,
+  tierOf,
+  poolTierCounts,
+  editionTierCounts,
 } from "../lib/seminarQuota.js";
+import {
+  SEMINAR_FEEDS,
+  ANALYSIS_SOURCE_NAMES,
+  TIER_LOOKBACK_DAYS,
+  feedTier,
+} from "../lib/seminarFeeds.js";
+import { seminarHealth } from "../lib/seminarWeek.js";
 
 let passed = 0;
 function test(name, fn) {
@@ -40,8 +56,20 @@ function test(name, fn) {
 // --- fixtures ---------------------------------------------------------------
 
 let nextId = 1;
-function row(title, source = "Test Feed", region = "INTL", body = "") {
-  return { id: nextId++, source, url: `https://example.test/${nextId}`, title, body_html: body, region_tag: region };
+// Sources ROTATE by default. A single-source fixture would quietly sail past the
+// per-source cap that section H exists to protect, and the cap is real: a shipped
+// edition once ran three of its four Americas items off one outlet.
+function row(title, source = null, region = "INTL", body = "", extra = {}) {
+  const id = nextId++;
+  return {
+    id,
+    source: source || `Test Feed ${id % 9}`,
+    url: `https://example.test/${id}`,
+    title,
+    body_html: body,
+    region_tag: region,
+    ...extra,
+  };
 }
 function poolOf(specs) {
   // specs: [[bucketKey, count, titleTemplate]]
@@ -391,6 +419,197 @@ test("ENFORCE: seven Iran items disguised across categories still end at the cei
   const out = enforceQuotas(items, richPool(), { total: TOTAL_ITEMS });
   assert.strictEqual(out.counts[IRAN_BUCKET], IRAN_MAX);
   assert.strictEqual(validateEdition(out.counts, out.shortfalls, out.total).ok, true);
+});
+
+// ===========================================================================
+// H. Source tiers — think tanks weighted above news wires (2026-09-21).
+//
+// John's instruction: the analysis layer gets "more weight than news feeds".
+// These fail the build if the weighting, the wider analysis lookback or the
+// per-source cap is removed — all three are load-bearing, and the first two are
+// the difference between "we added think-tank feeds" and "the think tanks
+// actually appear in the brief".
+// ===========================================================================
+
+const DAY = 86400000;
+function tieredRow(title, source, tier, ageDays, region = "NGO") {
+  return row(title, source, region, "", {
+    tier,
+    ts: new Date(Date.now() - ageDays * DAY).toISOString(),
+  });
+}
+
+test("GUARD: every feed carries a tier, and the tier is a property of the feed", () => {
+  for (const f of SEMINAR_FEEDS) {
+    assert.ok(
+      f.tier === ANALYSIS_TIER || f.tier === NEWS_TIER,
+      `feed "${f.name}" has no valid tier — tiers must be declared on the feed, not inferred`
+    );
+    assert.strictEqual(feedTier(f), f.tier);
+  }
+  assert.ok(
+    ANALYSIS_SOURCE_NAMES.length >= 20,
+    `expected at least 20 analysis sources, got ${ANALYSIS_SOURCE_NAMES.length}`
+  );
+  // Derived from the feed list, so a new feed inherits the weighting for free.
+  const declared = SEMINAR_FEEDS.filter((f) => f.tier === ANALYSIS_TIER).map((f) => f.name);
+  assert.deepStrictEqual(ANALYSIS_SOURCE_NAMES, declared);
+});
+
+test("GUARD: analysis reaches back further than news, or weekly pieces never qualify", () => {
+  assert.ok(TIER_LOOKBACK_DAYS[NEWS_TIER] >= 7, "news must cover a full 7-day week");
+  assert.ok(
+    TIER_LOOKBACK_DAYS[ANALYSIS_TIER] >= 21,
+    `analysis lookback is ${TIER_LOOKBACK_DAYS[ANALYSIS_TIER]} days — a weekly think-tank piece needs >= 21`
+  );
+});
+
+test("GUARD: John's thin categories each have a dedicated analysis source", () => {
+  const names = ANALYSIS_SOURCE_NAMES.join(" | ");
+  for (const needle of ["GI-TOC", "Igarapé", "Jamestown", "Long War Journal", "Crisis Group"]) {
+    assert.ok(names.includes(needle), `analysis tier lost its ${needle} source`);
+  }
+});
+
+test("WEIGHT: a 4-day-old think-tank piece outranks a 4-hour-old wire story", () => {
+  // John's own example, asserted directly.
+  const analysis = tieredRow("Chatham House on Gulf deterrence", "Chatham House", ANALYSIS_TIER, 4);
+  const wire = tieredRow("Wire update", "BBC World", NEWS_TIER, 4 / 24, "UK");
+  assert.ok(
+    poolScoreMs(analysis) > poolScoreMs(wire),
+    "the whole point of the tier change: analysis must outrank fresher wire copy"
+  );
+  assert.ok(ANALYSIS_RECENCY_BONUS_DAYS >= 7, "the bonus must cover at least a publishing week");
+});
+
+test("WEIGHT: an untagged row is treated as news and is never promoted", () => {
+  assert.strictEqual(tierOf({ title: "x" }), NEWS_TIER);
+  assert.strictEqual(tierOf({ tier: "something-else" }), NEWS_TIER);
+});
+
+test("WEIGHT: analysis survives a pool flooded with fresher wire copy", () => {
+  const rows = [];
+  // 400 wire stories from today, the way a real week actually looks.
+  for (let i = 0; i < 400; i++) {
+    rows.push(tieredRow(`NATO and Japan defence pact update ${i}`, `Wire ${i % 6}`, NEWS_TIER, i / 400, "UK"));
+  }
+  // A dozen think-tank pieces, all older than every wire story.
+  for (let i = 0; i < 12; i++) {
+    rows.push(tieredRow(`Chatham House on China supply chains ${i}`, `Institute ${i % 4}`, ANALYSIS_TIER, 5 + i));
+  }
+  const pool = buildCandidatePool(rows, { limit: 120 });
+  const tiers = poolTierCounts(pool);
+  assert.strictEqual(
+    tiers[ANALYSIS_TIER], 12,
+    `every analysis piece must reach the prompt, got ${tiers[ANALYSIS_TIER]} of 12`
+  );
+  // And they must be near the FRONT, not tacked on the end.
+  const firstTwenty = pool.slice(0, 20).filter((c) => tierOf(c.row) === ANALYSIS_TIER).length;
+  assert.ok(firstTwenty >= 6, `analysis should lead the pool, only ${firstTwenty} in the first 20`);
+});
+
+test("WEIGHT: the analysis floor holds slots even when a category sweep would spend them", () => {
+  assert.ok(ANALYSIS_POOL_FLOOR >= 20, `analysis pool floor is ${ANALYSIS_POOL_FLOOR} — too small to guarantee anything`);
+  const rows = [];
+  for (let i = 0; i < 500; i++) {
+    rows.push(tieredRow(`Sinaloa cartel fentanyl seizure ${i}`, `Wire ${i % 5}`, NEWS_TIER, i / 500, "MEX"));
+  }
+  for (let i = 0; i < 30; i++) {
+    rows.push(tieredRow(`GI-TOC on trafficking routes ${i}`, `Institute ${i % 5}`, ANALYSIS_TIER, 20));
+  }
+  const pool = buildCandidatePool(rows, { limit: 200 });
+  assert.ok(
+    poolTierCounts(pool)[ANALYSIS_TIER] >= 25,
+    `the analysis floor should hold its slots, got ${poolTierCounts(pool)[ANALYSIS_TIER]}`
+  );
+});
+
+test("SOURCE CAP: one outlet cannot take more than two slots in a category", () => {
+  // The exact failure that prompted this: four Americas items, three from one source.
+  const items = [
+    { rank: 1, title: "Americas A", bucket: "americas", source_row: row("Americas A", "One Outlet"), origin: "model" },
+    { rank: 2, title: "Americas B", bucket: "americas", source_row: row("Americas B", "One Outlet"), origin: "model" },
+    { rank: 3, title: "Americas C", bucket: "americas", source_row: row("Americas C", "One Outlet"), origin: "model" },
+    { rank: 4, title: "Americas D", bucket: "americas", source_row: row("Americas D", "One Outlet"), origin: "model" },
+  ];
+  const out = enforceQuotas(items, richPool(), { total: TOTAL_ITEMS });
+  const fromOne = out.items.filter(
+    (i) => i.bucket === "americas" && i.source_row && i.source_row.source === "One Outlet"
+  ).length;
+  assert.ok(
+    fromOne <= MAX_PER_SOURCE_PER_BUCKET,
+    `one outlet kept ${fromOne} Americas slots, cap is ${MAX_PER_SOURCE_PER_BUCKET}`
+  );
+  assert.ok(
+    out.dropped.some((d) => /per-source cap/.test(d.dropped_because || "")),
+    "the drop must say why it happened"
+  );
+  // The freed slots are refilled, not lost.
+  assert.strictEqual(out.total, TOTAL_ITEMS);
+});
+
+test("SOURCE CAP: backfill does not rebuild the concentration it just broke up", () => {
+  // Pool offers Americas stories from one outlet only.
+  const pool = [];
+  for (let i = 0; i < 10; i++) {
+    pool.push({ row: row(`Americas filler ${i}`, "One Outlet"), bucket: "americas" });
+  }
+  for (let i = 0; i < 10; i++) {
+    pool.push({ row: row(`Terror filler ${i}`, `Outlet ${i}`), bucket: "terrorism" });
+  }
+  const out = enforceQuotas([], pool, { total: TOTAL_ITEMS });
+  const fromOne = out.items.filter(
+    (i) => i.bucket === "americas" && i.source_row && i.source_row.source === "One Outlet"
+  ).length;
+  assert.ok(fromOne <= MAX_PER_SOURCE_PER_BUCKET, `backfill stacked ${fromOne} items from one outlet`);
+});
+
+test("GUARD: validateEdition fails an edition that breaches the per-source cap", () => {
+  const counts = { [IRAN_BUCKET]: 5, emerging_fp: 3, terrorism: 2, cartels_narcotics: 2, americas: 3 };
+  const items = ["A", "B", "C"].map((t) => ({
+    bucket: "americas",
+    title: t,
+    source_row: row(t, "One Outlet"),
+  }));
+  const v = validateEdition(counts, [], 15, items);
+  assert.strictEqual(v.ok, false, "three items from one source in one category must fail validation");
+  assert.ok(v.problems.some((p) => /per-source cap/.test(p)));
+});
+
+test("REPORT: the edition can say how many of its items came from the analysis tier", () => {
+  const items = [
+    { bucket: "americas", source_row: row("a", "Institute", "NGO", "", { tier: ANALYSIS_TIER }) },
+    { bucket: "americas", source_row: row("b", "Wire") },
+  ];
+  const t = editionTierCounts(items);
+  assert.strictEqual(t[ANALYSIS_TIER], 1);
+  assert.strictEqual(t[NEWS_TIER], 1);
+});
+
+// ===========================================================================
+// I. Once-weekly cadence (2026-09-21).
+// ===========================================================================
+
+test("GUARD: the mid-week refresh is gone and cannot silently come back", () => {
+  const now = new Date("2026-09-24T18:00:00Z"); // a Thursday afternoon
+  const h = seminarHealth({
+    latestWeekStart: "2026-09-21",
+    latestPublishedAt: "2026-09-21T11:30:00Z", // Monday's edition, nothing since
+    now,
+  });
+  assert.strictEqual(h.mid_week_stale, false, "a Thursday must never be reported stale — the brief is weekly now");
+  assert.strictEqual(h.healthy, true, "Monday's edition is the only edition of the week; Thursday is not a miss");
+});
+
+test("GUARD: a genuinely missed Monday is still caught", () => {
+  const h = seminarHealth({
+    latestWeekStart: "2026-09-14",
+    latestPublishedAt: "2026-09-14T11:30:00Z",
+    now: new Date("2026-09-23T18:00:00Z"),
+  });
+  assert.strictEqual(h.up_to_date, false);
+  assert.strictEqual(h.skip, true, "the weekly skip alarm must still fire");
+  assert.strictEqual(h.healthy, false);
 });
 
 console.log(`\n${passed} passed${process.exitCode ? " — WITH FAILURES" : ""}\n`);

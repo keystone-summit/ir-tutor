@@ -15,7 +15,18 @@ import { query } from "../../../../lib/db";
 import { SEMINAR_FEEDS } from "../../../../lib/seminarFeeds";
 import { fetchFeed } from "../../../../lib/rss";
 
-const MAX_ITEMS_PER_FEED = 18;
+// CADENCE NOTE (2026-09-21). The brief now PUBLISHES once a week (Monday), but
+// this endpoint still runs TWICE a week — Monday 10:00 before the generate
+// chain, and again Thursday 10:00 on its own. That Thursday run publishes
+// nothing; it exists so a busy wire feed that rolls its 20 most recent items
+// over in three days does not drop Tuesday's and Wednesday's stories off the
+// end before Monday comes round. Ingest twice, publish once: no story falls
+// between editions and is never seen.
+//
+// Same reason for the higher per-feed ceiling: a weekly pull has to reach
+// further back than a twice-weekly one did. Rows are deduped on url, so
+// re-reading the same items is free.
+const MAX_ITEMS_PER_FEED = 30;
 
 export async function POST(req) {
   const auth = requireCronOrAuth(req);
