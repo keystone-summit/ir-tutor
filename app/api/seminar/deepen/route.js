@@ -10,12 +10,21 @@
 //
 //   Triggered three ways:
 //     1. Vercel Cron (Monday 11:30 UTC) — between generate (11:00) and
-//        extract-relationships (12:00).
-//     2. Fire-and-forget from /api/seminar/generate (manual runs).
+//        extract-relationships (12:00). Kept as the SAFETY NET: trigger 2 is
+//        best-effort and can fail silently (see lib/seminarDeepDiveGuard).
+//     2. Fire-and-forget from /api/seminar/generate (manual runs, and the
+//        heartbeat self-heal, which goes through generate).
 //     3. A specific edition — ?seminar_id=<n> (defaults to latest published
 //        edition that has no deep dive yet).
 //
-//   Gated by SEMINAR_CRON_SECRET (cron / manual) OR a PIN token. Idempotent.
+//   TRULY IDEMPOTENT since 2026-09-21: an edition that already has a deep dive
+//   is SKIPPED before the Claude call, so whichever trigger arrives second
+//   costs nothing and cannot overwrite good output. Pass &force=1 to
+//   deliberately re-write one. Before this, generate's 11:00 fire-and-forget
+//   and the 11:30 cron both did the full job every week — paying twice and
+//   replacing the first (good) deep dive with a second version.
+//
+//   Gated by SEMINAR_CRON_SECRET (cron / manual) OR a PIN token.
 export const runtime = "nodejs";
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
@@ -23,6 +32,7 @@ export const dynamic = "force-dynamic";
 import { requireCronOrAuth } from "../../../../lib/seminarAuth";
 import { query } from "../../../../lib/db";
 import { claudeJSON } from "../../../../lib/anthropic";
+import { shouldRunDeepDive } from "../../../../lib/seminarDeepDiveGuard";
 
 const DEEP_SYSTEM =
   "You are a senior foreign-policy analyst and IR theorist writing the marquee " +
@@ -55,9 +65,32 @@ export async function POST(req) {
 
   const { searchParams } = new URL(req.url);
   const seminarId = parseInt(searchParams.get("seminar_id"), 10);
+  const force = searchParams.get("force") === "1";
 
   const edition = await pickEdition(seminarId);
   if (!edition) return Response.json({ ok: false, error: "No edition to deepen." }, { status: 404 });
+
+  // IDEMPOTENCY GATE — must sit BEFORE the Claude call. This edition already
+  // has a deep dive when the other trigger got here first (see the header
+  // comment); doing the work again would re-bill Claude and delete+insert over
+  // output that is already good.
+  let existing = null;
+  try {
+    const ex = await query(
+      `select id from public.seminar_deep_dive where seminar_id = $1 limit 1`, [edition.id]);
+    existing = ex.rows[0] || null;
+  } catch { /* pre-migration DB with no deep-dive table — treat as absent */ }
+
+  const decision = shouldRunDeepDive({ existing, force });
+  if (!decision.run) {
+    return Response.json({
+      ok: true,
+      edition_id: edition.id,
+      skipped: true,
+      reason: decision.reason,
+      deep_dive_id: existing.id,
+    });
+  }
 
   const ev = await query(
     `select id, rank, title, summary, reasoning, raw_html

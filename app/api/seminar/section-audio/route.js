@@ -5,6 +5,12 @@
 //   text changes (e.g. the Thursday deepen re-run), the hash no longer matches
 //   and the audio is regenerated transparently.
 //
+//   EXCEPTION, section=briefing: the Weekly Briefing narration is identical to
+//   what /api/seminar/voice-briefing already synthesised and stored in
+//   seminar_briefing_audio, so this route serves those bytes instead of paying
+//   ElevenLabs again for the same ~7,200 characters. See briefingReuseDecision
+//   in lib/seminarSectionVoice.
+//
 //   Public (no PIN) — same posture as /briefing-audio and the static
 //   theory/pattern MP3s, because the browser <audio> element streams it and
 //   can't attach a bearer token. The reader page itself stays PIN-gated. The
@@ -24,6 +30,7 @@ import {
   contentHash,
   synthesizeSection,
   ensureSectionAudioTable,
+  briefingReuseDecision,
   ADAM_VOICE_ID,
   BRIEFING_MODEL_ID,
 } from "../../../../lib/seminarSectionVoice";
@@ -94,6 +101,26 @@ export async function GET(req) {
   const voiceId = process.env.ELEVENLABS_VOICE_ID || ADAM_VOICE_ID;
   const modelId = process.env.ELEVENLABS_MODEL_ID || BRIEFING_MODEL_ID;
   const hash = contentHash(text, voiceId, modelId);
+
+  // The Weekly Briefing is ALREADY synthesised once a week by
+  // /api/seminar/voice-briefing and stored in seminar_briefing_audio. Serve
+  // those exact bytes rather than re-billing ElevenLabs for the identical
+  // narration — same builder, same rows, same voice, so the listener hears
+  // precisely what the weekly job produced. Any mismatch (missing row, changed
+  // text, changed voice) falls through to normal synthesis below, and the other
+  // five sections are untouched by this branch.
+  if (section === "briefing") {
+    let stored = null;
+    try {
+      const r = await query(
+        `select mp3, char_count, voice_id, model_id
+           from public.seminar_briefing_audio where seminar_id = $1 limit 1`, [id]);
+      stored = r.rows[0] || null;
+    } catch { /* table not created yet — fall through to generation */ }
+    if (briefingReuseDecision({ stored, text, voiceId, modelId }).reuse) {
+      return streamMp3(stored.mp3);
+    }
+  }
 
   // Cache lookup — serve immediately when the stored hash still matches.
   let cached = null;
